@@ -11,7 +11,9 @@ class GeneralSetting extends BaseModel
 
     protected $table = "general_setting";
     protected $primaryKey = "general_setting_id";
-    protected $fillable = ['site_title', 'zoom_client_url', 'zoom_client_secret_key', 'zoom_account_no', 'zoom_access_token', 'sms_template', 'appointment_template', 'country_code', 'site_logo', 'site_logo_dark', 'mail_config', 'account_sid', 'auth_token', 'from_number', 'stripe_key', 'stripe_secret_key', 'stripe_webhook_key', 'stripe_webhook_url'];
+    protected $fillable = ['site_title', 'zoom_client_url', 'zoom_client_secret_key', 'zoom_account_no', 'zoom_access_token', 'sms_template', 'appointment_template', 'country_code', 'site_logo', 'site_logo_dark', 'mail_config', 'account_sid', 'auth_token', 'from_number', 'stripe_key', 'stripe_secret_key', 'stripe_webhook_key', 'stripe_webhook_url'
+        ,'order_placed','order_approved','order_shipped','order_arrived','order_fulfilled'
+    ];
 
     protected $entity = 'general_setting';
     public $filter;
@@ -54,6 +56,11 @@ class GeneralSetting extends BaseModel
         $data['appointment_template'] = $request['appointment_template'];
         $data['site_title'] = $request['site_title'];
         $data['country_code'] = $request['country_code'];
+        $data['order_placed'] = $request['order_placed'];
+        $data['order_approved'] = $request['order_approved'];
+        $data['order_shipped'] = $request['order_shipped'];
+        $data['order_arrived'] = $request['order_arrived'];
+        $data['order_fulfilled'] = $request['order_fulfilled'];
         $mailConfig = [
             'name' => 'smtp',
             'host' => $request['host'],

@@ -84,7 +84,4 @@ class SettingsController extends Controller
         return $generalSetting->sendTestMail($request);
     }
 
-    public function saveOrderSetting(Request $request){
-
-    }
 }
