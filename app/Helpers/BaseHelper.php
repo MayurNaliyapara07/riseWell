@@ -6,6 +6,7 @@ use Akaunting\Money\Currency;
 use Akaunting\Money\Money;
 use App\Mail\Notify;
 use App\Models\GeneralSetting;
+use App\Models\ManageSection;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -644,6 +645,15 @@ class BaseHelper
         $notify->createLog = $createLog;
         $notify->userColumn = isset($user->id) ? $user->getForeignKey() : 'user_id';
         $notify->send();
+    }
+
+    public function getManageSectionConfigValueByKey($key)
+    {
+        $manager_section_setting = ManageSection::where('name', $key)->first();
+        if ($manager_section_setting !== null) {
+            return $manager_section_setting->value;
+        }
+        return '';
     }
 
 

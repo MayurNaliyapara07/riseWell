@@ -171,6 +171,15 @@
                                             <span class="menu-text">Product</span>
                                         </a>
                                     </li>
+                                    <li class="menu-item menu-item-submenu {{ request()->is('manage-section*') ? 'menu-item-active' : '' }}"
+                                        aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="{{ route('manage-section.index') }}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">Manage Section</span>
+                                        </a>
+                                    </li>
 
 
                                 </ul>

@@ -1,3 +1,4 @@
+@inject('baseHelper','App\Helpers\ManageSection\Helper')
 @extends('layouts.frontend')
 @section('content')
     <!--get-started-->
@@ -9,20 +10,16 @@
                         <div class="logo"><a href="#"><img src="{{asset('assets/frontend/images/dark-logo-horizontal.png')}}" alt=""></a></div>
                     </div>
                     <div class="right-title">
-                        Are you ready to get <strong>100mg Generic Viagra</strong> delivered to you?
+                        {!! $baseHelper->getManageSectionConfigValueByKey('title_one') !!}
                     </div>
-
-
                 </div>
-
                 <div class="icon-list">
                     <div class="icon-block">
                         <div class="icon">
-                            <img src="{{asset('assets/frontend/images/icon-1.png')}}" alt="">
+                            <img src="{{$baseHelper->siteDarkLogo()}}" alt="">
                         </div>
                         <h4>HIPAA COMPLIANCE</h4>
                     </div>
-
                     <div class="icon-block">
                         <div class="icon">
                             <img src="{{asset('assets/frontend/images/icon-2.png')}}" alt="">
@@ -67,7 +64,7 @@
         <div class="dont-wait-area">
             <div class="container">
                 <div class="pd">
-                    <p>Torem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus. Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. </p>
+                    <p> {!! $baseHelper->getManageSectionConfigValueByKey('title_two') !!}</p>
                     <div class="checkarea">
                         <input type="checkbox" name="" value="">
                         <label for="">Click here to consent to <a href="#">Privacy Policy</a> and <a href="#">Terms</a>.</label>
@@ -77,8 +74,6 @@
                 <div class="black-box">
                     <h2>Don’t Wait. RiseWell Today!</h2>
                     <a href="{{route('step1')}}" class="btn-started"> GET started now</a>
-                    <h4>Are you ready to get <strong>100mg Generic Viagra</strong> delivered to you?</h4>
-                    <a href="#" class="btn-link">Get link via email</a>
                 </div>
             </div>
         </div>
@@ -87,8 +82,8 @@
     <section>
         <div class="started-info">
             <div class="container">
-                <p>Torem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus. Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. </p>
-            </div>
+                <p> {!! $baseHelper->getManageSectionConfigValueByKey('title_three') !!}</p>
+             </div>
         </div>
     </section>
 

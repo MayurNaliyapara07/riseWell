@@ -7,6 +7,7 @@ use App\Http\Controllers\Common\CommonController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\Frontend\FrontendCategoryController;
 use App\Http\Controllers\Frontend\FrotendController;
+use App\Http\Controllers\Frontend\ManageSectionController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PatientsController;
@@ -117,7 +118,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('product-change-status/{id}', [ProductController::class,'productChangeStatus'])->name('product-change-status');
 
     Route::resource('category', FrontendCategoryController::class);
+    Route::resource('manage-section', ManageSectionController::class);
     Route::get('get-category', [FrontendCategoryController::class,'getCategory'])->name('get-category');
+    Route::get('get-manage-section', [ManageSectionController::class,'getManageSection'])->name('get-manage-section');
     Route::get('get-lab-category', [CategoryController::class,'getCategory'])->name('get-lab-category');
     Route::get('get-product', [ProductController::class,'getProduct'])->name('get-product');
     Route::get('get-users', [UserController::class,'getUser'])->name('get-users');

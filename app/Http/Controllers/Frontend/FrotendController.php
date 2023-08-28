@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\EDFlow;
+use App\Models\ManageSection;
 use App\Models\Product;
 use App\Models\TrtFlow;
 use Illuminate\Http\Request;
 
 class FrotendController extends Controller
 {
-
 
     public function thankYou()
     {
@@ -43,7 +43,9 @@ class FrotendController extends Controller
         $flow = $request->flow;
         session()->put('sku', $sku);
         session()->put('flow', $flow);
-        return view('frontend.ed-form-survey.get-started');
+        $manageSectionObj = new ManageSection();
+        $getContent = $manageSectionObj->getData();
+        return view('frontend.ed-form-survey.get-started')->with(compact('getContent'));
     }
 
     public function step1()
