@@ -44,6 +44,9 @@ class SettingsController extends Controller
     public function zoomSetting(){
         return view('master.setting.zoom-setting');
     }
+    public function orderSetting(){
+        return view('master.setting.order-setting');
+    }
 
     public function userUpdate(Request $request,$id){
         $request->merge(['id' => $id]);
@@ -79,5 +82,9 @@ class SettingsController extends Controller
     public function sendTestMail(Request $request){
         $generalSetting = new GeneralSetting();
         return $generalSetting->sendTestMail($request);
+    }
+
+    public function saveOrderSetting(Request $request){
+
     }
 }

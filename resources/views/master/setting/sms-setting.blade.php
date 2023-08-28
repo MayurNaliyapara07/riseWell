@@ -65,6 +65,18 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">SMS Template
+                                            <span class="text-danger">*</span></label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <textarea type="text"
+                                                      name="sms_template"
+                                                      class="form-control form-control-lg form-control-solid mb-2 summernote">
+                                                {{!empty($general_setting->sms_template)?$general_setting->sms_template:''}}
+                                            </textarea>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </form>
@@ -74,3 +86,10 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $('.summernote').summernote({
+            height: 150
+        });
+    </script>
+@endpush

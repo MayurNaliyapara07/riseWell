@@ -105,6 +105,18 @@
                                                    placeholder="Password">
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Appointment Template
+                                            <span class="text-danger">*</span></label>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <textarea type="text"
+                                                      name="appointment_template"
+                                                      class="form-control form-control-lg form-control-solid mb-2 summernote">
+                                                {{!empty($general_setting->appointment_template)?$general_setting->appointment_template:''}}
+                                            </textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -150,6 +162,9 @@
 @endsection
 @push('scripts')
     <script>
+        $('.summernote').summernote({
+            height: 150
+        });
         function sendTestMail() {
 
             $('#sentTestMailButton').addClass('spinner spinner-white spinner-right');
