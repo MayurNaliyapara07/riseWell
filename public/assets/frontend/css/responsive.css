@@ -1,0 +1,740 @@
+@media (max-width: 1600px) {
+}
+@media (max-width: 1460px) {
+
+.main-slider .item .content-area .text-block h2{font-size: 40px; line-height: 50px;}
+.main-slider .owl-dots .owl-dot button{font-size: 16px; padding: 15px 0;}
+.main-slider .item .content-area .text-block p{font-size: 14px}
+
+.product-list-page{padding: 260px 30px 1px 30px}
+
+}
+
+@media (min-width: 768px) and (max-width: 1024px){
+
+  .header-main-area .header-inner{padding: 10px 20px; align-items: center;}
+  .header-main-area.fixed .header-inner{padding: 10px 20px;}
+  .header-main-area .header-inner .navbar-brand{width: 60px; position: relative; z-index: 1}
+  .header-main-area .header-inner .navbar-brand img{width: 100%}
+  .header-main-area.fixed .header-inner .navbar-brand-small{position: relative; z-index: 1}
+  .header-main-area .header-inner .btn-menu{display: block; cursor: pointer; position: relative; z-index: 1}
+  .header-main-area .header-inner .menu-right{position: fixed;background: #000; width: 100%; height: 100%; left: -100%; top: 0px; display: block; padding: 110px 20px 20px 20px; transition: all .5s ease;}
+  .header-main-area .header-inner .menu-right.active{left: 0px; transition: all .5s ease;}
+  .header-main-area .header-inner ul.menu-list{display: block;}
+  .header-main-area .header-inner ul.menu-list li a{padding: 16px 0px;}
+  .header-main-area .header-inner .btn-treat{font-size: 14px; line-height: 40px; width: 100%; margin-top: 15px}
+  .header-main-area.fixed  .header-inner .menu-right{background: #fff}
+  .header-main-area.dark-header .header-inner .menu-right{background: #fff}
+  .header-main-area.dark-header .header-inner .btn-menu span{background: #000}
+  .slider-area .content-area{height: 70vh}
+  .slider-area .content-area .text-block .w-60 {max-width: 300px;}
+  .slider-area .content-area .text-block{padding: 0 20px}
+  .slider-area .content-area .text-block h2{font-size: 30px; line-height: 36px; margin: 0 0 15px 0;}
+  .slider-area .content-area .text-block p{font-size: 14px; line-height: 20px; margin: 0 0 20px 0;}
+  .slider-area .content-area .text-block .btn-product{font-size: 14px; line-height: 40px; width: 100%}
+  .slider-area .highlight-text{padding: 10px; font-size: 12px; line-height: 16px;}
+
+
+  .product-area {padding: 40px 0;}
+  .product-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .product-area p{font-size: 16px; line-height: 24px; margin: 0 0 12px 0; width: 100%;}
+  .product-area .btn-area{margin: 20px 0 30px 0;}
+  .product-area .btn-area .btn-about{line-height: 40px; font-size: 14px}
+  .product-area .owl-nav {position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+
+
+  .vitamins-product-area{padding: 40px 0 }
+  .vitamins-product-area .product-slider {margin-top: 20px;}
+  .vitamins-product-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .vitamins-product-area p{font-size: 16px; line-height: 24px; margin: 0 0 12px 0; width: 100%;}
+  .vitamins-product-area .owl-nav{position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+
+  .vitamins-product-area .howitwork{ margin-top: 74px;}
+  .vitamins-product-area .howitwork h3{font-size: 20px; line-height: 30px; }
+  .vitamins-product-area .howitwork .btn-work{ line-height: 40px; font-size: 14px}
+
+  .treatment-areas{padding: 40px 15px}
+  .treatment-areas h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .treatment-areas .treatment-list .treatment-block{width: 33.33%; margin-bottom: 20px}
+  .treatment-areas .treatment-list{flex-wrap: wrap;}
+  .treatment-areas .treatment-list .treatment-block .name{font-size: 14px; line-height: 20px;}
+  .treatment-areas .treatment-list .treatment-block .light-bg{margin: 0 0 10px 0; padding: 15px}
+  .treatment-areas .treatment-list .treatment-block .light-bg .circle-icon {width: 82px; height: 82px;}
+  .treatment-areas .treatment-list .treatment-block .light-bg .circle-icon img{max-width: 50%; max-height: 50%;}
+
+  .ratients-area{padding: 0px 0px 50px 0px;}
+  .ratients-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .ratients-area p{font-size: 16px; line-height: 24px; margin: 0 0 12px 0; width: 100%;}
+  .ratients-area .team-list{flex-wrap: wrap; justify-content: center;}
+  .ratients-area .team-list .team-block {margin-bottom: 20px; width: 33.33%; padding: 0 15px}
+  .ratients-area .team-list .team-block .name{font-size: 22px; line-height: 26px; margin: 0 0 10px 0;}
+  .ratients-area .team-list .team-block .name span{font-size: 12px; line-height: 16px;}
+  .ratients-area .team-list .team-block .info{font-size: 14px; line-height: 20px;}
+  .ratients-area .btn-center{padding: 0 15px; margin-top: 25px}
+  .ratients-area .btn-center .btn-now{line-height: 40px; font-size: 14px}
+
+  .difference-area{padding: 40px 0}
+  .difference-area h2{font-size: 30px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .difference-area .content-block {margin: 30px 0 0 0;}
+  .difference-area .content-block .title-icon{font-size: 20px; line-height: 25px; padding-bottom: 10px; margin-bottom: 10px; height: 60px;}
+  .difference-area .content-block .title-icon .icon {width: 50px; height: 50px;}
+  .difference-area .content-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .difference-area .btn-center .btn-now{line-height: 40px; font-size: 14px; margin-top: 30PX}
+  .difference-area .md-50 {margin: 0 -15px;}
+  .difference-area .pd-50 {padding: 0 15px;}
+
+  .blog-area{padding: 30px 0 30px 0;}
+  .blog-area .blog-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .blog-area .blog-block {margin: 0 0 30px 0;}
+  .blog-area .btn-center .btn-blog{line-height: 40px; font-size: 14px; }
+  .blog-area .md-50 {margin: 0 -15px;}
+  .blog-area .pd-50 {padding: 0 15px;}
+
+  footer .footer-main{padding: 40px 0}
+  footer .footer-main::before {width: 300px; height: 300px; bottom: -150px; left: -150px; background-size: cover;}
+  footer .footer-main .footer-menu-area{padding: 0px}
+  footer .footer-main .footer-menu-area .footer-info{display: block; padding: 18px 0 12px 0}
+  footer .footer-main .footer-menu-area ul.footer-link{padding: 12px 0}
+  footer .footer-main .footer-menu-area ul.footer-link li{font-size: 16px; line-height: 30px; margin-top: 0;}
+  footer .footer-main .footer-menu-area .footer-info h2{font-size: 22px; line-height: 22px; width: 100%;}
+  footer .footer-main .footer-menu-area .footer-info ul.link{margin: 10px 0 0 0}
+  footer .footer-main .footer-menu-area .footer-info ul.link li{font-size: 16px; line-height: 30px; margin-top: 0px}
+  footer .footer-main .copyright{font-size: 12px; line-height: 18px;width: 100%; margin-left: 0; padding-top: 18px; text-align: center;}
+
+  .product-list-page {padding: 120px 20px 1px 20px;}
+  .product-list-page .product-main-area{display: block; margin: 0 auto 40px auto}
+  .product-list-page .product-main-area .category{width: 100%; height: auto; margin-bottom: 20px}
+  .product-list-page .product-main-area .category .name{font-size: 26px; line-height: 38px; padding: 20px 20px;}
+  .product-list-page .product-main-area .category:hover .name {padding: 20px;}
+  .product-list-page .product-main-area .category img{position: relative;}
+  .product-list-page .product-main-area ul.pro-list{width: 100%; }
+  .product-list-page .product-main-area ul.pro-list li{padding: 0 15px; margin-bottom: 20px; width: 50%;}
+  .product-box .product-info{padding: 15px}
+  .product-box .product-info .title{font-size: 20px; line-height: 24px;}
+  .product-box .product-info .info{display: block; margin-bottom: 15px;}
+  .product-box .product-info .info p{font-size: 16px; line-height: 20px;}
+  .product-box .product-info .info a{font-size: 12px; line-height: 16px; margin-top: 10px}
+  .product-box .product-info .price{display: block; margin-bottom: 15px;}
+  .product-box .product-info .price .left{font-size: 12px; line-height: 20px;}
+  .product-box .product-info .price .price-right{font-size: 26px; line-height: 30px;}
+  .product-box .product-info .btn-coming{width: 100%; line-height: 40px; font-size: 14px;}
+  .product-box .product-info .btn-purchase{width: 100%; line-height: 40px; font-size: 14px;}
+
+  .inner-top-area{height: 70vh}
+  .inner-top-area .content-center{padding: 80px}
+  .inner-top-area .content-center h2{font-size: 30px; line-height: 36px; margin: 0 0 15px 0;}
+  .inner-top-area .content-center p{font-size: 14px; line-height: 20px; margin: 0 0 20px 0;}
+  .inner-top-area .content-center .btn-product{font-size: 14px; line-height: 40px; }
+
+
+  .step-area{padding: 40px 0}
+  .step-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .step-area .price-area {display: block; width: 100%; margin: 0 auto 20px auto; text-align: center;}
+  .step-area .price-area .price{margin: 0 0 10px 0; font-size: 30px; line-height: 30px}
+  .step-area .price-area p{font-size: 13px; line-height: 18px;}
+
+  .step-area .step-block{min-height: auto; padding: 30px 150px; margin-bottom: 30px;}
+  .step-area .step-block h3{font-size: 18px; line-height: 26px; margin: 0 0 10px 0}
+  .step-area .step-block p{font-size: 13px; line-height: 22px; width: auto;}
+  .step-area .step-block .number{bottom: -5px; left: 30px; font-size: 130px; line-height: 80px;}
+  .step-area .btn-center .btn-now{font-size: 14px; line-height: 40px; }
+
+  .subscription-area{padding: 40px 0}
+  .subscription-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .subscription-area p{font-size: 13px; line-height: 18px; margin: 0 0 10px 0}
+  .subscription-area ul{padding: 0px 0px 0px 15px; margin: 0px 0px 15px 0px}
+  .subscription-area ul li{font-size: 15px; line-height: 25px; padding: 5px 0;}
+  .subscription-area::before {content: none}
+
+  .subscription-area .price-block .left{width: 50%; padding-right: 20px}
+  .subscription-area .price-block .price{font-size: 28px; line-height: 38px; margin: 0px}
+  .subscription-area .price-block .info{margin-bottom: 15px; font-size: 12px; line-height: 14px;}
+  .subscription-area .price-block .btn-now{font-size: 14px; line-height: 40px;}
+
+  .medications-area{padding: 40px 0 90px 20px}
+  .medications-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 25px 0;}
+  .medications-area .other-product-box .product-info{padding: 20px}
+  .medications-area .other-product-box .product-info .title{font-size: 20px; line-height: 24px;}
+  .medications-area .other-product-box .product-info .price{font-size: 26px; line-height: 30px;}
+  .medications-area .owl-nav{position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+
+  .get-started-area{position: relative; padding: 60px 0 20px 0;}
+  .get-started-area::before {height: 770px;}
+  .get-started-area .top-logo{max-width: 558px; margin: 0 auto 65px auto; display: block;}
+  .get-started-area .right-title{width: 100%; margin-top: 40px}
+  .get-started-area .icon-list{flex-wrap: wrap; width: 600px; margin: 0 auto;}
+  .get-started-area .icon-list .icon-block{margin-bottom: 40px}
+
+  .dont-wait-area{padding: 100px 45px 60px 45px}
+  .dont-wait-area .black-box{padding: 100px 90px 120px 90px; text-align: center;}
+  .dont-wait-area .black-box::before{content: none}
+  .dont-wait-area .black-box h4{width: 100%}
+
+  .started-info{padding: 60px 45px 40px 45px; margin-bottom: 80px}
+
+  .inner-top-area.about-photo {height: 400px;}
+  .about-area{padding: 60px 15px}
+  .about-area h2{font-size: 46px}
+
+  .our-founders{padding: 60px 15px 0px 15px}
+  .our-founders .container{max-width: 450px}
+  .our-founders p{width: 100%}
+  .our-founders .team-list{display: block; margin: 0px auto; max-width: 330px; }
+  .our-founders .team-list .team-block{width: 100%; padding: 0px; margin-bottom: 60px}
+
+  .our-medicaladvisory{padding: 60px 15px 10px 15px}
+  .our-medicaladvisory .container{max-width: 586px}
+  .our-medicaladvisory p{width: 100%}
+  .our-medicaladvisory .team-list{display: block; margin: 0px auto;  }
+  .our-medicaladvisory .team-list .team-block{width: 100%; padding: 0px; margin-bottom: 60px}
+
+  .mission-area{padding: 60px 15px 80px 15px}
+  .mission-area h2{font-size: 46px; width: 100%; margin: 0px}
+  .mission-area .container{max-width: 340px}
+  .mission-area .content-block{margin-top: 100px}
+  .mission-area .md-50 {margin: 0;}
+  .mission-area .pd-50 {padding: 0;}
+
+  .btn-section{padding: 60px 45px}
+  .btn-section .content-area{text-align: center; display: block;}
+  .btn-section .content-area .w50{width: 100%}
+  .btn-section .content-area h3{margin-top: 60px}
+
+  .terms-section{padding: 40px 45px 80px 45px; background: #FBFBFF}
+
+  .blog-info-area{min-height: auto}
+  .blog-info-area p{ margin: 15px 0 0px 0}
+
+  .blog-detail-page{padding: 0px 0 80px 0; background: #FBFBFF}
+  .blog-detail-page .blog-img{width: 100%; margin-top: 0px; position: relative; z-index: 1}
+  .blog-detail-page .blog-img img{width: 100%}
+  .blog-detail-page .container{padding: 0 60px}
+  .blog-detail-page p{font-size: 16px; line-height: 24px;}
+
+  .blog-top-area .content-center{align-items: flex-end; padding-bottom: 80px}
+  .blog-top-area .container {max-width: 555px;}
+  .blog-top-area .content-center p{width: 100%; font-size: 18px; line-height: 26px;}
+
+  .browse-content{padding: 35px 0}
+  .browse-content .container{padding: 0px}
+  .browse-content .main-content-block{display: block;}
+  .browse-content .main-content-block .content-block{width: 100%; padding: 20px 25px}
+  .browse-content .main-content-block .border-right {border-bottom: #E5E8F1 1px solid !important; border-right: none !important;}
+  .browse-content .main-content-block .content-block p a{font-size: 22px}
+
+  .blog-list-gray, .blog-list-black{padding: 100px 0 70px 0}
+  .blog-list-gray .container, .blog-list-black .container{max-width: 380px;}
+  .blog-list-gray .btn-articles, .blog-list-black .btn-articles{margin-bottom: 30px}
+
+  .form-area-section{padding: 30px 15px}
+  .form-area-section .container{display: block;}
+  .form-area-section .step-list{width: auto; max-width: 450px; margin: 0 auto;}
+  .form-area-section .right-form-area{width: 100%; padding-left: 0; padding-top: 40px;}
+  .form-area-section h1{text-align: center;}
+
+}
+
+
+
+
+@media (max-width: 767px) {
+  .header-main-area .header-inner{padding: 10px 20px; align-items: center;}
+  .header-main-area.fixed .header-inner{padding: 10px 20px;}
+  .header-main-area .header-inner .navbar-brand{width: 60px; position: relative; z-index: 1}
+  .header-main-area .header-inner .navbar-brand img{width: 100%}
+  .header-main-area.fixed .header-inner .navbar-brand-small{position: relative; z-index: 1}
+  .header-main-area .header-inner .btn-menu{display: block; cursor: pointer; position: relative; z-index: 1}
+  .header-main-area .header-inner .menu-right{position: fixed;background: #000; width: 100%; height: 100%; left: -100%; top: 0px; display: block; padding: 110px 20px 20px 20px; transition: all .5s ease;}
+  .header-main-area .header-inner .menu-right.active{left: 0px; transition: all .5s ease;}
+  .header-main-area .header-inner ul.menu-list{display: block;}
+  .header-main-area .header-inner ul.menu-list li a{padding: 16px 0px;}
+  .header-main-area .header-inner .btn-treat{font-size: 14px; line-height: 40px; width: 100%; margin-top: 15px}
+  .header-main-area.fixed  .header-inner .menu-right{background: #fff}
+  .header-main-area.dark-header .header-inner .menu-right{background: #fff}
+  .header-main-area.dark-header .header-inner .btn-menu span{background: #000}
+
+
+  .slider-area .content-area{height: 100vh}
+  .slider-area .content-area .text-block{padding: 0 20px 50px 20px; align-items: end;}
+  .slider-area .highlight-text{display: none; padding: 10px; font-size: 12px; line-height: 16px;}
+
+  .product-area {padding: 40px 0 0 0;}
+  .product-area .btn-area{margin: 20px 0 110px 0;}
+  .product-area .btn-area .btn-about{margin: 15px 0 0 0; width: 260px}
+  .product-area h2,
+  .product-area p{width: 100%;}
+  .product-area .owl-nav{position: absolute; top: -84px; right: auto;}
+
+  .vitamins-product-area{padding: 20px 0 0 0}
+  .vitamins-product-area .product-slider {margin-top: 110px;}
+  .vitamins-product-area h2{margin: 0 0 40px 0; width: 100%}
+  .vitamins-product-area p{width: 100%;}
+  .vitamins-product-area .owl-nav{position: absolute; top: -84px; right: auto;}
+
+  .vitamins-product-area .howitwork{display: block; margin-top: 30px;}
+  .vitamins-product-area .howitwork h3{font-size: 20px; line-height: 30px; margin: 0 0 30px 0; text-align: center;}
+  .vitamins-product-area .howitwork .btn-work{margin: 0 0 40px 0; width: 100%; line-height: 40px; font-size: 14px}
+
+  .treatment-areas{padding: 40px 15px}
+  .treatment-areas h2{; width: 100%; margin: 0 0 15px 0;}
+  .treatment-areas .treatment-list .treatment-block{width: 170px; margin-bottom: 10px; padding: 0 5px}
+  .treatment-areas .treatment-list{flex-wrap: wrap; justify-content: center;}
+  .treatment-areas .treatment-list .treatment-block .name{font-size: 12px; line-height: 20px; min-height: 20px;}
+  .treatment-areas .treatment-list .treatment-block .light-bg{margin: 0 0 10px 0; padding: 40px 15px}
+  .treatment-areas .treatment-list .treatment-block .light-bg .circle-icon {width: 82px; height: 82px;}
+  .treatment-areas .treatment-list .treatment-block .light-bg .circle-icon img{max-width: 50%; max-height: 50%;}
+
+  .ratients-area{padding: 0px 0px 50px 0px;}
+  .ratients-area h2{width: 100%; margin: 0 0 15px 0;}
+  .ratients-area p{ margin: 0 0 12px 0; width: 100%;}
+  .ratients-area .team-list{display: block;}
+  .ratients-area .team-list .team-block {width: 244px; padding: 0; margin: 0 auto 20px auto;}
+  .ratients-area .team-list .team-block .name{font-size: 22px; line-height: 26px; margin: 0 0 10px 0;}
+  .ratients-area .team-list .team-block .name span{font-size: 12px; line-height: 16px;}
+  .ratients-area .team-list .team-block .info{font-size: 14px; line-height: 20px;}
+  .ratients-area .btn-center{padding: 0 15px; margin-top: 25px}
+  .ratients-area .btn-center .btn-now{width: 244px; }
+
+  .difference-area{padding: 40px 15px}
+  .difference-area h2{ width: 100%; margin: 0 0 15px 0;}
+  .difference-area .content-block {margin: 30px 0 0 0;}
+  .difference-area .content-block .title-icon{font-size: 20px; line-height: 25px; padding-bottom: 10px; margin-bottom: 10px; height: 60px;}
+  .difference-area .content-block .title-icon .icon {width: 50px; height: 50px;}
+  .difference-area .content-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .difference-area .btn-center .btn-now{width: 100%; line-height: 40px; font-size: 14px; margin-top: 30PX}
+  .difference-area .md-50 {margin: 0;}
+  .difference-area .pd-50 {padding: 0;}
+
+  .blog-area{padding: 40px 15px 40px 15px;}
+  .blog-area .blog-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .blog-area .blog-block {margin: 0 0 30px 0;}
+  .blog-area .btn-center .btn-blog{width: 100%;}
+  .blog-area .md-50 {margin: 0;}
+  .blog-area .pd-50 {padding: 0;}
+
+  footer .footer-main{padding: 40px 15px}
+  footer .footer-main::before {width: 300px; height: 300px; bottom: -150px; left: -150px; background-size: cover;}
+  footer .footer-main .footer-menu-area{padding: 0px}
+  footer .footer-main .footer-menu-area .footer-info{display: block; padding: 18px 0 12px 0}
+  footer .footer-main .footer-menu-area ul.footer-link{padding: 12px 0; display: flex; justify-content: space-between;}
+  footer .footer-main .footer-menu-area ul.footer-link li{font-size: 16px; line-height: 30px; margin-top: 0;}
+  footer .footer-main .footer-menu-area .footer-info h2{font-size: 22px; line-height: 22px; width: 100%;}
+  footer .footer-main .footer-menu-area .footer-info ul.link{margin: 10px 0 0 0}
+  footer .footer-main .footer-menu-area .footer-info ul.link li{font-size: 16px; line-height: 30px; margin-top: 0px}
+  footer .footer-main .copyright{font-size: 12px; line-height: 18px;width: 100%; margin-left: 0; padding-top: 18px; }
+
+  .product-list-page {padding: 120px 20px 1px 20px;}
+  .product-list-page .product-main-area{display: block; margin: 0 auto 40px auto}
+  .product-list-page .product-main-area .category{width: 100%; height: 400px}
+  .product-list-page .product-main-area .category .name{font-size: 26px; line-height: 38px; padding: 20px 20px;}
+  .product-list-page .product-main-area .category:hover .name {padding: 20px;}
+  .product-list-page .product-main-area ul.pro-list{width: 100%; display: block;}
+  .product-list-page .product-main-area ul.pro-list li{padding: 0; margin-bottom: 20px; width: 100%;}
+  .product-box .product-info{padding: 15px}
+  .product-box .product-info .title{font-size: 20px; line-height: 24px;}
+  .product-box .product-info .info{display: block; margin-bottom: 15px;}
+  .product-box .product-info .info p{font-size: 16px; line-height: 20px;}
+  .product-box .product-info .info a{font-size: 12px; line-height: 16px; margin-top: 10px}
+  .product-box .product-info .price{display: block; margin-bottom: 15px;}
+  .product-box .product-info .price .left{font-size: 12px; line-height: 20px;}
+  .product-box .product-info .price .price-right{font-size: 26px; line-height: 30px;}
+  .product-box .product-info .btn-coming{width: 100%; line-height: 40px; font-size: 14px;}
+  .product-box .product-info .btn-purchase{width: 100%; line-height: 40px; font-size: 14px;}
+
+  .inner-top-area{height: 100vh}
+  .inner-top-area .content-center{padding: 50px 20px 50px 50px !important}
+  .inner-top-area .content-center h2{ margin: 0 0 15px 0;}
+  .inner-top-area .content-center p{ margin: 0 0 20px 0;}
+  .inner-top-area .content-center .btn-product{padding: 0 20px; width: 100%}
+
+
+  .step-area{padding: 40px 0}
+  .step-area h2{font-size: 36px; line-height: 42px; width: 100%; margin: 0 0 15px 0;}
+  .step-area .container{padding: 0px}
+  .step-area .price-area {width: 90%; margin: 0 auto 40px auto; }
+  .step-area .price-area .price{ font-size: 30px; line-height: 30px}
+  .step-area .price-area p{font-size: 13px; line-height: 18px;}
+
+  .step-area .step-block{min-height: auto; padding: 60px 30px 40px 30px; margin-bottom: 30px;}
+  .step-area .step-block h3{font-size: 36px; line-height: 42px; margin: 0 0 10px 0; text-align: center;}
+  .step-area .step-block p{line-height: 26px; width: auto; text-align: center; position: relative; z-index: 1}
+  .step-area .step-block .number{bottom: -5px; }
+  .step-area .btn-center .btn-now{font-size: 14px; line-height: 40px; width: 100%}
+
+  .subscription-area{padding: 40px 15px}
+  .subscription-area h2{ width: 100%; margin: 0 0 15px 0;}
+  .subscription-area p{ margin: 0 0 10px 0}
+  .subscription-area ul{padding: 0px 0px 0px 15px; margin: 0px 0px 15px 0px}
+  .subscription-area ul li{ padding: 5px 0;}
+  .subscription-area::before {content: none}
+  .subscription-area .price-block {display: block; max-width: 100%;}
+  .subscription-area .price-block .left{width: 80%}
+  .subscription-area .price-block .info{margin-bottom: 15px;}
+
+  .medications-area{padding: 40px 0 30px 30px}
+  .medications-area h2{ width: 100%; margin: 0 0 100px 0;}
+  .medications-area .other-product-box .product-info{padding: 20px}
+  .medications-area .other-product-box .product-info .title{font-size: 20px; line-height: 24px;}
+  .medications-area .other-product-box .product-info .price{font-size: 26px; line-height: 30px;}
+  .medications-area .owl-nav {top: -77px; right: auto; left: 0;}
+
+  .hormone-optimization-area{padding: 40px 30px}
+  .hormone-optimization-area h2{ width: 100%; margin: 0 0 15px 0;}
+  .hormone-optimization-area p{width: auto; margin: 0 0 30px 0}
+  .hormone-optimization-area .hormone-content-area{display: block;}
+  .hormone-optimization-area .hormone-content-area .leftside{width: 100%; padding: 0 0 25px 0}
+  .hormone-optimization-area .hormone-content-area .content-list{padding: 20px; display: block;}
+  .hormone-optimization-area .hormone-content-area .content-list .light-bg {width: 120px; height: 120px; position: relative; margin: 0 auto 20px auto;}
+  .hormone-optimization-area .hormone-content-area .content-list .light-bg .circle-icon {width: 72px; height: 72px; }
+  .hormone-optimization-area .hormone-content-area .content-list .light-bg .circle-icon img {position: absolute; top: 20%; bottom: 20%; left: 20%; right: 20%; object-fit: contain; max-width: 60%; max-height: 60%; margin: auto;}
+  .hormone-optimization-area .hormone-content-area .content-list p{text-align: center;}
+  .hormone-optimization-area .hormone-content-area .content-list:nth-of-type(2n+2){padding: 20px; display: block;}
+  .hormone-optimization-area .hormone-content-area .rightside {width: 100%; padding-left: 0;}
+  .hormone-optimization-area .hormone-content-area .rightside .photobox{height: 400px}
+
+  .product-detail{padding: 60px 0 40px 0}
+  .product-detail .container{display: block;}
+  .product-detail .container .product-photo{width: 100%}
+  .product-detail .container .detail-block{width: 100%; padding: 20px 0px 0 0px}
+  .product-detail .container .detail-block h1{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .product-detail .container .detail-block p{font-size: 16px; line-height: 24px; width: auto; margin: 0 0 30px 0}
+  .product-detail .price-block {display: block; max-width: 100%;}
+  .product-detail .price-block .left{width: 100%}
+  .product-detail .price-block .price{font-size: 28px; line-height: 38px;}
+  .product-detail .price-block .info{margin-bottom: 15px; font-size: 12px; line-height: 14px;}
+  .product-detail .price-block .btn-now{font-size: 14px; line-height: 40px; width: 100%}
+
+  .benefits-area{padding: 40px 0}
+  .benefits-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .benefits-area p{font-size: 13px; line-height: 18px; margin: 0 0 10px 0}
+  .benefits-area ul{padding: 0px 0px 0px 15px; margin: 0px}
+  .benefits-area ul li{font-size: 15px; line-height: 25px; padding: 5px 0 0 0;}
+
+  .review-area{padding: 40px 0 90px 20px}
+  .review-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 25px 0;}
+  .review-area .owl-nav{position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+  .review-box{padding: 90px 20px 20px 20px}
+  .review-box .user-photo{top: 20px; left: 20px;}
+  .review-box p{font-size: 16px; line-height: 24px; width: auto; margin: 0}
+  .review-box .name{font-size: 20px; line-height: 24px; margin: 0 0 10px 0;}
+  .review-box .name span{font-size: 12px; line-height: 16px;}
+
+  .dark-blog-area{padding: 30px 0 30px 0;}
+  .dark-blog-area .blog-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .dark-blog-area .blog-block {margin: 0 0 30px 0;}
+  .dark-blog-area .btn-center .btn-blog{width: 100%; line-height: 40px; font-size: 14px; }
+  .dark-blog-area .md-50 {margin: 0;}
+  .dark-blog-area .pd-50 {padding: 0;}
+
+  .otherproduct-area{padding: 40px 0 90px 20px}
+  .otherproduct-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 25px 0;}
+  .otherproduct-area .owl-nav{position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+
+  .get-started-area{position: relative; padding: 60px 0 40px 0;}
+  .get-started-area::before {height: 578px;}
+  .get-started-area .top-logo{max-width: 282px; margin: 0 auto 65px auto; display: block;}
+  .get-started-area .leftside {width: 100%;}
+  .get-started-area .leftside .logo {width: 100%;}
+  .get-started-area .right-title{width: 100%; margin-top: 40px; font-size: 26px; line-height: 34px;}
+  .get-started-area .icon-list{flex-wrap: wrap; width: 276px; margin: 0 auto;}
+  .get-started-area .icon-list .icon-block{margin-bottom: 10px; width: 116px}
+  .get-started-area .icon-list .icon-block .icon{width: 116px; height: 116px;}
+  .get-started-area .icon-list .icon-block .icon img { max-width: 60%; max-height: 60%;}
+  .get-started-area .icon-list .icon-block h4{font-size: 10px;  margin: 15px 0px 0px 0px; line-height: 14px;}
+
+  .dont-wait-area{padding: 40px 0px 60px 0px}
+  .dont-wait-area .container{padding: 0px}
+  .dont-wait-area .pd{padding: 0 60px}
+  .dont-wait-area::before {height: 1080px}
+  .dont-wait-area .black-box{padding: 60px 50px; text-align: center; border-radius: 0px;}
+  .dont-wait-area .black-box::before{content: none}
+  .dont-wait-area .black-box h4{width: 100%}
+
+  .started-info{padding: 60px 45px 40px 45px; margin-bottom: 60px}
+
+  .inner-top-area.about-photo {height: 400px;}
+  .about-area{padding: 60px 15px}
+  .about-area h2{font-size: 46px}
+
+  .our-founders{padding: 60px 15px 0px 15px}
+  .our-founders p{width: 100%}
+  .our-founders .team-list{display: block; margin: 0px auto; max-width: 330px; }
+  .our-founders .team-list .team-block{width: 100%; padding: 0px; margin-bottom: 60px}
+
+  .our-medicaladvisory{padding: 60px 15px 10px 15px}
+  .our-medicaladvisory p{width: 100%}
+  .our-medicaladvisory .team-list{display: block; margin: 0px auto; max-width: 330px; }
+  .our-medicaladvisory .team-list .team-block{width: 100%; padding: 0px; margin-bottom: 60px}
+
+  .mission-area{padding: 60px 15px 80px 15px}
+  .mission-area h2{font-size: 46px; width: 100%; margin: 0px}
+  .mission-area .content-block{margin-top: 100px}
+  .mission-area .md-50 {margin: 0;}
+  .mission-area .pd-50 {padding: 0;}
+
+  .btn-section{padding: 60px 45px}
+  .btn-section .content-area{text-align: center; display: block;}
+  .btn-section .content-area .w50{width: 100%}
+  .btn-section .content-area h3{margin-top: 60px}
+
+  .terms-section{padding: 40px 15px 40px 15px; background: #FBFBFF}
+  .terms-section p{font-size: 16px; line-height: 24px;}
+  .terms-section h2{margin: 20px 0 20px 0}
+
+  .blog-info-area{min-height: auto}
+  .blog-info-area p{ margin: 15px 0 0px 0}
+
+  .blog-detail-page{padding: 0px 0 80px 0; background: #FBFBFF}
+  .blog-detail-page .blog-img{width: 100%; margin-top: 0px; position: relative; z-index: 1}
+  .blog-detail-page .blog-img img{width: 100%}
+  .blog-detail-page .container{padding: 0 30px}
+  .blog-detail-page p{font-size: 16px; line-height: 24px;}
+  .blog-detail-page .pagination-area{display: block; text-align: center;}
+  .blog-detail-page .pagination-area .btn-back{margin: 10px 0;}
+  .blog-detail-page .pagination-area .btn-post{margin: 10px 0; }
+
+  .blog-top-area .content-center{align-items: flex-end; padding-bottom: 40px}
+  .blog-top-area .content-center p{width: 100%; font-size: 18px; line-height: 26px;}
+
+  .browse-content{padding: 35px 0}
+  .browse-content .container{padding: 0px}
+  .browse-content .main-content-block{display: block;}
+  .browse-content .main-content-block .content-block{width: 100%; padding: 20px 25px}
+  .browse-content .main-content-block .border-right {border-bottom: #E5E8F1 1px solid !important; border-right: none !important;}
+  .browse-content .main-content-block .content-block p a{font-size: 22px}
+
+  .blog-list-gray, .blog-list-black{padding: 100px 0 70px 0}
+  .blog-list-gray h2, .blog-list-black h2{padding: 0px}
+  .blog-list-gray .btn-articles, .blog-list-black .btn-articles{margin-bottom: 30px}
+
+  .secondheader{padding: 18px 10px}
+  .secondheader .logo {width: 136px;}
+  .secondheader .right-number {font-size: 10px; line-height: 14px;}
+  .secondheader .right-number a{font-size: 12px}
+  .form-area-section{padding: 30px 15px}
+  .form-area-section .container{display: block;}
+  .form-area-section .step-list{max-width: 450px; margin: 0 auto; width: 100%; padding: 30px;}
+  .form-area-section .right-form-area{width: 100%; padding-left: 0; padding-top: 40px;}
+  .form-area-section h1{text-align: left;}
+  .form-area-section .right-form-area .form-block{padding: 25px}
+  .form-area-section .checkbox-area ul.flex-check{display: block;}
+  .form-area-section .checkbox-area ul.flex-check li{margin-bottom: 10px}
+  .form-area-section .checkbox-area ul.half-flex-check{display: block;}
+  .form-area-section .checkbox-area ul.half-flex-check li{padding-right: 0px; width: 100%; margin-bottom: 10px}
+  .form-area-section .btn-back{margin-right: 0px; margin-bottom: 10px; width: 100%; padding: 0 15px}
+  .form-area-section .btn-continue{width: 100%; padding: 0 15px}
+  .form-area-section .checkbox-area ul.flex-check-five{display: block;}width: auto;
+  .form-area-section .checkbox-area ul.flex-check-five li{padding-right: 0px; width: 100%; margin-bottom: 10px}
+
+  .form-area-section .inner-info {padding: 25px 25px 5px 25px !important; margin-top: 30px;}
+  .form-area-section .inner-info h2{font-size: 26px}
+  .form-area-section .right-form-area .form-block .d-flex{display: block !important;}
+  .form-area-section .summery-area{width: 100%}
+  .form-area-section .purchase-block{width: 100%; padding: 30px 0 0 0}
+  .form-area-section .summery-area ul li span,
+  .form-area-section .summery-area ul li del{font-size: 16px; text-align: right; width: 120px}
+
+}
+
+@media (max-width: 360px) {
+  .slider-area .content-area{height: 100vh}
+  .slider-area .content-area .text-block{padding: 0 20px 80px 20px; align-items: end;}
+  .slider-area .content-area .text-block h2{font-size: 30px; line-height: 36px; margin: 0 0 15px 0;}
+  .slider-area .content-area .text-block p{font-size: 14px; line-height: 20px; margin: 0 0 20px 0;}
+  .slider-area .content-area .text-block .btn-product{font-size: 14px; line-height: 40px; width: 100%}
+  .slider-area .highlight-text{padding: 10px; font-size: 12px; line-height: 16px;}
+
+  .product-area {padding: 40px 0 0 0;}
+  .product-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .product-area p{font-size: 16px; line-height: 24px; margin: 0 0 12px 0; width: 100%;}
+  .product-area .btn-area{margin: 20px 0 110px 0;}
+  .product-area .btn-area .btn-about{margin: 0 0 5px 0; width: 100%; line-height: 40px; font-size: 14px}
+  .product-area .owl-nav{position: absolute; top: -84px; right: auto;}
+
+
+  .vitamins-product-area{padding: 20px 0 0 0}
+  .vitamins-product-area .product-slider {margin-top: 110px;}
+  .vitamins-product-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .vitamins-product-area p{font-size: 16px; line-height: 24px; margin: 0 0 12px 0; width: 100%;}
+  .vitamins-product-area .owl-nav{position: absolute; top: -84px; right: auto;}
+
+  .vitamins-product-area .howitwork{display: block; margin-top: 30px;}
+  .vitamins-product-area .howitwork h3{font-size: 20px; line-height: 30px; margin: 0 0 30px 0; text-align: center;}
+  .vitamins-product-area .howitwork .btn-work{margin: 0 0 40px 0; width: 100%; line-height: 40px; font-size: 14px}
+
+  .treatment-areas{padding: 40px 15px}
+  .treatment-areas h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .treatment-areas .treatment-list .treatment-block{width: 145px; margin-bottom: 10px; padding: 0 5px}
+  .treatment-areas .treatment-list{flex-wrap: wrap;}
+  .treatment-areas .treatment-list .treatment-block .name{font-size: 10px; line-height: 20px; min-height: 20px;}
+  .treatment-areas .treatment-list .treatment-block .light-bg{margin: 0 0 10px 0; padding: 26px 15px}
+  .treatment-areas .treatment-list .treatment-block .light-bg .circle-icon {width: 82px; height: 82px;}
+  .treatment-areas .treatment-list .treatment-block .light-bg .circle-icon img{max-width: 50%; max-height: 50%;}
+
+  .ratients-area{padding: 0px 0px 50px 0px;}
+  .ratients-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .ratients-area p{font-size: 16px; line-height: 24px; margin: 0 0 12px 0; width: 100%;}
+  .ratients-area .team-list{display: block;}
+  .ratients-area .team-list .team-block {width: 244px; padding: 0; margin: 0 auto 20px auto;}
+  .ratients-area .team-list .team-block .name{font-size: 22px; line-height: 26px; margin: 0 0 10px 0;}
+  .ratients-area .team-list .team-block .name span{font-size: 12px; line-height: 16px;}
+  .ratients-area .team-list .team-block .info{font-size: 14px; line-height: 20px;}
+  .ratients-area .btn-center{padding: 0 15px; margin-top: 25px}
+  .ratients-area .btn-center .btn-now{width: 244px; line-height: 40px; font-size: 14px}
+
+  .difference-area{padding: 40px 0}
+  .difference-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .difference-area .content-block {margin: 30px 0 0 0;}
+  .difference-area .content-block .title-icon{font-size: 20px; line-height: 25px; padding-bottom: 10px; margin-bottom: 10px; height: 60px;}
+  .difference-area .content-block .title-icon .icon {width: 50px; height: 50px;}
+  .difference-area .content-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .difference-area .btn-center .btn-now{width: 100%; line-height: 40px; font-size: 14px; margin-top: 30PX}
+  .difference-area .md-50 {margin: 0;}
+  .difference-area .pd-50 {padding: 0;}
+
+  .blog-area{padding: 30px 0 30px 0;}
+  .blog-area .blog-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .blog-area .blog-block {margin: 0 0 30px 0;}
+  .blog-area .btn-center .btn-blog{width: 100%; line-height: 40px; font-size: 14px; }
+  .blog-area .md-50 {margin: 0;}
+  .blog-area .pd-50 {padding: 0;}
+
+  footer .footer-main{padding: 40px 0}
+  footer .footer-main::before {width: 300px; height: 300px; bottom: -150px; left: -150px; background-size: cover;}
+  footer .footer-main .footer-menu-area{padding: 0px}
+  footer .footer-main .footer-menu-area .footer-info{display: block; padding: 18px 0 12px 0}
+  footer .footer-main .footer-menu-area ul.footer-link{padding: 12px 0; display: flex; justify-content: space-between;}
+  footer .footer-main .footer-menu-area ul.footer-link li{font-size: 16px; line-height: 30px; margin-top: 0;}
+  footer .footer-main .footer-menu-area .footer-info h2{font-size: 22px; line-height: 22px; width: 100%;}
+  footer .footer-main .footer-menu-area .footer-info ul.link{margin: 10px 0 0 0}
+  footer .footer-main .footer-menu-area .footer-info ul.link li{font-size: 16px; line-height: 30px; margin-top: 0px}
+  footer .footer-main .copyright{font-size: 12px; line-height: 18px;width: 100%; margin-left: 0; padding-top: 18px; }
+
+  .product-list-page {padding: 120px 20px 1px 20px;}
+  .product-list-page .product-main-area{display: block; margin: 0 auto 40px auto}
+  .product-list-page .product-main-area .category{width: 100%; height: 400px}
+  .product-list-page .product-main-area .category .name{font-size: 26px; line-height: 38px; padding: 20px 20px;}
+  .product-list-page .product-main-area .category:hover .name {padding: 20px;}
+  .product-list-page .product-main-area ul.pro-list{width: 100%; display: block;}
+  .product-list-page .product-main-area ul.pro-list li{padding: 0; margin-bottom: 20px; width: 100%;}
+
+  .product-box .product-info{padding: 15px}
+  .product-box .product-info .title{font-size: 20px; line-height: 24px;}
+  .product-box .product-info .info{display: block; margin-bottom: 15px;}
+  .product-box .product-info .info p{font-size: 16px; line-height: 20px;}
+  .product-box .product-info .info a{font-size: 12px; line-height: 16px; margin-top: 10px}
+  .product-box .product-info .price{display: block; margin-bottom: 15px;}
+  .product-box .product-info .price .left{font-size: 12px; line-height: 20px;}
+  .product-box .product-info .price .price-right{font-size: 26px; line-height: 30px;}
+  .product-box .product-info .btn-coming{width: 100%; line-height: 40px; font-size: 14px;}
+  .product-box .product-info .btn-purchase{width: 100%; line-height: 40px; font-size: 14px;}
+
+  .inner-top-area{height: 70vh}
+  .inner-top-area .content-center{padding-bottom: 40px}
+  .inner-top-area .content-center h2{font-size: 30px; line-height: 36px; margin: 0 0 15px 0;}
+  .inner-top-area .content-center p{font-size: 14px; line-height: 20px; margin: 0 0 20px 0;}
+  .inner-top-area .content-center .btn-product{font-size: 14px; line-height: 40px; width: 100%}
+
+
+  .step-area{padding: 40px 0}
+  .step-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .step-area .container{padding: 0px}
+  .step-area .step-block{min-height: auto; padding: 30px 30px 110px 30px; margin-bottom: 30px;}
+  .step-area .step-block h3{font-size: 18px; line-height: 26px; margin: 0 0 10px 0}
+  .step-area .step-block p{font-size: 13px; line-height: 22px; width: auto;}
+  .step-area .step-block .number{bottom: -5px; left: 30px; font-size: 130px; line-height: 80px;}
+  .step-area .btn-center .btn-now{font-size: 14px; line-height: 40px; width: 100%}
+
+  .subscription-area{padding: 40px 0}
+  .subscription-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .subscription-area p{font-size: 13px; line-height: 18px; margin: 0 0 10px 0}
+  .subscription-area ul{padding: 0px 0px 0px 15px; margin: 0px 0px 15px 0px}
+  .subscription-area ul li{font-size: 15px; line-height: 25px; padding: 5px 0;}
+  .subscription-area::before {content: none}
+  .subscription-area .price-block {display: block; max-width: 100%;}
+  .subscription-area .price-block .left{width: 100%}
+  .subscription-area .price-block .price{font-size: 28px; line-height: 38px;}
+  .subscription-area .price-block .info{margin-bottom: 15px; font-size: 12px; line-height: 14px;}
+  .subscription-area .price-block .btn-now{font-size: 14px; line-height: 40px; width: 100%}
+
+  .medications-area{padding: 40px 0 90px 20px}
+  .medications-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 25px 0;}
+  .medications-area .other-product-box .product-info{padding: 20px}
+  .medications-area .other-product-box .product-info .title{font-size: 20px; line-height: 24px;}
+  .medications-area .other-product-box .product-info .price{font-size: 26px; line-height: 30px;}
+  .medications-area .owl-nav{position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+
+  .hormone-optimization-area{padding: 40px 15px}
+  .hormone-optimization-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .hormone-optimization-area p{font-size: 16px; line-height: 24px; width: auto; margin: 0 0 30px 0}
+  .hormone-optimization-area .hormone-content-area{display: block;}
+  .hormone-optimization-area .hormone-content-area .leftside{width: 100%; padding: 0 0 25px 0}
+  .hormone-optimization-area .hormone-content-area .content-list{padding: 20px; display: block;}
+  .hormone-optimization-area .hormone-content-area .content-list .light-bg {width: 120px; height: 120px; position: relative; margin: 0 auto 20px auto;}
+  .hormone-optimization-area .hormone-content-area .content-list .light-bg .circle-icon {width: 72px; height: 72px; }
+  .hormone-optimization-area .hormone-content-area .content-list .light-bg .circle-icon img {position: absolute; top: 20%; bottom: 20%; left: 20%; right: 20%; object-fit: contain; max-width: 60%; max-height: 60%; margin: auto;}
+  .hormone-optimization-area .hormone-content-area .content-list p{text-align: center;}
+  .hormone-optimization-area .hormone-content-area .content-list:nth-of-type(2n+2){padding: 20px; display: block;}
+  .hormone-optimization-area .hormone-content-area .rightside {width: 100%; padding-left: 0;}
+  .hormone-optimization-area .hormone-content-area .rightside .photobox{height: 400px}
+
+  .product-detail{padding: 60px 0 40px 0}
+  .product-detail .container{display: block;}
+  .product-detail .container .product-photo{width: 100%}
+  .product-detail .container .detail-block{width: 100%; padding: 20px 0px 0 0px}
+  .product-detail .container .detail-block h1{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .product-detail .container .detail-block p{font-size: 16px; line-height: 24px; width: auto; margin: 0 0 30px 0}
+  .product-detail .price-block {display: block; max-width: 100%;}
+  .product-detail .price-block .left{width: 100%}
+  .product-detail .price-block .price{font-size: 28px; line-height: 38px;}
+  .product-detail .price-block .info{margin-bottom: 15px; font-size: 12px; line-height: 14px;}
+  .product-detail .price-block .btn-now{font-size: 14px; line-height: 40px; width: 100%}
+
+  .benefits-area{padding: 40px 0}
+  .benefits-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 15px 0;}
+  .benefits-area p{font-size: 13px; line-height: 18px; margin: 0 0 10px 0}
+  .benefits-area ul{padding: 0px 0px 0px 15px; margin: 0px}
+  .benefits-area ul li{font-size: 15px; line-height: 25px; padding: 5px 0 0 0;}
+
+  .review-area{padding: 40px 0 90px 20px}
+  .review-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 25px 0;}
+  .review-area .owl-nav{position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+  .review-box{padding: 90px 20px 20px 20px}
+  .review-box .user-photo{top: 20px; left: 20px;}
+  .review-box p{font-size: 16px; line-height: 24px; width: auto; margin: 0}
+  .review-box .name{font-size: 20px; line-height: 24px; margin: 0 0 10px 0;}
+  .review-box .name span{font-size: 12px; line-height: 16px;}
+
+  .dark-blog-area{padding: 30px 0 30px 0;}
+  .dark-blog-area .blog-block p{font-size: 16px; line-height: 24px; margin: 0; width: 100%;}
+  .dark-blog-area .blog-block {margin: 0 0 30px 0;}
+  .dark-blog-area .btn-center .btn-blog{width: 100%; line-height: 40px; font-size: 14px; }
+  .dark-blog-area .md-50 {margin: 0;}
+  .dark-blog-area .pd-50 {padding: 0;}
+
+  .otherproduct-area{padding: 40px 0 90px 20px}
+  .otherproduct-area h2{font-size: 24px; line-height: 30px; width: 100%; margin: 0 0 25px 0;}
+  .otherproduct-area .owl-nav{position: absolute; top: auto; right: auto; margin-top: 10px; width: 100%; text-align: center;}
+
+  .get-started-area{position: relative; padding: 40px 0 40px 0;}
+  .get-started-area::before {height: 578px;}
+  .get-started-area .top-logo{max-width: 260px; margin: 0 auto 65px auto; display: block;}
+  .get-started-area .leftside {width: 100%;}
+  .get-started-area .leftside .logo {width: 100%;}
+  .get-started-area .right-title{width: 100%; margin-top: 40px; font-size: 26px; line-height: 34px;}
+  .get-started-area .icon-list{flex-wrap: wrap; width: 260px; margin: 0 auto;}
+  .get-started-area .icon-list .icon-block{margin-bottom: 10px; width: 116px}
+  .get-started-area .icon-list .icon-block .icon{width: 116px; height: 116px;}
+  .get-started-area .icon-list .icon-block .icon img { max-width: 60%; max-height: 60%;}
+  .get-started-area .icon-list .icon-block h4{font-size: 10px;  margin: 15px 0px 0px 0px; line-height: 14px;}
+
+  .dont-wait-area{padding: 40px 0px 60px 0px}
+  .dont-wait-area .container{padding: 0px}
+  .dont-wait-area .pd{padding: 0 35px}
+  .dont-wait-area::before {height: 1080px}
+  .dont-wait-area .black-box{padding: 60px 30px; text-align: center; border-radius: 0px;}
+  .dont-wait-area .black-box::before{content: none}
+  .dont-wait-area .black-box h4{width: 100%}
+
+  .started-info{padding: 40px 20px 30px 20px; margin-bottom: 60px}
+}
