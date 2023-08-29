@@ -66,11 +66,12 @@ class Product extends BaseModel
         return $this->hasMany(ProductImages::class, 'product_id', 'product_id');
     }
 
-    public function getProductBySkU($sku)
+    public function getProductBySkU($sku,$type)
     {
         $this->setSelect();
         $selectedColumn = $this->selectColomns([$this->table . '.product_id', $this->table . '.product_name', $this->table . '.image', $this->table . '.sku', $this->table . '.price', $this->table . '.discount', $this->table . '.shipping_cost', $this->table . '.processing_fees', $this->table . '.product_type', $this->table . '.benifit', $this->table . '.membership_subscription', $this->table . '.stripe_plan', $this->table . '.slug']);
         $this->addFieldToFilter($this->table, 'sku', 'like', $sku);
+        $this->addFieldToFilter($this->table, 'product_type', 'like', $type);
         $result = $this->get($selectedColumn)->first();
         return $result;
 

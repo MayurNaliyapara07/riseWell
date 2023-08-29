@@ -41,7 +41,7 @@
                 </div>
                 <div class="right-form-area">
                     <h1>Medical History</h1>
-                    <form id="ed_flow" action="{{route('save-step-two')}}" method="post" enctype="multipart/form-data" class="ajax-form">
+                    <form id="ed_flow" action="{{route('save-ed-step-two')}}" method="post" enctype="multipart/form-data" class="ajax-form">
                         @csrf
                         <div class="form-block">
 
@@ -53,12 +53,12 @@
                                     <ul class="flex-check">
                                         <li>
                                             <input type="radio" name="vitals" value="1" id="vitals_yes"  {{ !empty($patient) && $patient->vitals == 1 ? 'checked' : ''}}
-                                                   class="css-radio">
+                                                   class="css-radio required" data-msg-required="Vitas Tested is required">
                                             <label for="vitals_yes" class="css-label">Yes</label>
                                         </li>
                                         <li>
                                             <input type="radio" name="vitals" value="0" id="vitals_no" {{ !empty($patient) && $patient->vitals == 0 ? 'checked' : ''}}
-                                                   class="css-radio">
+                                                   class="css-radio required" data-msg-required="Vitas Tested is required">
                                             <label for="vitals_no" class="css-label">No</label>
                                         </li>
                                     </ul>
@@ -72,13 +72,15 @@
                                         <li>
                                             <input type="radio" name="medical_problems" value="1" {{ !empty($patient) && $patient->medical_problems == 1 ? 'checked' : ''}}
                                                    id="medical_problems_yes"
-                                                   class="css-radio">
+                                                   data-msg-required="Medication Problems is required"
+                                                   class="css-radio required">
                                             <label for="medical_problems_yes" class="css-label">Yes</label>
                                         </li>
                                         <li>
                                             <input type="radio" name="medical_problems" value="0" {{ !empty($patient) && $patient->medical_problems == 0 ? 'checked' : ''}}
                                                    id="medical_problems_no"
-                                                   class="css-radio">
+                                                   data-msg-required="Medical Problems is required"
+                                                   class="css-radio required">
                                             <label for="medical_problems_no" class="css-label">No</label>
                                         </li>
 
@@ -89,7 +91,8 @@
                                 <div class="checkbox-area">
                                     <h4>What were the medical problem(s)?</h4>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Type Here"
+                                        <input type="text" class="form-control required" placeholder="Type Here"
+                                               data-msg-required="Medical Problem(s) is required"
                                                name="medical_problem" value="{{!empty($patient) ? $patient->medical_problem : old('medical_problem')}}">
                                     </div>
                                 </div>
@@ -103,10 +106,11 @@
                                             @foreach($getBloodPressure as $key=>$bloodPressure)
                                                 <li>
                                                     <input type="radio" name="blood_pressure"
+                                                           data-msg-required="Blood Pressure is required"
                                                            value="{{$bloodPressure['value']}}"
                                                            {{ !empty($patient) && $patient->blood_pressure == $bloodPressure['value'] ? 'checked' : ''}}
                                                            id="blood_pressure_{{$key}}"
-                                                           class="css-radio">
+                                                           class="css-radio required">
                                                     <label for="blood_pressure_{{$key}}"
                                                            class="css-label">{{$bloodPressure['label']}}</label>
                                                 </li>
@@ -126,9 +130,10 @@
                                             @foreach($getBloodPressureMedication as $key=>$bloodPressureMedication)
                                                 <li>
                                                     <input type="radio" name="blood_pressure_medication"
+                                                           data-msg-required="Blood Pressure Medication is required"
                                                            value="{{$bloodPressureMedication['value']}}"
                                                            {{ !empty($patient) && $patient->blood_pressure_medication == $bloodPressureMedication['value'] ? 'checked' : ''}}
-                                                           id="blood_pressure_medication_{{$key}}" class="css-radio">
+                                                           id="blood_pressure_medication_{{$key}}" class="css-radio required">
                                                     <label for="blood_pressure_medication_{{$key}}"
                                                            class="css-label">{{$bloodPressureMedication['label']}}</label>
                                                 </li>
@@ -160,9 +165,10 @@
                                             @foreach($getMedicationsConjunction as $medicationsConjunction)
                                                 <li>
                                                     <input type="checkbox" name="medication_conjunction[]"
+                                                           data-msg-required="Nitrates Medication is required"
                                                            value="{{$medicationsConjunction['value']}}"
                                                            {{  !empty($selectedConjunction) && in_array($medicationsConjunction['value'],$selectedConjunction) ?  'checked':'' }}
-                                                           id="{{$medicationsConjunction['key']}}" class="css-checkbox">
+                                                           id="{{$medicationsConjunction['key']}}" class="css-checkbox required">
                                                     <label for="{{$medicationsConjunction['key']}}"
                                                            class="css-label">{{$medicationsConjunction['label']}}</label>
                                                 </li>
@@ -183,10 +189,11 @@
                                             @foreach($getRecreationalDrugs as $drugs)
                                                 <li>
                                                     <input type="checkbox" name="recreational_drugs[]"
+                                                           data-msg-required="Recreational Medication is required"
                                                            value="{{$drugs['value']}}"
                                                            {{  !empty($selectedRecreationalDrugs) && in_array($drugs['value'],$selectedRecreationalDrugs) ?  'checked':'' }}
                                                            id="recreational_drugs_{{$drugs['key']}}"
-                                                           class="css-checkbox">
+                                                           class="css-checkbox required">
                                                     <label for="recreational_drugs_{{$drugs['key']}}"
                                                            class="css-label">{{$drugs['label']}}</label>
                                                 </li>
@@ -203,13 +210,17 @@
                                     </h4>
                                     <ul class="flex-check">
                                         <li>
-                                            <input type="radio" name="medication_prescription" value="1"   {{ !empty($patient) && $patient->medication_prescription == 1 ? 'checked' : ''}}
-                                                   id="medication_prescription_yes" class="css-radio">
+                                            <input type="radio" name="medication_prescription" value="1"  {{ !empty($patient) && $patient->medication_prescription == 1 ? 'checked' : ''}}
+                                                   id="medication_prescription_yes" class="css-radio required"
+                                                   data-msg-required="Prescription Medications is required"
+                                            >
                                             <label for="medication_prescription_yes" class="css-label">Yes</label>
                                         </li>
                                         <li>
                                             <input type="radio" name="medication_prescription" value="0" {{ !empty($patient) && $patient->medication_prescription == 0 ? 'checked' : ''}}
-                                                   id="medication_prescription_no" class="css-radio">
+                                                   id="medication_prescription_no" class="css-radio required"
+                                                   data-msg-required="Prescription Medications is required"
+                                            >
                                             <label for="medication_prescription_no" class="css-label">No</label>
                                         </li>
                                     </ul>
@@ -226,7 +237,9 @@
                                                     <input type="radio" name="treat"
                                                            value="{{$treat['value']}}"
                                                            {{ !empty($patient) && $patient->treat == $treat['value'] ? 'checked' : ''}}
-                                                           id="treat_{{$treat['key']}}" class="css-radio">
+                                                           id="treat_{{$treat['key']}}" class="css-radio required"
+                                                           data-msg-required="Treat Conditions is required"
+                                                    >
                                                     <label for="treat_{{$treat['key']}}"
                                                            class="css-label">{{$treat['label']}}</label>
                                                 </li>
@@ -257,7 +270,9 @@
                                                            value="{{$cardiovascular['value']}}"
                                                            {{ !empty($patient) && $patient->cardiovascular == $cardiovascular['value'] ? 'checked' : ''}}
                                                            id="cardiovascular_{{$cardiovascular['key']}}"
-                                                           class="css-radio">
+                                                           class="css-radio required"
+                                                           data-msg-required="Cardiovascular Disease is required"
+                                                    >
                                                     <label for="cardiovascular_{{$cardiovascular['key']}}"
                                                            class="css-label">{{$cardiovascular['label']}}</label>
                                                 </li>
@@ -276,7 +291,9 @@
                                                     <input type="radio" name="diabetes" value="{{$diabetes['value']}}"
                                                            id="{{$diabetes['key']}}"
                                                            {{ !empty($patient) && $patient->diabetes == $diabetes['value'] ? 'checked' : ''}}
-                                                           class="css-radio">
+                                                           class="css-radio required"
+                                                           data-msg-required="Diabetes Medication is required"
+                                                    >
                                                     <label for="{{$diabetes['key']}}"
                                                            class="css-label">{{$diabetes['label']}}</label>
                                                 </li>
@@ -295,7 +312,9 @@
                                                     <input type="radio" name="diabetes_level"
                                                            value="{{$diabetesLevel['value']}}"
                                                            {{ !empty($patient) && $patient->diabetes_level == $diabetesLevel['value'] ? 'checked' : ''}}
-                                                           id="{{$diabetesLevel['key']}}" class="css-radio">
+                                                           id="{{$diabetesLevel['key']}}" class="css-radio required"
+                                                           data-msg-required="Diabetes Level is required"
+                                                    >
                                                     <label for="{{$diabetesLevel['key']}}"
                                                            class="css-label">{{$diabetesLevel['label']}}</label>
                                                 </li>
@@ -314,7 +333,9 @@
                                                     <input type="radio" name="thyroid"
                                                            value="{{$thyroid['value']}}"
                                                            {{ !empty($patient) && $patient->thyroid == $thyroid['value'] ? 'checked' : ''}}
-                                                           id="{{$thyroid['key']}}" class="css-radio">
+                                                           id="{{$thyroid['key']}}" class="css-radio required"
+                                                           data-msg-required="Thyroid Medication is required"
+                                                    >
                                                     <label for="{{$thyroid['key']}}"
                                                            class="css-label">{{$thyroid['label']}}</label>
                                                 </li>
@@ -333,7 +354,9 @@
                                                     <input type="radio" name="cholesterol"
                                                            value="{{$cholesterol['value']}}"
                                                            {{ !empty($patient) && $patient->cholesterol == $cholesterol['value'] ? 'checked' : ''}}
-                                                           id="{{$cholesterol['key']}}" class="css-radio">
+                                                           id="{{$cholesterol['key']}}" class="css-radio required"
+                                                           data-msg-required="Cholesterol Medication is required"
+                                                    >
                                                     <label for="{{$cholesterol['key']}}"
                                                            class="css-label">{{$cholesterol['label']}}</label>
                                                 </li>
@@ -351,7 +374,8 @@
                                                 <li>
                                                     <input type="radio" name="breathing" value="{{$breathing['value']}}"
                                                            {{ !empty($patient) && $patient->breathing == $breathing['value'] ? 'checked' : ''}}
-                                                           id="{{$breathing['key']}}" class="css-radio">
+                                                           id="{{$breathing['key']}}" class="css-radio required"
+                                                           data-msg-required="Breathing Medication is required">
                                                     <label for="{{$breathing['key']}}"
                                                            class="css-label">{{$breathing['label']}}</label>
                                                 </li>
@@ -371,7 +395,9 @@
                                                     <input type="radio" name="gastroesophageal"
                                                            value="{{$gastroesophageal['value']}}"
                                                            {{ !empty($patient) && $patient->gastroesophageal == $gastroesophageal['value'] ? 'checked' : ''}}
-                                                           id="{{$gastroesophageal['key']}}" class="css-radio">
+                                                           id="{{$gastroesophageal['key']}}" class="css-radio required"
+                                                           data-msg-required="Gastroesophageal Reflux Medication is required"
+                                                    >
                                                     <label for="{{$gastroesophageal['key']}}"
                                                            class="css-label">{{$gastroesophageal['label']}}</label>
                                                 </li>
@@ -392,7 +418,9 @@
                                                     <input type="radio" name="hyperactivity"
                                                            value="{{$hyperactivity['value']}}"
                                                            {{ !empty($patient) && $patient->hyperactivity == $hyperactivity['value'] ? 'checked' : ''}}
-                                                           id="{{$hyperactivity['key']}}" class="css-radio">
+                                                           id="{{$hyperactivity['key']}}" class="css-radio required"
+                                                           data-msg-required="ADHD Medication is required"
+                                                    >
                                                     <label for="{{$hyperactivity['key']}}"
                                                            class="css-label">{{$hyperactivity['label']}}</label>
                                                 </li>
@@ -410,12 +438,13 @@
                                     <ul class="flex-check">
                                         <li>
                                             <input type="radio" name="allergies" value="1" id="allergies_yes"  {{ !empty($patient) && $patient->allergies == 1 ? 'checked' : ''}}
-                                                   class="css-radio">
+                                                   class="css-radio required" data-msg-required="Medication Allergies is required"
+                                            >
                                             <label for="allergies_yes" class="css-label">Yes</label>
                                         </li>
                                         <li>
                                             <input type="radio" name="allergies" value="0" id="allergies_no" {{ !empty($patient) && $patient->allergies == 0 ? 'checked' : ''}}
-                                                   class="css-radio">
+                                            class="css-radio required" data-msg-required="Medication Allergies is required">
                                             <label for="allergies_no" class="css-label">No</label>
                                         </li>
 

@@ -37,4 +37,8 @@ class HomeController extends BaseController
         return view('master.email.order-placed')->with(compact('order'));
     }
 
+    public function payment(){
+        return view('payment');
+    }
+
 }

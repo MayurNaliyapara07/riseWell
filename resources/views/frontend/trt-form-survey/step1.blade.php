@@ -14,7 +14,7 @@
                                     <input type="hidden" name="trt_refill" value="1">
                                     <input type="hidden" name="member_id" value="{{!empty($memberId)?$memberId:''}}">
                                     <input type="hidden" name="product_id" value="{{!empty($productId)?$productId:''}}">
-                                    <input type="hidden" name="survey_form_type" value="{{!empty($flow)?$flow:''}}">
+                                    <input type="hidden" name="survey_form_type" value="{{!empty($productType)?$productType:''}}">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">

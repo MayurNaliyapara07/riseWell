@@ -16,10 +16,10 @@ class CreateProductTable extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->bigIncrements('product_id')->index();
             $table->unsignedBigInteger('category_id')->index()->nullable();
-            $table->double('price')->nullable();
-            $table->double('discount')->nullable();
-            $table->double('shipping_cost')->nullable();
-            $table->double('processing_fees')->nullable();
+            $table->double('price')->default(0);
+            $table->double('discount')->default(0);
+            $table->double('shipping_cost')->default(0);
+            $table->double('processing_fees')->default(0);
             $table->string('sku',150)->nullable();
             $table->enum('type',['OneTime','Subscription'])->nullable();
             $table->enum('product_type',['TRT','ED'])->nullable();

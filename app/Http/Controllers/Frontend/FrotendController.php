@@ -42,7 +42,7 @@ class FrotendController extends Controller
         $sku = $request->sku;
         $flow = $request->flow;
         session()->put('sku', $sku);
-        session()->put('flow', $flow);
+        session()->put('product_type', $flow);
         $manageSectionObj = new ManageSection();
         $getContent = $manageSectionObj->getData();
         return view('frontend.ed-form-survey.get-started')->with(compact('getContent'));
@@ -53,20 +53,21 @@ class FrotendController extends Controller
         $edFlowObj = new EDFlow();
         $memberId = $edFlowObj->getMemberId();
         $state = $edFlowObj->getStateList();
-        $sku = session()->get('sku');
-        $flow = session()->get('flow');
-        $patient = session()->get('patient_data');
-        $productObj = new Product();
-        $productDetails = $productObj->getProductBySkU($sku);
-        session()->put('product_details', $productDetails);
 
+        $sku = session()->get('sku');
+        $productType = session()->get('product_type');
+        $patient = session()->get('patient_data');
+
+        $productObj = new Product();
+        $productDetails = $productObj->getProductBySkU($sku,$productType);
+        session()->put('product_details', $productDetails);
         $productId = !empty($productDetails) ? $productDetails->product_id : '';
 
         if (!empty($productDetails)) {
-            if ($flow == "ed") {
-                return view('frontend.ed-form-survey.step1')->with(compact('flow', 'memberId', 'patient', 'productId', 'productDetails'));
+            if ($productType == "ed") {
+                return view('frontend.ed-form-survey.step1')->with(compact('productType', 'memberId', 'patient', 'productId', 'productDetails'));
             } else {
-                return view('frontend.trt-form-survey.step1')->with(compact('flow', 'state', 'memberId', 'patient', 'productId', 'productDetails'));
+                return view('frontend.trt-form-survey.step1')->with(compact('productType', 'state', 'memberId', 'patient', 'productId', 'productDetails'));
             }
         } else {
             return redirect()->back()->with('alert', 'product not found');
@@ -96,28 +97,28 @@ class FrotendController extends Controller
         return view('frontend.ed-form-survey.step4')->with(compact('patient', 'state', 'product'));
     }
 
-    public function saveStepOne(Request $request)
+    public function saveEdStepOne(Request $request)
     {
         $edFlowObj = new EDFlow();
         $data = $request->all();
         return $edFlowObj->ValidateStep1($data);
     }
 
-    public function saveStepTwo(Request $request)
+    public function saveEdStepTwo(Request $request)
     {
         $edFlowObj = new EDFlow();
         $data = $request->all();
         return $edFlowObj->ValidateStep2($data);
     }
 
-    public function saveStepThree(Request $request)
+    public function saveEdStepThree(Request $request)
     {
         $edFlowObj = new EDFlow();
         $data = $request->all();
         return $edFlowObj->ValidateStep3($data);
     }
 
-    public function saveStepFour(Request $request)
+    public function saveEdStepFour(Request $request)
     {
         $edFlowObj = new EDFlow();
         $data = $request->all();

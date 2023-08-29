@@ -39,6 +39,7 @@ Route::get('/clear-cache', function () {
     echo "Cache Clear successfully";
 });
 
+Route::get('/payment',[\App\Http\Controllers\HomeController::class, 'payment'])->name('payment');;
 Route::get('/checkout/{patientId}',[\App\Http\Controllers\StripePaymentController::class, 'checkout'])->name('checkout');;
 Route::get('success',[\App\Http\Controllers\StripePaymentController::class,'success'])->name('checkout.success');
 Route::post('cancel',[\App\Http\Controllers\StripePaymentController::class,'cancel'])->name('checkout.cancel');
@@ -54,10 +55,10 @@ Route::get('/step2', [FrotendController::class, 'step2'])->name('step2');
 Route::get('/step3', [FrotendController::class, 'step3'])->name('step3');
 Route::get('/step4', [FrotendController::class, 'step4'])->name('step4');
 
-Route::post('/save-step-one', [FrotendController::class, 'saveStepOne'])->name('save-step-one');
-Route::post('/save-step-two', [FrotendController::class, 'saveStepTwo'])->name('save-step-two');
-Route::post('/save-step-three', [FrotendController::class, 'saveStepThree'])->name('save-step-three');
-Route::post('/save-step-four', [FrotendController::class, 'saveStepFour'])->name('save-step-four');
+Route::post('/save-ed-step-one', [FrotendController::class, 'saveEdStepOne'])->name('save-ed-step-one');
+Route::post('/save-ed-step-two', [FrotendController::class, 'saveEdStepTwo'])->name('save-ed-step-two');
+Route::post('/save-ed-step-three', [FrotendController::class, 'saveEdStepThree'])->name('save-ed-step-three');
+Route::post('/save-ed-step-four', [FrotendController::class, 'saveEdStepFour'])->name('save-ed-step-four');
 
 Route::get('/trt-ed-form-survey', [FrotendController::class, 'trtFormSurvey'])->name('trt-ed-form-survey');
 Route::get('/trt-step1', [FrotendController::class, 'trtStep1'])->name('trt-step1');

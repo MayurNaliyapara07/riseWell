@@ -15,14 +15,19 @@ class EDFlow extends BaseModel
     use HasFactory;
 
     protected $table = "ed_flow";
+
     protected $primaryKey = "ed_flow_id";
+
     protected $guarded;
 
     protected $entity = 'ed_flow';
+
     public $filter;
+
     protected $_helper;
 
     const STATUS_ACTIVE = 1;
+
     const STATUS_INCTIVE = 0;
 
     public function __construct(array $attributes = [])
@@ -99,10 +104,30 @@ class EDFlow extends BaseModel
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
             'email' => 'required|email|max:255',
-            'phone_no' => 'required',
+            'phone_no' => 'required|numeric',
+            'weekday' => 'required',
+            'weekend' => 'required',
+            'gender' => 'required',
+            'height' => 'required|numeric',
+            'weight' => 'required|numeric',
+            'dob' => 'required',
+            'policy' => 'required',
+//            'terms' => 'required',
         ];
+        $message['first_name.required'] = 'First Name is required';
+        $message['last_name.required'] = 'Last Name is required';
+        $message['email.required'] = 'Email Address is required';
+        $message['phone_no.required'] = 'PhoneNo is required';
+        $message['weekday.required'] = 'Weekday is required';
+        $message['weekend.required'] = 'Weekend is required';
+        $message['gender.required'] = 'Biological sex is required';
+        $message['height.required'] = 'Height is required';
+        $message['weight.required'] = 'Weight is required';
+        $message['dob.required'] = 'DOB is required';
+        $message['policy.required'] = 'Privacy Policy is required';
+//        $message['terms.required'] = 'Terms is required';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
 
         if ($validationResult['success'] == false) {
 
@@ -135,30 +160,58 @@ class EDFlow extends BaseModel
 
         $rules = [
             'vitals' => 'required',
+            'medical_problems' => 'required',
+            'medical_problem' => 'required',
+            'blood_pressure' => 'required',
+            'blood_pressure_medication' => 'required',
+            'medication_conjunction' => 'required',
+            'recreational_drugs' => 'required',
+            'medication_prescription' => 'required',
+            'treat' => 'required',
+            'cardiovascular' => 'required',
+            'diabetes' => 'required',
+            'diabetes_level' => 'required',
+            'thyroid' => 'required',
+            'cholesterol' => 'required',
+            'breathing' => 'required',
+            'gastroesophageal' => 'required',
+            'hyperactivity' => 'required',
+            'allergies' => 'required',
         ];
+        $message['vitals.required'] = 'Vitas Tested is required';
+        $message['medical_problems.required'] = 'Medical Problems is required';
+        $message['medical_problem.required'] = 'Medical Problem(s) is required';
+        $message['blood_pressure.required'] = 'Blood Pressure is required';
+        $message['blood_pressure_medication.required'] = 'Blood Pressure Medication is required';
+        $message['medication_conjunction.required'] = 'Nitrates Medication is required';
+        $message['recreational_drugs.required'] = 'Recreational Medication is required';
+        $message['medication_prescription.required'] = 'Prescription Medications is required';
+        $message['treat.required'] = 'Treat Conditions is required';
+        $message['cardiovascular.required'] = 'Cardiovascular Disease is required';
+        $message['diabetes.required'] = 'Diabetes Medication is required';
+        $message['diabetes_level.required'] = 'Diabetes Level is required';
+        $message['thyroid.required'] = 'Thyroid Medication is required';
+        $message['cholesterol.required'] = 'Cholesterol Medication is required';
+        $message['breathing.required'] = 'Breathing Medication is required';
+        $message['gastroesophageal.required'] = 'Gastroesophageal Reflux Medication is required';
+        $message['hyperactivity.required'] = 'ADHD Medication is required';
+        $message['allergies.required'] = 'Medication Allergies is required';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
 
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             foreach ($validationResult['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $response['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
 
         } else {
-
             session()->put('ed_flow.step2', $data);
-
             $response['success'] = true;
             $response['message'] = '';
             $response['redirectUrl'] = '/step3';
-
         }
-
         return $response;
     }
 
@@ -170,28 +223,35 @@ class EDFlow extends BaseModel
 
         $rules = [
             'erectile_dysfunction' => 'required',
+            'treated_with' => 'required',
+            'confidence_rate' => 'required',
+            'sexual_stimulation' => 'required',
+            'sexual_stimulation_1' => 'required',
+            'sexual_stimulation_2' => 'required',
+            'sexual_dificult' => 'required',
         ];
+        $message['erectile_dysfunction.required'] = 'Erectile Dysfunction Medications is required';
+        $message['treated_with.required'] = 'Treated Medications is required';
+        $message['confidence_rate.required'] = 'Confidence Rate is required';
+        $message['sexual_stimulation.required'] = 'Sexual Stimulation is required';
+        $message['sexual_stimulation_1.required'] = 'Sexual Intercourse is required';
+        $message['sexual_stimulation_2.required'] = 'Sexual Satisfactory is required';
+        $message['sexual_dificult.required'] = 'Sexual Intercourse is required';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
 
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             foreach ($validationResult['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $response['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
 
         } else {
-
             session()->put('ed_flow.step3', $data);
-
             $response['success'] = true;
             $response['message'] = '';
             $response['redirectUrl'] = '/step4';
-
         }
 
         return $response;
@@ -200,14 +260,16 @@ class EDFlow extends BaseModel
     public function createEDFormRecord($request)
     {
 
+        $patientsData = [];
+        $edFormData = [];
+        $result = [
+            'success' => false,
+            'message' => ''
+        ];
+
         $step1 = session()->get('ed_flow.step1');
         $step2 = session()->get('ed_flow.step2');
         $step3 = session()->get('ed_flow.step3');
-
-        $patientsData = [];
-        $edFormData = [];
-
-        $result = ['success' => false, 'message' => ''];
 
         $patientsData['survey_form_type'] = 'ed';
         $patientsData['product_id'] = !empty($step1['product_id']) ? $step1['product_id'] : '';
@@ -220,24 +282,20 @@ class EDFlow extends BaseModel
         $patientsData['height'] = !empty($step1['height']) ? $step1['height'] : '';
         $patientsData['weight'] = !empty($step1) ? $step1['weight'] : '';
         $patientsData['dob'] = !empty($step1['weight']) ? $step1['dob'] : '';
-        $patientsData['state_id'] = !empty($request['billing_state_id']) ? $request['billing_state_id'] : '';
+        $patientsData['state_id'] = !empty($request['billing_state_id']) ? $request['billing_state_id'] : null;
         $patientsData['status'] = self::STATUS_ACTIVE;
-
-        $edFormData['same_as_billing_address'] = !empty($request['billing_same_as_shipping']) && $request['billing_same_as_shipping'] == 'on' ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;;
 
         $billing_address_1 = !empty($request['billing_address_1']) ? $request['billing_address_1'] : '';
         $billing_address_2 = !empty($request['billing_address_2']) ? $request['billing_address_2'] : '';
-        $billing_state_id = !empty($request['billing_state_id']) ? $request['billing_state_id'] : '';
+        $billing_state_id = !empty($request['billing_state_id']) ? $request['billing_state_id'] : null;
         $billing_city_name = !empty($request['billing_city_name']) ? $request['billing_city_name'] : '';
         $billing_zipcode = !empty($request['billing_zipcode']) ? $request['billing_zipcode'] : '';
-
         $shipping_address_1 = !empty($request['shipping_address_1']) ? $request['shipping_address_1'] : '';
         $shipping_address_2 = !empty($request['shipping_address_2']) ? $request['shipping_address_2'] : '';
-        $shipping_state_id = !empty($request['shipping_state_id']) ? $request['shipping_state_id'] : '';
+        $shipping_state_id = !empty($request['shipping_state_id']) ? $request['shipping_state_id'] : null;
         $shipping_city_name = !empty($request['shipping_city_name']) ? $request['shipping_city_name'] : '';
         $shipping_zipcode = !empty($request['shipping_zipcode']) ? $request['shipping_zipcode'] : '';
-
-
+        $edFormData['same_as_billing_address'] = !empty($request['billing_same_as_shipping']) && $request['billing_same_as_shipping'] == 'on' ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;;
         if (!empty($edFormData['same_as_billing_address'])) {
             $patientsData['billing_address_1'] = $billing_address_1;
             $patientsData['billing_address_2'] = $billing_address_2;
@@ -249,7 +307,8 @@ class EDFlow extends BaseModel
             $patientsData['shipping_state_id'] = $billing_state_id;
             $patientsData['shipping_city_name'] = $billing_city_name;
             $patientsData['shipping_zip'] = $billing_zipcode;
-        } else {
+        }
+        else {
             $patientsData['billing_address_1'] = $billing_address_1;
             $patientsData['billing_address_2'] = $billing_address_2;
             $patientsData['billing_state_id'] = $billing_state_id;
@@ -272,13 +331,17 @@ class EDFlow extends BaseModel
         $edFormData['blood_pressure'] = !empty($step2['blood_pressure']) ? $step2['blood_pressure'] : '';
         $edFormData['blood_pressure_medication'] = !empty($step2['blood_pressure_medication']) ? $step2['blood_pressure_medication'] : '';
         $edFormData['medications'] = !empty($step2['medications']) ? $step2['medications'] : '';
-        $edFormData['medication_conjunction'] = !empty($step2['medication_conjunction']) ? implode(',', $step2['medication_conjunction']) : '';
-        $edFormData['recreational_drugs'] = !empty($step2['recreational_drugs']) ? implode(',', $step2['recreational_drugs']) : '';
+        if (!empty($step2['medication_conjunction']) && count($step2['medication_conjunction']) > 0){
+            $edFormData['medication_conjunction'] =  implode(',', $step2['medication_conjunction']);
+        }
+        if (!empty($step2['recreational_drugs']) && count($step2['recreational_drugs']) > 0){
+            $edFormData['recreational_drugs'] =  implode(',', $step2['recreational_drugs']);
+        }
         $edFormData['medication_prescription'] = !empty($step2['medication_prescription']) ? $step2['medication_prescription'] : '';
         $edFormData['other_conditions'] = !empty($step2['other_conditions']) ? $step2['other_conditions'] : '';
         $edFormData['cardiovascular'] = !empty($step2['cardiovascular']) ? $step2['cardiovascular'] : '';
         $edFormData['diabetes'] = !empty($step2['diabetes']) ? $step2['diabetes'] : '';
-        $edFormData['thyroid'] = !empty($step2['thyroid']) ? $step2['thyroid'] : '';
+        $edFormData['thyroid'] = !empty($step2['thyroid']) ? $step2['thyroid'] : '-';
         $edFormData['cholesterol'] = !empty($step2['cardiovascular']) ? $step2['cardiovascular'] : '';
         $edFormData['breathing'] = !empty($step2['breathing']) ? $step2['breathing'] : '';
         $edFormData['gastroesophageal'] = !empty($step2['gastroesophageal']) ? $step2['gastroesophageal'] : '';
@@ -286,8 +349,7 @@ class EDFlow extends BaseModel
         $edFormData['allergies'] = !empty($step2['allergies']) ? $step2['allergies'] : '';
         $edFormData['allergies_list'] = !empty($step2['allergies_list']) ? $step2['allergies_list'] : '';
         $edFormData['pi'] = !empty($step2['pi']) ? $step2['pi'] : '';
-        $edFormData['erectile_dysfunction'] = !empty($step3['erectile_dysfunction']) ? $step3['erectile_dysfunction'] : '';
-        $edFormData['treat'] = !empty($step3['treat']) ? $step3['treat'] : '';
+        $edFormData['erectile_dysfunction'] = !empty($step3['erectile_dysfunction']) && $step3['erectile_dysfunction'] == "on" ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;
         $edFormData['treated_with'] = !empty($step3['treated_with']) ? $step3['treated_with'] : '';
         $edFormData['confidence_rate'] = !empty($step3['confidence_rate']) ? $step3['confidence_rate'] : '';
         $edFormData['sexual_stimulation'] = !empty($step3['sexual_stimulation']) ? $step3['sexual_stimulation'] : '';
@@ -302,22 +364,18 @@ class EDFlow extends BaseModel
         $response = $this->saveEDFormRecord($patientsData, $edFormData);
 
         if ($response['success']) {
-
             $result['success'] = true;
             $result['message'] = $response['message'];
             $result['patients_id'] = $response['patients_id'];
-            $result['redirectUrl'] = '/checkout/'.$response['patients_id'];
+            $result['redirectUrl'] = '/checkout/' . $response['patients_id'];
 
-        } else {
-
+        }
+        else {
             $messages = [];
-
             foreach ($response['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $result['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
-
         }
 
         return $result;
@@ -327,36 +385,31 @@ class EDFlow extends BaseModel
     public function saveEDFormRecord($patientsData, $edFormData)
     {
 
-        $rules['shipping_address_1'] = 'required';
-        $rules['shipping_zip'] = 'required|numeric';
-        $rules['billing_address_1'] = 'required';
-        $rules['billing_zip'] = 'required|numeric';
-
         $response = [];
         $response['success'] = false;
         $response['message'] = '';
 
-        $validationResult = $this->validateDataWithRules($rules, $patientsData);
+        $rules['billing_address_1'] = 'required';
+        $rules['billing_state_id'] = 'required|numeric';
+        $rules['billing_city_name'] = 'required';
+        $rules['billing_zip'] = 'required';
+        $message['billing_address_1.required'] = 'Billing Address is required';
+        $message['billing_city_name.required'] = 'Billing City is required';
+        $message['billing_state_id.required'] = 'Billing State is required';
+        $message['billing_zip.required'] = 'Billing ZipCode is required';
 
+        $validationResult = $this->validateDataWithMessage($rules, $patientsData, $message);
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             $response['message'] = ($validationResult['message']);
-
             return $response;
-
         }
 
         if (isset($edFormData['patients_id']) && $edFormData['patients_id'] != '') {
-
             self::create($edFormData);
-
             $patient_id = $edFormData['patients_id'];
 
         } else {
-
-
             $patients = Patients::create($patientsData);
             $productId = $patients->product_id;
             $edFormData['patients_id'] = $patients->patients_id;
@@ -376,77 +429,6 @@ class EDFlow extends BaseModel
         return $response;
 
     }
-
-
-
-//    public function savePayment()
-//    {
-//        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-//        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-//
-//        $token = \Stripe\Token::create([
-//            'account' => [
-//                'individual' => [
-//                    'first_name' => 'Jane',
-//                    'last_name' => 'Doe',
-//                ],
-//            ],
-//        ]);
-//
-//        $tokenId = $token['id'];
-//        if (isset($tokenId)) {
-//
-//            $customer = \Stripe\Customer::create([
-//                'name' => "mayur",
-//                'email' => "mayur@gmail.com",
-//                'phone' => "8849166013",
-//                'address' => [
-//                    'line1' => "Test 1",
-//                    'postal_code' => "360002",
-//                    'state' => "California",
-//                    'city' => "",
-//                    'country' => "US",
-//                ],
-//                'shipping' => [
-//                    'name' => "Test 1",
-//                    'phone' => "8849166013",
-//                    'address' => [
-//                        'line1' => "Test 1",
-//                        'postal_code' => "360002",
-//                        'state' => "California",
-//                        'city' => "",
-//                        'country' => "US",
-//                    ],
-//                ],
-//            ]);
-//
-//            $customerId = $customer['id'];
-//
-//            $paymentIntent = $stripe->paymentIntents->create([
-//                'customer' => $customerId,
-//                'payment_method_types' => ['card', 'bancontact', 'ideal'],
-//            ]);
-//
-//            $client_secret = $paymentIntent['id'];
-//            $productDetails = session()->get('product_details');
-//            $subscription = \Stripe\Subscription::create([
-//                'customer' => $customerId,
-//                'items' => [[
-//                    'price' => "plan_OOQ9LWKIO2ySmp",
-//                ]],
-//                'payment_behavior' => 'default_incomplete',
-//                'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
-//                'expand' => ['latest_invoice.payment_intent'],
-//            ]);
-//
-//            $subscriptionId = $subscription['id'];
-//            $subscriptionClientSecret = $subscription['latest_invoice']['hosted_invoice_url'];
-//
-//            echo "<pre>";
-//            print_r($subscriptionClientSecret);
-//            exit();
-//        }
-//    }
 
 
 }

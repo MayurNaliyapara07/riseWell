@@ -29,7 +29,7 @@
                 <div class="right-form-area">
                     <h1>Sexual Health</h1>
                     <div class="form-block">
-                        <form id="ed_flow" action="{{route('save-step-three')}}" enctype="multipart/form-data" class="ajax-form">
+                        <form id="ed_flow" action="{{route('save-ed-step-three')}}" enctype="multipart/form-data" class="ajax-form">
                             @csrf
                             <div class="gap-60">
                                 <div class="checkbox-area">
@@ -41,12 +41,12 @@
                                     <ul class="flex-check">
                                         <li>
                                             <input type="radio" name="erectile_dysfunction" {{ !empty($patient) && $patient->erectile_dysfunction == 1 ? 'checked' : ''}}
-                                                   id="erectile_dysfunction_yes" class="css-radio">
+                                                   id="erectile_dysfunction_yes" class="css-radio required" data-msg-required="Erectile Dysfunction Medications is required">
                                             <label for="erectile_dysfunction_yes" class="css-label">Yes</label>
                                         </li>
                                         <li>
                                             <input type="radio" name="erectile_dysfunction" {{ !empty($patient) && $patient->erectile_dysfunction == 0 ? 'checked' : ''}}
-                                                   id="erectile_dysfunction_yes_no" class="css-radio">
+                                                   id="erectile_dysfunction_yes_no" class="css-radio required" data-msg-required="Erectile Dysfunction Medications is required">
                                             <label for="erectile_dysfunction_yes_no" class="css-label">No</label>
                                         </li>
                                     </ul>
@@ -62,7 +62,9 @@
                                                     <input type="radio" name="treated_with"
                                                            value="{{$treatedWith['value']}}"
                                                            {{ !empty($patient) && $patient->treated_with == $treatedWith['value'] ? 'checked' : ''}}
-                                                           id="{{$treatedWith['key']}}" class="css-radio">
+                                                           id="{{$treatedWith['key']}}" class="css-radio required"
+                                                           data-msg-required="Treated Medications is required"
+                                                    >
                                                     <label for="{{$treatedWith['key']}}"
                                                            class="css-label">{{$treatedWith['label']}}</label>
                                                 </li>
@@ -83,7 +85,9 @@
                                                     <input type="radio" name="confidence_rate"
                                                            value="{{$confidence['value']}}" id="{{$confidence['key']}}"
                                                            {{ !empty($patient) && $patient->confidence_rate == $confidence['value'] ? 'checked' : ''}}
-                                                           class="css-radio">
+                                                           class="css-radio required"
+                                                           data-msg-required="Confidence Rate is required"
+                                                    >
                                                     <label for="{{$confidence['key']}}"
                                                            class="css-label">{{$confidence['label']}}</label>
                                                 </li>
@@ -105,7 +109,9 @@
                                                     <input type="radio" name="sexual_stimulation"
                                                            value="{{$sexualStimulation['value']}}"
                                                            {{ !empty($patient) && $patient->sexual_stimulation == $sexualStimulation['value'] ? 'checked' : ''}}
-                                                           id="{{$sexualStimulation['key']}}" class="css-radio">
+                                                           id="{{$sexualStimulation['key']}}" class="css-radio required"
+                                                           data-msg-required="Sexual Stimulation is required"
+                                                    >
                                                     <label for="{{$sexualStimulation['key']}}"
                                                            class="css-label">{{$sexualStimulation['label']}}</label>
                                                 </li>
@@ -126,7 +132,9 @@
                                                            value="{{$sexualStimulation['value']}}"
                                                            {{ !empty($patient) && $patient->sexual_stimulation_1 == $sexualStimulation['value'] ? 'checked' : ''}}
                                                            id="sexual_stimulation_1_{{$sexualStimulation['key']}}"
-                                                           class="css-radio">
+                                                           class="css-radio required"
+                                                           data-msg-required="Sexual Intercourse is required"
+                                                    >
                                                     <label for="sexual_stimulation_1_{{$sexualStimulation['key']}}"
                                                            class="css-label">{{$sexualStimulation['label']}}</label>
                                                 </li>
@@ -146,7 +154,9 @@
                                                     <input type="radio" name="sexual_dificult"
                                                            value="{{$sexualDificult['value']}}"
                                                            {{ !empty($patient) && $patient->sexual_dificult == $sexualDificult['value'] ? 'checked' : ''}}
-                                                           id="{{$sexualDificult['key']}}" class="css-radio">
+                                                           id="{{$sexualDificult['key']}}" class="css-radio required"
+                                                           data-msg-required="Sexual Intercourse is required"
+                                                    >
                                                     <label for="{{$sexualDificult['key']}}"
                                                            class="css-label">{{$sexualDificult['label']}}</label>
                                                 </li>
@@ -168,7 +178,9 @@
                                                            value="{{$sexualStimulation['value']}}"
                                                            {{ !empty($patient) && $patient->sexual_stimulation_2 == $sexualStimulation['value'] ? 'checked' : ''}}
                                                            id="sexual_stimulation_2_{{$sexualStimulation['key']}}"
-                                                           class="css-radio">
+                                                           class="css-radio required"
+                                                           data-msg-required="Sexual Satisfactory is required"
+                                                    >
                                                     <label for="sexual_stimulation_2_{{$sexualStimulation['key']}}"
                                                            class="css-label">{{$sexualStimulation['label']}}</label>
                                                 </li>
@@ -178,9 +190,10 @@
                                     </ul>
                                 </div>
                             </div>
+
                             <a href="{{route('step2')}}" class="btn-back">Back</a>
                             <button type="submit" class="btn-continue">Continue</button>
-                            </form>
+                        </form>
                     </div>
                 </div>
             </div>

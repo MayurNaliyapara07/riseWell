@@ -55,9 +55,9 @@
                                     Code: </strong> {{!empty($address->postal_code)?$address->postal_code:''}}</div>
                         </div>
                     </div>
-
+                    <?php $subTotal = $itemTotal = 0; ?>
                     @if(!empty($product))
-                            <?php $subTotal = 0; ?>
+
                         <div class="table-responsive-sm">
                             <table class="table table-striped">
                                 <thead>
@@ -72,7 +72,6 @@
                                 <tbody>
                                 @foreach($product as $key=>$item)
                                     @php
-
                                         $itemTotal = $item['total'];
                                     @endphp
                                     <tr>
@@ -98,7 +97,7 @@
                         <div class="col-lg-4 col-sm-5 ml-auto">
                             <?php
 
-                            $totalAmount = new \Akaunting\Money\Money($subTotal - $discountDetails->coupon->amount_off, new \Akaunting\Money\Currency($currency));
+                            $totalAmount = new \Akaunting\Money\Money($subTotal - $discount, new \Akaunting\Money\Currency($currency));
                             ?>
                             <table class="table table-clear">
                                 <tbody>
