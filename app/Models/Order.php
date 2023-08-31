@@ -23,6 +23,7 @@ class Order extends BaseModel
         'customer_address',
         'product_details',
         'discount_details',
+        'shipping_and_processing_amount',
         'invoice_id',
         'invoice_pdf',
         'mode',

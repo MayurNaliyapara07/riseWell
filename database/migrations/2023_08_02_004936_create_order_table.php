@@ -36,8 +36,9 @@ class CreateOrderTable extends Migration
             $table->string('exp_year',50)->nullable();
             $table->string('last4',50)->nullable();
             $table->string('status',50)->nullable();
-            $table->decimal('sub_total',6,2)->nullable();
-            $table->decimal('total_amount',6,2)->nullable();
+            $table->decimal('sub_total')->nullable();
+            $table->decimal('total_amount')->nullable();
+            $table->decimal('shipping_and_processing_amount')->nullable();
             $table->enum('order_status',['Approved','OrderPlaced','OrderShipped','OrderArrived','Fulfilled'])->nullable();
             $table->longText('order_placed')->nullable();
             $table->longText('order_approved')->nullable();

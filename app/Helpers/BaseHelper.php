@@ -503,7 +503,7 @@ class BaseHelper
         if (!empty($general->site_logo)) {
             $logo = asset('uploads/images/general_setting/' . $general->site_logo);
         } else {
-            $logo = asset('assets/media/logos/logo.png');
+            $logo = asset('assets/media/logos/light-logo-horizontal.png');
         }
         return $logo;
     }
@@ -594,16 +594,18 @@ class BaseHelper
         if (!empty($product)) {
             foreach ($product as $item) {
                 $currency = strtoupper($item->currency);
-                $itemAmount = new Money($item->amount, new Currency($currency));
-                $quantity = !empty($item->quantity) ? $item->quantity : "";
-                $totalAmount = new Money($item->amount * $quantity, new Currency($currency));;
+                $unitAmount = new Money($item->unit_amount, new Currency($currency));
+                $quantity = !empty($item->qty) ? $item->qty : "";
+                $totalAmount = new Money($item->unit_amount * $quantity, new Currency($currency));;
                 $productArray[] = [
-                    'product_plan' => !empty($item->plan) ? $item->plan->product : "",
+                    'product_name' => !empty($item->product_name) ? $item->product_name : "",
                     'description' => !empty($item->description) ? $item->description : "",
-                    'amount' => $itemAmount,
+                    'currency' => $currency,
+                    'unit_cost' => $unitAmount,
                     'quantity' => $quantity,
                     'total' => $totalAmount,
-                    'sub_total' => $item->amount,
+                    'sub_total' => $item->unit_amount,
+                    'discount_amount' => $item->discount,
                 ];
             }
 
@@ -634,7 +636,7 @@ class BaseHelper
         ];
 
         if (gettype($user) == 'array') {
-            $user = (object) $user;
+            $user = (object)$user;
         }
 
         $shortCodes = array_merge($shortCodes ?? [], $globalShortCodes);
@@ -655,6 +657,99 @@ class BaseHelper
         }
         return '';
     }
+
+    public function getFrontendTopPhoneNo()
+    {
+        $phoneNo = $this->getManageSectionConfigValueByKey('phone_no');
+        $phoneNo = trim($phoneNo);
+        if ($phoneNo == '') {
+            $phoneNo = '0000000000';
+        }
+        return $phoneNo;
+    }
+
+    public function getPrivacyPolicyUrl()
+    {
+        $privacy_policy = $this->getManageSectionConfigValueByKey('privacy_policy');
+        $privacy_policy = trim($privacy_policy);
+        if ($privacy_policy == '') {
+            $privacy_policy = '#';
+        }
+        return $privacy_policy;
+    }
+
+    public function getRefundPolicyUrl()
+    {
+        $refund_policy = $this->getManageSectionConfigValueByKey('refund_policy');
+        $refund_policy = trim($refund_policy);
+        if ($refund_policy == '') {
+            $refund_policy = '#';
+        }
+        return $refund_policy;
+    }
+
+    public function getBlogUrl()
+    {
+        $blog_url = $this->getManageSectionConfigValueByKey('blog_url');
+        $blog_url = trim($blog_url);
+        if ($blog_url == '') {
+            $blog_url = '#';
+        }
+        return $blog_url;
+    }
+
+    public function getAboutUsUrl(){
+        $about_us_url = $this->getManageSectionConfigValueByKey('about_us_url');
+        $about_us_url = trim($about_us_url);
+        if ($about_us_url == '') {
+            $about_us_url = '#';
+        }
+        return $about_us_url;
+    }
+
+    public function getContactUsUrl(){
+        $contact_us_url = $this->getManageSectionConfigValueByKey('contact_us_url');
+        $contact_us_url = trim($contact_us_url);
+        if ($contact_us_url == '') {
+            $contact_us_url = '#';
+        }
+        return $contact_us_url;
+    }
+
+    public function getTermsAndConditionsUrl()
+    {
+        $terms_and_conditions = $this->getManageSectionConfigValueByKey('terms_and_conditions');
+        $terms_and_conditions = trim($terms_and_conditions);
+        if ($terms_and_conditions == '') {
+            $terms_and_conditions = '#';
+        }
+        return $terms_and_conditions;
+    }
+
+    public function getConsentToTreatUrl()
+    {
+        $consent_to_treat = $this->getManageSectionConfigValueByKey('consent_to_treat');
+        $consent_to_treat = trim($consent_to_treat);
+        if ($consent_to_treat == '') {
+            $consent_to_treat = '#';
+        }
+        return $consent_to_treat;
+    }
+
+    public function getStartedTitle($productName){
+
+        $title_one= $this->getManageSectionConfigValueByKey('title_one');
+        $title_one = trim($title_one);
+        if (!empty($productName)) {
+            $title_one = str_replace("{{product_name}}", $productName, $title_one);
+        }
+        else{
+            $title_one = str_replace("{{product_name}}", 'Test Product', $title_one);
+        }
+        return $title_one;
+
+    }
+
 
 
 }

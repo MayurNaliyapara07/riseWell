@@ -45,7 +45,10 @@ class FrotendController extends Controller
         session()->put('product_type', $flow);
         $manageSectionObj = new ManageSection();
         $getContent = $manageSectionObj->getData();
-        return view('frontend.ed-form-survey.get-started')->with(compact('getContent'));
+        $productObj = new Product();
+        $productDetails = $productObj->getProductBySkU($sku,$flow);
+
+        return view('frontend.ed-form-survey.get-started')->with(compact('getContent','productDetails'));
     }
 
     public function step1()

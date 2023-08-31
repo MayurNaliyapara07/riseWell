@@ -1,3 +1,4 @@
+@inject('baseHelper','App\Helpers\ManageSection\Helper')
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,7 +26,7 @@
 <body>
 
 
-<div id='toTop' class="hvr-pulse"><img src="{{asset('assets/frontend/images/top_arrow.png')}}" alt="top" /></div>
+<div id='toTop' class="hvr-pulse"><img src="{{$baseHelper->siteLogo()}}" alt="top" /></div>
 
 
 <header>
@@ -35,7 +36,7 @@
         </div>
         <div class="right-number">
             Have Questions? <span>CALL TODAY</span>
-            <a href="#">+ (000) 000-0000</a>
+            <a href="tel:{{$baseHelper->getFrontendTopPhoneNo()}}">+ {{$baseHelper->getFrontendTopPhoneNo()}}</a>
         </div>
     </div>
 </header>
@@ -48,15 +49,15 @@
     <div class="footer-main">
         <div class="container">
             <div class="logo-box">
-                <a href="#"><img src="{{ asset('assets/frontend/images/light-logo-horizontal.png')}}" alt=""></a>
+                <a href="#"><img src="{{$baseHelper->siteLogo()}}" alt=""></a>
             </div>
             <div class="footer-menu-area">
                 <div class="row">
                     <div class="col-lg-4">
                         <ul class="footer-link">
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="{{$baseHelper->getBlogUrl()}}">Blog</a></li>
+                            <li><a href="{{$baseHelper->getAboutUsUrl()}}">About Us</a></li>
+                            <li><a href="{{$baseHelper->getContactUsUrl()}}">Contact Us</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-8">
@@ -71,16 +72,16 @@
                         <div class="footer-info">
                             <h2>Links</h2>
                             <ul class="link">
-                                <li><a href="#">Terms & Conditions</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Refund Policy</a></li>
+                                <li><a href="{{$baseHelper->getTermsAndConditionsUrl()}}">Terms & Conditions</a></li>
+                                <li><a href="{{$baseHelper->getPrivacyPolicyUrl()}}">Privacy Policy</a></li>
+                                <li><a href="{{$baseHelper->getRefundPolicyUrl()}}">Refund Policy</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="copyright">
-                © Copyright 2023, RiseWell, All Rights Reserved.<br> RiseWell is not connected or affiliated with Aliquam pellentesque odio metus, sit amet imperdiet nisl sodales eu. Quisque viverra nunc nec vestibulum dapibus. Inte, or any associated products and services.
+                {{$baseHelper->getManageSectionConfigValueByKey('copy_rights')}}
             </div>
         </div>
     </div>

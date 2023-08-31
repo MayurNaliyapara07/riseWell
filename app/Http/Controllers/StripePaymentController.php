@@ -151,6 +151,8 @@ class StripePaymentController extends Controller
     {
         $sessionId = $request->get('session_id');
         $stripeRecord = $this->stripe->checkout->sessions->retrieve($sessionId);
+        $line_items = $this->stripe->checkout->sessions->allLineItems($sessionId, ['limit' => 20]);
+        $stripeRecord['line_items'] = $line_items;
         $stripeRecord['patients_id'] = $request->get('patients_id');
         return $this->addToOrdersTables($stripeRecord);
     }
@@ -186,10 +188,10 @@ class StripePaymentController extends Controller
     public function addToOrdersTables($stripeRecord)
     {
 
-
         $sessionId = $stripeRecord->id;
         $paymentStatus = $stripeRecord->payment_status;
         $status = $stripeRecord->status;
+        $shippingAndProcessingCost = !empty($stripeRecord->shipping_cost->amount_total)?$stripeRecord->shipping_cost->amount_total:0;
         $subTotal = !empty($stripeRecord->amount_subtotal) ? $stripeRecord->amount_subtotal : 0;
         $totalAmount = !empty($stripeRecord->amount_total) ? $stripeRecord->amount_total : 0;
         $mode = !empty($stripeRecord->mode) ? $stripeRecord->mode : '';
@@ -200,6 +202,7 @@ class StripePaymentController extends Controller
         $customerEmail = !empty($stripeRecord->customer_details) ? $stripeRecord->customer_details->email : '';
         $customerName = !empty($stripeRecord->customer_details) ? $stripeRecord->customer_details->name : '';
         $customerPhoneNo = !empty($stripeRecord->customer_details) ? $stripeRecord->customer_details->phone : '';
+
         $address = !empty($customerDetails) ? json_encode($customerDetails) : '';
         $cardDetails = $this->stripe->customers->allPaymentMethods($customerId, ['type' => 'card']);
         $paymentMethodId = !empty($cardDetails['data'][0]) ? $cardDetails['data'][0]['id'] : '';
@@ -212,15 +215,29 @@ class StripePaymentController extends Controller
         $patientsId = !empty($stripeRecord->patients_id) ? $stripeRecord->patients_id : 0;
         if (!empty($invoiceId)) {
             $invoiceDetails = $this->stripe->invoices->retrieve($invoiceId);
-            $productDetails = !empty($invoiceDetails['lines']['data']) ? json_encode($invoiceDetails['lines']['data']) : '';
+            $productDetails = !empty($invoiceDetails['lines']['data']) ? $invoiceDetails['lines']['data']: '';
             $invoicePdf = !empty($invoiceDetails['invoice_pdf']) ? $invoiceDetails['invoice_pdf'] : '';
             $discountDetails = !empty($invoiceDetails['discount']) ? json_encode($invoiceDetails['discount']) : "";
-        }
+        } else {
+            $lineItems = !empty($stripeRecord->line_items->data) ? $stripeRecord->line_items->data : "";
+            foreach ($lineItems as $item){
+                $productDetails[] = [
+                    'product_name' => !empty($item->description)?$item->description:'',
+                    'qty' =>!empty($item->quantity)?$item->quantity:0,
+                    'currency' =>!empty($item->currency)?$item->currency:'',
+                    'discount' =>!empty($item->amount_discount)?$item->amount_discount:0,
+                    'sub_total' =>!empty($item->amount_subtotal)?$item->amount_subtotal:0,
+                    'total_amount' =>!empty($item->amount_total)?$item->amount_total:0,
+                    'unit_amount' =>!empty($item->price->unit_amount)?$item->price->unit_amount:0,
+                ];
+            }
+         }
         if ($paymentStatus == 'paid' && $status == 'complete') {
             $order = [
                 'session_id' => !empty($sessionId) ? $sessionId : '',
                 'patients_id' => $patientsId,
-                'product_details' => !empty($productDetails) ? $productDetails : '',
+                'product_details' => !empty($productDetails) ? json_encode($productDetails): '',
+                'shipping_and_processing_amount' => $shippingAndProcessingCost,
                 'discount_details' => !empty($discountDetails) ? $discountDetails : '',
                 'customer_email' => !empty($customerEmail) ? $customerEmail : '',
                 'customer_name' => !empty($customerName) ? $customerName : '',

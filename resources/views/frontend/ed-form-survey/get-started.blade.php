@@ -1,6 +1,9 @@
 @inject('baseHelper','App\Helpers\ManageSection\Helper')
 @extends('layouts.frontend')
 @section('content')
+    <?php
+        $productName = !empty($productDetails)?$productDetails->product_name:'';
+    ?>
     <form action="{{route('step1')}}" enctype="multipart/form-data">
         <section>
             <div class="get-started-area">
@@ -8,13 +11,13 @@
                     <div class="top-logo">
                         <div class="leftside">
                             <div class="logo">
-                                <a href="#">
+                                <a href="{{$baseHelper->siteDarkLogo()}}">
                                     <img src="{{$baseHelper->siteDarkLogo()}}" alt="Logo">
                                 </a>
                             </div>
                         </div>
                         <div class="right-title">
-                            {!! $baseHelper->getManageSectionConfigValueByKey('title_one') !!}
+                            {!! $baseHelper->getStartedTitle($productName) !!}
                         </div>
                     </div>
                     <div class="icon-list">
@@ -68,10 +71,16 @@
                     <div class="pd">
                         <p> {!! $baseHelper->getManageSectionConfigValueByKey('title_two') !!}</p>
                         <div class="checkarea">
-                            <input type="checkbox" required  name="" value="">
+                            <input type="checkbox" required name="" value="" style="width: 20px;height: 20px !important;">
                             <label for="">Click here to consent to
-                                <a href="#">Privacy Policy</a> and
-                                <a href="#">Terms</a>.
+                                <a href="{{$baseHelper->getPrivacyPolicyUrl()}}">Privacy Policy</a> and
+                                <a href="{{$baseHelper->getTermsAndConditionsUrl()}}">Terms & Conditions</a>.
+                            </label>
+                        </div>
+                        <div class="checkarea">
+                            <input type="checkbox" required name="" value="" style="width: 20px;height: 20px !important;">
+                            <label for="">Click here to accept the
+                                <a href="{{$baseHelper->getConsentToTreatUrl()}}">Consent to Treat</a> .
                             </label>
                         </div>
                     </div>

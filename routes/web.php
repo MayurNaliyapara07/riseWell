@@ -204,6 +204,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('general-setting', 'generalSetting')->name('general-setting');
         Route::get('email-setting', 'emailSetting')->name('email-setting');
         Route::get('order-setting', 'orderSetting')->name('order-setting');
+        Route::get('order-shipping-setting', 'orderShippingSetting')->name('order-shipping-setting');
         Route::get('sms-setting', 'smsSetting')->name('sms-setting');
         Route::get('payment-gateway-setting', 'paymentGateWaySetting')->name('payment-gateway-setting');
         Route::get('zoom-setting', 'zoomSetting')->name('zoom-setting');

@@ -48,6 +48,10 @@ class SettingsController extends Controller
         return view('master.setting.order-setting');
     }
 
+    public function orderShippingSetting(){
+        return view('master.setting.order-shipping-setting');
+    }
+
     public function userUpdate(Request $request,$id){
         $request->merge(['id' => $id]);
         return $this->_model->userUpdate($request);

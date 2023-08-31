@@ -5,10 +5,8 @@
     <?php
     $currency = !empty($order) ? strtoupper($order->currency) : "";
     $product = $baseHelper->getStripeProductDetails(json_decode($order->product_details));
-    $discountDetails = !empty($order->discount_details) ? json_decode($order->discount_details) : "";
-    $discount = !empty($discountDetails->coupon->amount_off) ? new \Akaunting\Money\Money($discountDetails->coupon->amount_off, new \Akaunting\Money\Currency($currency)) : 0;
-
-
+    $shippingAndProcessingCost =!empty($order->shipping_and_processing_amount) ? new \Akaunting\Money\Money($order->shipping_and_processing_amount, new \Akaunting\Money\Currency($currency)) : 0;
+    $shippingCost =!empty($order->shipping_and_processing_amount) ? $order->shipping_and_processing_amount : 0;
     ?>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         @include('layouts.sub-header',[
@@ -55,9 +53,12 @@
                                     Code: </strong> {{!empty($address->postal_code)?$address->postal_code:''}}</div>
                         </div>
                     </div>
-                    <?php $subTotal = $itemTotal = 0; ?>
-                    @if(!empty($product))
+                    <?php $subTotal = $itemTotal = $discountAmount = 0;
 
+                    ?>
+
+
+                    @if(!empty($product))
                         <div class="table-responsive-sm">
                             <table class="table table-striped">
                                 <thead>
@@ -76,13 +77,15 @@
                                     @endphp
                                     <tr>
                                         <td class="center">{{$key+1}}</td>
-                                        <td class="left strong">{{$item['description']}}</td>
-                                        <td class="right">{{$item['amount']}}</td>
+                                        <td class="left strong">{{$item['product_name']}}</td>
+                                        <td class="right">{{$item['unit_cost']}}</td>
                                         <td class="center">{{$item['quantity']}}</td>
-                                        <td class="right">{{$item['amount']}}</td>
+                                        <td class="right">{{$item['unit_cost']}}</td>
                                     </tr>
                                     @php
                                         $subTotal += $item['sub_total'];
+                                        $discountAmount = $item['discount_amount'];
+                                        $discount = new \Akaunting\Money\Money($item['discount_amount'],new \Akaunting\Money\Currency($item['currency']));;
                                     @endphp
                                 @endforeach
 
@@ -97,7 +100,9 @@
                         <div class="col-lg-4 col-sm-5 ml-auto">
                             <?php
 
-                            $totalAmount = new \Akaunting\Money\Money($subTotal - $discount, new \Akaunting\Money\Currency($currency));
+                            $shippingWithSubTotal = $subTotal + $shippingCost;
+                            $totalAmount = new \Akaunting\Money\Money($shippingWithSubTotal - $discountAmount, new \Akaunting\Money\Currency($currency));
+
                             ?>
                             <table class="table table-clear">
                                 <tbody>
@@ -109,9 +114,15 @@
                                 </tr>
                                 <tr>
                                     <td class="left">
+                                        <strong>Shipping Charges & Processing Fees</strong>
+                                    </td>
+                                    <td class="right">{{$shippingAndProcessingCost}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left">
                                         <strong>Discount</strong>
                                     </td>
-                                    <td class="right">{{$discount}}</td>
+                                    <td class="right">  {{$discount}}</td>
                                 </tr>
                                 <tr>
                                     <td class="left">
