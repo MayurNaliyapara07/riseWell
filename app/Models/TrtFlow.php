@@ -12,14 +12,19 @@ class TrtFlow extends BaseModel
     use HasFactory;
 
     protected $table = "trt_flow";
+
     protected $primaryKey = "trt_flow_id";
+
     protected $guarded;
 
     protected $entity = 'ed_flow';
+
     public $filter;
+
     protected $_helper;
 
     const STATUS_ACTIVE = 1;
+
     const STATUS_INCTIVE = 0;
 
     public function __construct(array $attributes = [])
@@ -47,7 +52,6 @@ class TrtFlow extends BaseModel
             ->addFieldToFilter($this->table, 'trt_flow_id', '=', $trt_flow_id)
             ->get($selectedColumns)
             ->first();
-
         return $return;
     }
 
@@ -88,37 +92,48 @@ class TrtFlow extends BaseModel
 
     public function ValidateTRTStep1($data)
     {
-
         $response = array();
         $response['success'] = false;
         $response['message'] = '';
 
         $rules = [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'email' =>  'required|unique:users,email,' . $data['patients_id'],
+            'phone_no' => 'required|numeric',
+            'dob' => 'required',
+            'billing_address_1' => 'required',
+            'billing_city_name' => 'required',
+            'billing_state_id' => 'required|numeric',
+            'billing_zipcode' => 'required',
+            'apt' => 'required',
         ];
+        $message['first_name.required'] = 'First Name is required';
+        $message['last_name.required'] = 'Last Name is required';
+        $message['email.required'] = 'Email Address is required';
+        $message['phone_no.required'] = 'PhoneNo is required';
+        $message['dob.required'] = 'DOB is required';
+        $message['billing_address_1.required'] = 'Billing Address is required';
+        $message['billing_city_name.required'] = 'Billing City is required';
+        $message['billing_state_id.required'] = 'Billing State is required';
+        $message['billing_zipcode.required'] = 'Billing Zip code is required';
+        $message['apt.required'] = 'APT/Suite code is required';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
 
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             foreach ($validationResult['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $response['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
 
         } else {
 
             session()->put('trt_flow.step1', $data);
-
             $response['success'] = true;
             $response['message'] = '';
             $response['redirectUrl'] = '/trt-step2';
-
         }
 
         return $response;
@@ -126,36 +141,34 @@ class TrtFlow extends BaseModel
 
     public function ValidateTRTStep2($data)
     {
-        $response = array();
-        $response['success'] = false;
-        $response['message'] = '';
-
         $rules = [
             'energy' => 'required',
+            'sleep' => 'required',
+            'libido' => 'required',
+            'memory' => 'required',
+            'strength' => 'required',
         ];
+        $message['energy.required'] = 'Energy is required';
+        $message['sleep.required'] = 'Sleep is required';
+        $message['libido.required'] = 'Libido is required';
+        $message['memory.required'] = 'Memory & Focus is required';
+        $message['strength.required'] = 'Endurance & Strength is required';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
-
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             foreach ($validationResult['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $response['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
 
-        } else {
-
+        }
+        else {
             session()->put('trt_flow.step2', $data);
-
             $response['success'] = true;
             $response['message'] = '';
             $response['redirectUrl'] = '/trt-step3';
-
         }
-
         return $response;
     }
 
@@ -167,30 +180,36 @@ class TrtFlow extends BaseModel
 
         $rules = [
             'future_children' => 'required',
+            'living_children' => 'required',
+            'cream_and_gel' => 'required',
+            'allergies' => 'required',
+            'herbal_or_vitamin' => 'required',
+            'medications_prescribed' => 'required',
         ];
+        $message['future_children.required'] = 'Future children is required';
+        $message['living_children.required'] = 'Children under the age of 5 years living in the home is required';
+        $message['cream_and_gel.required'] = 'Testosterone is required';
+        $message['allergies.required'] = 'Allergies is required';
+        $message['herbal_or_vitamin.required'] = 'Prescription is required';
+        $message['medications_prescribed.required'] = 'Medications is required';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
 
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             foreach ($validationResult['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $response['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
 
-        } else {
-
+        }
+        else {
             session()->put('trt_flow.step3', $data);
-
             $response['success'] = true;
             $response['message'] = '';
             $response['redirectUrl'] = '/trt-step4';
 
         }
-
         return $response;
     }
 
@@ -266,7 +285,6 @@ class TrtFlow extends BaseModel
 
     public function createTRTRecord($request)
     {
-
         $step1 = session()->get('trt_flow.step1');
         $step2 = session()->get('trt_flow.step2');
         $step3 = session()->get('trt_flow.step3');
@@ -276,103 +294,61 @@ class TrtFlow extends BaseModel
         $patientData = [];
         $trtFormData = [];
         $result = ['success' => false, 'message' => ''];
+
+        $patientData['first_name'] = !empty($request['first_name']) ? $request['first_name'] : '';
+        $patientData['last_name'] = !empty($request['last_name']) ? $request['last_name'] : '';
+        $patientData['email'] = !empty($request['email']) ? $request['email'] : '';
+        $patientData['phone_no'] = !empty($request['phone_no']) ? $request['phone_no'] : '';
+        $patientData['dob'] = !empty($request['dob']) ? $request['dob'] : '';
+        $patientData['state_id'] = !empty($request['billing_state_id']) ? $request['billing_state_id'] : 0;
         $patientData['trt_refill'] = !empty($request['trt_refill']) ? $request['trt_refill'] : '';
         $patientData['patients_id'] = !empty($request['patients_id']) ? $request['patients_id'] : '';
+        $patientData['apt'] = !empty($request['apt']) ? $request['apt'] : '';
+        $patientData['product_id'] = !empty($request['product_id']) ? $request['product_id'] : '';
+        $patientData['member_id'] = !empty($request['member_id']) ? $request['member_id'] : '';
         $patientData['survey_form_type'] = 'trt';
         $patientData['status'] = self::STATUS_ACTIVE;
 
-        if (!empty($step1)) {
+        $billing_address_1 = !empty($request['billing_address_1']) ? $request['billing_address_1'] : '';
+        $billing_address_2 = !empty($request['billing_address_2']) ? $request['billing_address_2'] : '';
+        $billing_state_id = !empty($request['billing_state_id']) ? $request['billing_state_id'] : 0;
+        $billing_city_name = !empty($request['billing_city_name']) ? $request['billing_city_name'] : '';
+        $billing_zipcode = !empty($request['billing_zipcode']) ? $request['billing_zipcode'] : '';
+        $shipping_address_1 = !empty($request['shipping_address_1']) ? $request['shipping_address_1'] : '';
+        $shipping_address_2 = !empty($request['shipping_address_2']) ? $request['shipping_address_2'] : '';
+        $shipping_state_id = !empty($request['shipping_state_id']) ? $request['shipping_state_id'] : 0;
+        $shipping_city_name = !empty($request['shipping_city_name']) ? $request['shipping_city_name'] : '';
+        $shipping_zipcode = !empty($request['shipping_zipcode']) ? $request['shipping_zipcode'] : '';
 
-            $trtFormData['apt'] = !empty($step1['apt']) ? $step1['apt'] : '';
-            $patientData['state_id'] = !empty($step1['billing_state_id']) ? $step1['billing_state_id'] : '';
-            $sameAsShiping = !empty($step1['billing_same_as_shipping']) && $step1['billing_same_as_shipping'] == 'on' ?: '';
-            $billing_address_1 = !empty($step1['billing_address_1']) ? $step1['billing_address_1'] : '';
-            $billing_address_2 = !empty($step1['billing_address_2']) ? $step1['billing_address_2'] : '';
-            $billing_state_id = !empty($step1['billing_state_id']) ? $step1['billing_state_id'] : '';
-            $billing_city_name = !empty($step1['billing_city_name']) ? $step1['billing_city_name'] : '';
-            $billing_zipcode = !empty($step1['billing_zipcode']) ? $step1['billing_zipcode'] : '';
-            $shipping_address_1 = !empty($step1['shipping_address_1']) ? $step1['shipping_address_1'] : '';
-            $shipping_address_2 = !empty($step1['shipping_address_2']) ? $step1['shipping_address_2'] : '';
-            $shipping_state_id = !empty($step1['shipping_state_id']) ? $step1['shipping_state_id'] : '';
-            $shipping_city_name = !empty($step1['shipping_city_name']) ? $step1['shipping_city_name'] : '';
-            $shipping_zipcode = !empty($step1['shipping_zipcode']) ? $step1['shipping_zipcode'] : '';
-            if (!empty($sameAsShiping)) {
+        $sameAsShipping = !empty($request['billing_same_as_shipping']) && $request['billing_same_as_shipping'] == 'on' ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;
 
-                $patientData['billing_address_1'] = $billing_address_1;
-                $patientData['billing_address_2'] = $billing_address_2;
-                $patientData['billing_state_id'] = $billing_state_id;
-                $patientData['billing_city_name'] = $billing_city_name;
-                $patientData['billing_zip'] = $billing_zipcode;
-                $patientData['shipping_address_1'] = $billing_address_1;
-                $patientData['shipping_address_2'] = $billing_address_2;
-                $patientData['shipping_state_id'] = $billing_state_id;
-                $patientData['shipping_city_name'] = $billing_city_name;
-                $patientData['shipping_zip'] = $billing_zipcode;
-            } else {
-                $patientData['billing_address_1'] = $billing_address_1;
-                $patientData['billing_address_2'] = $billing_address_2;
-                $patientData['billing_state_id'] = $billing_state_id;
-                $patientData['billing_city_name'] = $billing_city_name;
-                $patientData['billing_zip'] = $billing_zipcode;
-                $patientData['shipping_address_1'] = "";
-                $patientData['shipping_address_2'] = "";
-                $patientData['shipping_state_id'] = "";
-                $patientData['shipping_zip'] = "";
-                $patientData['shipping_city_name'] = "";
 
-            }
-        }
-        else {
-            $trtFormData['apt'] = !empty($request['apt']) ? $request['apt'] : '';
-            $patientData['product_id'] = !empty($request['product_id']) ? $request['product_id'] : '';
-            $patientData['member_id'] = !empty($request['member_id']) ? $request['member_id'] : '';
-            $patientData['first_name'] = !empty($request['first_name']) ? $request['first_name'] : '';
-            $patientData['last_name'] = !empty($request['last_name']) ? $request['last_name'] : '';
-            $patientData['email'] = !empty($request['email']) ? $request['email'] : '';
-            $patientData['phone_no'] = !empty($request['phone_no']) ? $request['phone_no'] : '';
-            $patientData['dob'] = !empty($request['dob']) ? $request['dob'] : '';
-            $patientData['state_id'] = !empty($request['billing_state_id']) ? $request['billing_state_id'] : '';
-
-            $sameAsShiping = !empty($request['billing_same_as_shipping']) && $request['billing_same_as_shipping'] == 'on' ?: '';
-            $billing_address_1 = !empty($request['billing_address_1']) ? $request['billing_address_1'] : '';
-            $billing_address_2 = !empty($request['billing_address_2']) ? $request['billing_address_2'] : '';
-            $billing_state_id = !empty($request['billing_state_id']) ? $request['billing_state_id'] : '';
-            $billing_city_name = !empty($request['billing_city_name']) ? $request['billing_city_name'] : '';
-            $billing_zipcode = !empty($request['billing_zipcode']) ? $request['billing_zipcode'] : '';
-            $shipping_address_1 = !empty($request['shipping_address_1']) ? $request['shipping_address_1'] : '';
-            $shipping_address_2 = !empty($request['shipping_address_2']) ? $request['shipping_address_2'] : '';
-            $shipping_state_id = !empty($request['shipping_state_id']) ? $request['shipping_state_id'] : '';
-            $shipping_city_name = !empty($request['shipping_city_name']) ? $request['shipping_city_name'] : '';
-            $shipping_zipcode = !empty($request['shipping_zipcode']) ? $request['shipping_zipcode'] : '';
-            if (!empty($sameAsShiping)) {
-
-                $patientData['billing_address_1'] = $billing_address_1;
-                $patientData['billing_address_2'] = $billing_address_2;
-                $patientData['billing_state_id'] = $billing_state_id;
-                $patientData['billing_city_name'] = $billing_city_name;
-                $patientData['billing_zip'] = $billing_zipcode;
-                $patientData['shipping_address_1'] = $billing_address_1;
-                $patientData['shipping_address_2'] = $billing_address_2;
-                $patientData['shipping_state_id'] = $billing_state_id;
-                $patientData['shipping_city_name'] = $billing_city_name;
-                $patientData['shipping_zip'] = $billing_zipcode;
-            } else {
-                $patientData['billing_address_1'] = $billing_address_1;
-                $patientData['billing_address_2'] = $billing_address_2;
-                $patientData['billing_state_id'] = $billing_state_id;
-                $patientData['billing_city_name'] = $billing_city_name;
-                $patientData['billing_zip'] = $billing_zipcode;
-                $patientData['shipping_address_1'] = "";
-                $patientData['shipping_address_2'] = "";
-                $patientData['shipping_state_id'] = "";
-                $patientData['shipping_zip'] = "";
-                $patientData['shipping_city_name'] = "";
-
-            }
+        if (!empty($sameAsShipping)) {
+            $patientData['billing_address_1'] = $billing_address_1;
+            $patientData['billing_address_2'] = $billing_address_2;
+            $patientData['billing_state_id'] = $billing_state_id;
+            $patientData['billing_city_name'] = $billing_city_name;
+            $patientData['billing_zip'] = $billing_zipcode;
+            $patientData['shipping_address_1'] = $billing_address_1;
+            $patientData['shipping_address_2'] = $billing_address_2;
+            $patientData['shipping_state_id'] = $billing_state_id;
+            $patientData['shipping_city_name'] = $billing_city_name;
+            $patientData['shipping_zip'] = $billing_zipcode;
+        } else {
+            $patientData['billing_address_1'] = $billing_address_1;
+            $patientData['billing_address_2'] = $billing_address_2;
+            $patientData['billing_state_id'] = $billing_state_id;
+            $patientData['billing_city_name'] = $billing_city_name;
+            $patientData['billing_zip'] = $billing_zipcode;
+            $patientData['shipping_address_1'] = $shipping_address_1;
+            $patientData['shipping_address_2'] = $shipping_address_2;
+            $patientData['shipping_state_id'] = $shipping_state_id;
+            $patientData['shipping_zip'] = $shipping_city_name;
+            $patientData['shipping_city_name'] = $shipping_zipcode;
         }
 
         $trtFormData['additional_information'] = !empty($request['additional_information']) ? $request['additional_information'] : '';
-        $trtFormData['experience'] = !empty($request['experience']) ? $request['experience'] : '';
+        $trtFormData['experience'] = !empty($request['experience']) ? $request['experience'] : 0;
         $trtFormData['energy'] = !empty($step2['energy']) ? $step2['energy'] : '';
         $trtFormData['sleep'] = !empty($step2['sleep']) ? $step2['sleep'] : '';
         $trtFormData['libido'] = !empty($step2['libido']) ? $step2['libido'] : '';
@@ -429,44 +405,62 @@ class TrtFlow extends BaseModel
         $trtFormData['acknowledge'] = !empty($step5['acknowledge']) && $step5['acknowledge'] == 'Yes' ? 1 : 0;
         $trtFormData['same_shipping_as_billing'] = !empty($sameAsShiping) ? 1 : 0;
 
-
         $response = $this->saveTRTRecord($patientData, $trtFormData);
 
         if ($response['success']) {
-
             $result['success'] = true;
             $result['message'] = $response['message'];
             $result['patients_id'] = $response['patients_id'];
             $result['redirectUrl'] = '/thank-you';
-
         } else {
-
             $messages = [];
-
             foreach ($response['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $result['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
 
         }
-
         return $result;
     }
 
     public function saveTRTRecord($patientData, $trtFormData)
     {
-        $rules[''] = "";
+
         $response = [];
         $response['success'] = false;
         $response['message'] = '';
 
-        $validationResult = $this->validateDataWithRules($rules, $patientData);
+        $rules = [
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'email' => 'required|unique:users,email',
+            'phone_no' => 'required|numeric',
+            'dob' => 'required',
+            'billing_address_1' => 'required',
+            'billing_city_name' => 'required',
+            'billing_state_id' => 'required|numeric',
+            'billing_zip' => 'required',
+            'apt' => 'required',
+        ];
+        $message['first_name.required'] = 'First Name is required';
+        $message['last_name.required'] = 'Last Name is required';
+        $message['email.required'] = 'Email Address is required';
+        $message['phone_no.required'] = 'PhoneNo is required';
+        $message['dob.required'] = 'DOB is required';
+        $message['billing_address_1.required'] = 'Billing Address is required';
+        $message['billing_city_name.required'] = 'Billing City is required';
+        $message['billing_state_id.required'] = 'Billing State is required';
+        $message['billing_zip.required'] = 'Billing Zip code is required';
+        $message['apt.required'] = 'APT/Suite code is required';
+
+        $validationResult = $this->validateDataWithMessage($rules, $patientData, $message);
+
         if ($validationResult['success'] == false) {
             $response['success'] = false;
             $response['message'] = ($validationResult['message']);
             return $response;
         }
+
         if (isset($patientData['patients_id']) && $patientData['patients_id'] != '') {
             $patientsId = $patientData['patients_id'];
             $patientsObj = new Patients();
@@ -478,20 +472,17 @@ class TrtFlow extends BaseModel
                 $refillCount['trt_refill'] = $trtRillCount + 1;
                 TrtFlow::where('patients_id', $patientsId)->update($trtFormData);
                 Patients::where('patients_id', $patientsId)->update($refillCount);
-            }
-            else {
+            } else {
                 $trtFormData['patients_id'] = $patientsId;
                 Patients::where('patients_id', $patientsId)->update($patientData);
                 self::create($trtFormData);
             }
-        } else {
+        }
 
+        else {
             $patients = Patients::create($patientData);
-
             $trtFormData['patients_id'] = $patients->patients_id;
-
             self::create($trtFormData);
-
         }
 
         session()->forget('trt_flow.step1');

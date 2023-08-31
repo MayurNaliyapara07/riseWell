@@ -42,11 +42,15 @@
                                 <h4>Do you want to have children in the future?</h4>
                                 <ul class="flex-radio">
                                     <li>
-                                        <input type="radio" name="future_children" id="yes1" value="Yes"  {{ !empty($patient->future_children) && $patient->future_children == 1 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="future_children" id="yes1" value="Yes"
+                                               data-msg-required="Future children is required"
+                                               {{ !empty($patient->future_children) && $patient->future_children == 1 ? 'checked' : ''}} class="css-radio required">
                                         <label for="yes1" class="css-label">Yes</label>
                                     </li>
                                     <li>
-                                        <input type="radio" name="future_children" id="no1" value="No" {{ !empty($patient->future_children) && $patient->future_children == 0 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="future_children"
+                                               data-msg-required="Future children is required"
+                                               id="no1" value="No" {{ !empty($patient->future_children) && $patient->future_children == 0 ? 'checked' : ''}} class="css-radio required">
                                         <label for="no1" class="css-label">No</label>
                                     </li>
                                 </ul>
@@ -55,11 +59,17 @@
                                 <h4>Do you have any children under the age of 5 years living in the home?</h4>
                                 <ul class="flex-radio">
                                     <li>
-                                        <input type="radio" name="living_children" id="Yes2" value="Yes" {{ !empty($patient->living_children) && $patient->living_children == 1 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="living_children" id="Yes2"
+                                               data-msg-required="Children under the age of 5 years living in the home is required"
+                                               value="Yes"
+                                               class="css-radio required"
+                                               {{ !empty($patient->living_children) && $patient->living_children == 1 ? 'checked' : ''}} >
                                         <label for="Yes2" class="css-label">Yes</label>
                                     </li>
                                     <li>
-                                        <input type="radio" name="living_children" id="No2"  value="No" {{ !empty($patient->living_children) && $patient->living_children == 0 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="living_children" id="No2"
+                                               data-msg-required="Children under the age of 5 years living in the home is required"
+                                               value="No" {{ !empty($patient->living_children) && $patient->living_children == 0 ? 'checked' : ''}} class="css-radio required">
                                         <label for="No2" class="css-label">No</label>
                                     </li>
                                 </ul>
@@ -69,11 +79,13 @@
                                     in changing your treatment method?</h4>
                                 <ul class="flex-radio">
                                     <li>
-                                        <input type="radio" name="cream_and_gel" id="Yes3" value="Yes" {{ !empty($patient->cream_and_gel) && $patient->cream_and_gel == 1 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="cream_and_gel" id="Yes3" value="Yes" {{ !empty($patient->cream_and_gel) && $patient->cream_and_gel == 1 ? 'checked' : ''}} class="css-radio required"
+                                               data-msg-required="Testosterone is required">
                                         <label for="Yes3" class="css-label">Yes</label>
                                     </li>
                                     <li>
-                                        <input type="radio" name="cream_and_gel" id="No3" value="No"  {{ !empty($patient->cream_and_gel) && $patient->cream_and_gel == 0 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="cream_and_gel" id="No3" value="No"  {{ !empty($patient->cream_and_gel) && $patient->cream_and_gel == 0 ? 'checked' : ''}} class="css-radio required"
+                                               data-msg-required="Testosterone is required">
                                         <label for="No3" class="css-label">No</label>
                                     </li>
                                 </ul>
@@ -82,11 +94,11 @@
                                 <h4>Do you have any new allergies that we should know about?</h4>
                                 <ul class="flex-radio">
                                     <li>
-                                        <input type="radio" name="allergies" id="Yes4" value="Yes" {{ !empty($patient->allergies) && $patient->allergies == 1 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="allergies" id="Yes4" value="Yes" {{ !empty($patient->allergies) && $patient->allergies == 1 ? 'checked' : ''}} class="css-radio required" data-msg-required="Allergies is required">
                                         <label for="Yes4" class="css-label">Yes</label>
                                     </li>
                                     <li>
-                                        <input type="radio" name="allergies" id="No4"  value="No" {{ !empty($patient->allergies) && $patient->allergies == 0 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="allergies" id="No4"  value="No" {{ !empty($patient->allergies) && $patient->allergies == 0 ? 'checked' : ''}} class="css-radio required" data-msg-required="Allergies is required">
                                         <label for="No4" class="css-label">No</label>
                                     </li>
                                 </ul>
@@ -96,11 +108,11 @@
                                     supplements that we should know about?</h4>
                                 <ul class="flex-radio">
                                     <li>
-                                        <input type="radio" name="herbal_or_vitamin" id="Yes5" value="Yes" {{ !empty($patient->herbal_or_vitamin) && $patient->herbal_or_vitamin == 1 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="herbal_or_vitamin" id="Yes5" value="Yes" {{ !empty($patient->herbal_or_vitamin) && $patient->herbal_or_vitamin == 1 ? 'checked' : ''}} class="css-radio required" data-msg-required="Prescription is required">
                                         <label for="Yes5" class="css-label">Yes</label>
                                     </li>
                                     <li>
-                                        <input type="radio" name="herbal_or_vitamin" id="No5" value="No" {{ !empty($patient->herbal_or_vitamin) && $patient->herbal_or_vitamin == 0 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="herbal_or_vitamin" id="No5" value="No" {{ !empty($patient->herbal_or_vitamin) && $patient->herbal_or_vitamin == 0 ? 'checked' : ''}} class="css-radio required" data-msg-required="Prescription is required">
                                         <label for="No5" class="css-label">No</label>
                                     </li>
                                 </ul>
@@ -109,11 +121,11 @@
                                 <h4>Are you taking your medications as prescribed?</h4>
                                 <ul class="flex-radio">
                                     <li>
-                                        <input type="radio" name="medications_prescribed" id="Yes6" value="Yes" {{ !empty($patient->medications_prescribed) && $patient->medications_prescribed == 1 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="medications_prescribed" id="Yes6" value="Yes" {{ !empty($patient->medications_prescribed) && $patient->medications_prescribed == 1 ? 'checked' : ''}} class="css-radio required" data-msg-required="Medications is required">
                                         <label for="Yes6" class="css-label">Yes</label>
                                     </li>
                                     <li>
-                                        <input type="radio" name="medications_prescribed" id="No6" value="No" {{ !empty($patient->medications_prescribed) && $patient->medications_prescribed == 0 ? 'checked' : ''}} class="css-radio">
+                                        <input type="radio" name="medications_prescribed" id="No6" value="No" {{ !empty($patient->medications_prescribed) && $patient->medications_prescribed == 0 ? 'checked' : ''}} class="css-radio required" data-msg-required="Medications is required">
                                         <label for="No6" class="css-label">No</label>
                                     </li>
                                 </ul>

@@ -185,7 +185,6 @@ class FrotendController extends Controller
 
     public function saveTRTStepOneRefill(Request $request)
     {
-
         $trtFlowObj = new TrtFlow();
         $data = $request->all();
         return $trtFlowObj->ValidateTRTStep1($data);

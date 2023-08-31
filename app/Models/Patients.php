@@ -13,7 +13,7 @@ class Patients extends BaseModel
 
     protected $table = "patients";
     protected $primaryKey = "patients_id";
-    protected $fillable = ['trt_refill', 'survey_form_type', 'product_id', 'first_name', 'last_name', 'gender', 'dob', 'profile_claimed', 'image', 'member_id', 'email', 'ssn', 'phone_no', 'country_code', 'status', 'city_name', 'zip', 'address', 'state_id', 'billing_address_1', 'billing_address_2', 'billing_address_3', 'billing_state_id', 'billing_city_name', 'billing_zip', 'shipping_address_1', 'shipping_address_2', 'shipping_address_3', 'shipping_state_id', 'shipping_city_name', 'shipping_zip', 'height', 'weight', 'time_zone'];
+    protected $fillable = ['trt_refill','apt','survey_form_type', 'product_id', 'first_name', 'last_name', 'gender', 'dob', 'profile_claimed', 'image', 'member_id', 'email', 'ssn', 'phone_no', 'country_code', 'status', 'city_name', 'zip', 'address', 'state_id', 'billing_address_1', 'billing_address_2', 'billing_address_3', 'billing_state_id', 'billing_city_name', 'billing_zip', 'shipping_address_1', 'shipping_address_2', 'shipping_address_3', 'shipping_state_id', 'shipping_city_name', 'shipping_zip', 'height', 'weight', 'time_zone'];
 
     protected $entity = 'patients';
     public $filter;

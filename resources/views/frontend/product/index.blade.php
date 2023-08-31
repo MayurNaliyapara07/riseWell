@@ -17,6 +17,7 @@
                                 <th>Image</th>
                                 <th>Category Name</th>
                                 <th>Product Name</th>
+                                <th>Product Type</th>
                                 <th>SKU</th>
                                 <th>Price</th>
                                 <th>Status</th>
@@ -54,6 +55,10 @@
                 {
                     data: 'product_name',
                     name: 'product_name',
+                },
+                {
+                    data: 'product_type',
+                    name: 'product_type',
                 },
                 {
                     data: 'sku',

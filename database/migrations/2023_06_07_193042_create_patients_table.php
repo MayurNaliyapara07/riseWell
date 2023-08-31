@@ -48,6 +48,7 @@ class CreatePatientsTable extends Migration
             $table->double('weight')->nullable();
             $table->string('time_zone',20)->nullable();
             $table->integer('trt_refill')->nullable();
+            $table->string('apt',150)->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

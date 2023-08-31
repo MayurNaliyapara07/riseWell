@@ -14,12 +14,12 @@
                                     <input type="hidden" name="trt_refill" value="1">
                                     <input type="hidden" name="member_id" value="{{!empty($memberId)?$memberId:''}}">
                                     <input type="hidden" name="product_id" value="{{!empty($productId)?$productId:''}}">
-                                    <input type="hidden" name="survey_form_type" value="{{!empty($productType)?$productType:''}}">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">legal First Name</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control required"
+                                                       data-msg-required="legal First Name is required"
                                                        placeholder="Please enter your legal first name"
                                                        name="first_name"
                                                        @php if(!empty($patient->first_name)) echo 'readonly' @endphp
@@ -29,7 +29,8 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">legal Last Name</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control required"
+                                                       data-msg-required="legal Last Name is required"
                                                        placeholder="Please enter your legal first name" name="last_name"
                                                        @php if(!empty($patient->last_name)) echo 'readonly' @endphp
                                                        value="{{!empty($patient)?$patient->last_name:old('last_name')}}">
@@ -38,7 +39,9 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">Email Address</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control required"
+                                                       data-rule-email="true"
+                                                       data-msg-required="Email Address is required"
                                                        placeholder="Please enter your email address" name="email"
                                                        @php if(!empty($patient->email)) echo 'readonly' @endphp
                                                        value="{{!empty($patient)?$patient->email:old('email')}}">
@@ -47,16 +50,18 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">Cell Phone Number</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Please enter your cell phone nuber" name="phone_no"
+                                                <input type="text" class="form-control required"
+                                                       data-msg-required="Phone No is required"
+                                                       placeholder="Please enter your cell phone no" name="phone_no"
                                                        @php if(!empty($patient->phone_no)) echo 'readonly' @endphp
                                                        value="{{!empty($patient)?$patient->phone_no:old('phone_no')}}">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
-                                                <label for="">Birthdate</label>
-                                                <input type="date" class="form-control" placeholder="" name="dob"
+                                                <label for="">DOB</label>
+                                                <input type="date" class="form-control required" placeholder="" name="dob"
+                                                       data-msg-required="DOB is required"
                                                        @php if(!empty($patient->dob)) echo 'readonly' @endphp
                                                        value="{{!empty($patient) ? $patient->dob : old('dob')}}">
                                             </div>
@@ -67,7 +72,8 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">Address</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control required"
+                                                       data-msg-required="Billing Address is required"
                                                        placeholder="Please enter your address"
                                                        name="billing_address_1"
                                                        value="{{!empty($patient) ? $patient->billing_address_1 : old('billing_address_1')}}">
@@ -76,7 +82,8 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">APT/Suite #</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control required"
+                                                       data-msg-required="APT/Suite is required"
                                                        placeholder="Please enter your apt/suite" name="apt"
                                                        value="{{!empty($patient) ? $patient->apt : old('apt')}}">
                                             </div>
@@ -84,7 +91,8 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">City</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control required"
+                                                       data-msg-required="Billing City is required"
                                                        placeholder="Please enter your city"
                                                        name="billing_city_name"
                                                        value="{{!empty($patient) ? $patient->billing_city_name : old('billing_city_name')}}">
@@ -93,7 +101,8 @@
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label for="">State</label>
-                                                <select name="billing_state_id" class="form-control" id="">
+                                                <select name="billing_state_id" class="form-control required" id=""
+                                                        data-msg-required="Billing State is required">
                                                     <option value="">Select State</option>
                                                     @if($state)
                                                         @foreach($state as $value)
@@ -108,8 +117,9 @@
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label for="">Zip Code</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Please enter your zip code"
+                                                <input type="text" class="form-control required"
+                                                       data-msg-required="Billing Zip code is required"
+                                                       placeholder="Zip code"
                                                        name="billing_zipcode"
                                                        value="{{!empty($patient) ? $patient->billing_zip : old('billing_zip')}}">
                                             </div>
@@ -117,7 +127,7 @@
                                         <div class="col-lg-12 col-md-12">
                                             <div class="shipping-check">
                                                 <input type="checkbox" name="billing_same_as_shipping" id="checkbox8"
-                                                       {{ !empty($patient) && $patient->policy == 1 ? 'checked' : ''}}  class="css-checkbox">
+                                                       {{ !empty($patient) && $patient->billing_same_as_shipping == 1 ? 'checked' : ''}}  class="css-checkbox">
                                                 <label for="checkbox8" class="css-label">Billing Address is the same as
                                                     shipping</label>
                                             </div>
@@ -139,9 +149,11 @@
                                         <li><i class="fas fa-check"></i>Online Provider Consult</li>
                                     </ul>
                                     <ul class="totalprice">
-                                        <li>Shipping :<span>Free</span></li>
-                                        <li class="total">Total :<span>$99</span></li>
-
+                                        <li>Price :<span>${{$productDetails->price}}</span></li>
+                                        <li>Shipping Cost :<span>${{$productDetails->shipping_cost}}</span></li>
+                                        <li>Processing Fees :<span>${{$productDetails->processing_fees}}</span></li>
+                                        <li>Discount :<span>${{$productDetails->discount}}</span></li>
+                                        <li class="total">Total :<span>${{($productDetails->price+$productDetails->shipping_cost+$productDetails->processing_fees) - $productDetails->discount}}</span></li>
                                     </ul>
                                 </div>
                             </div>

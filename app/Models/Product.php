@@ -101,7 +101,7 @@ class Product extends BaseModel
         $categoryTable = $categoryObj->getTable();
         $this->setSelect();
         $this->joinCategory();
-        $this->selectColomns([$this->table . '.product_id', $this->table . '.image',$this->table . '.status', $this->table . '.product_name', $this->table . '.sku', $this->table . '.price', $categoryTable . '.category_name']);
+        $this->selectColomns([$this->table . '.product_id',$this->table . '.product_type', $this->table . '.image',$this->table . '.status', $this->table . '.product_name', $this->table . '.sku', $this->table . '.price', $categoryTable . '.category_name']);
         $model = $this->getQueryBuilder();
         $columnsOrderData = $this->getOrderByFieldAndValue(request()->get("order"), request()->get("columns"), $this->primaryKey, 'DESC');
         $query = DataTables::of($model)->order(function ($query) use ($columnsOrderData) {
@@ -111,6 +111,13 @@ class Product extends BaseModel
         $query = $query->addColumn('action', function ($row) {
             $action = '<a href="' . route('product.edit', $row->product_id) . '" class="ml-3 btn btn-sm btn-warning btn-clean btn-icon" title="Edit"><i class="la la-edit"></i> </a>';
             return $action;
+        })->editColumn('product_type', function ($row) {
+            if ($row->product_type == self::PRODUCT_TYPE_ED) {
+                return '<span class="label label-lg label-primary label-inline">'.self::PRODUCT_TYPE_ED.'</span>';
+            } else {
+                return '<span class="label label-lg label-success label-inline">'.self::PRODUCT_TYPE_TRT.'</span>';
+            }
+
         })->editColumn('status', function ($row) {
             if ($row->status == $this::STATUS_ACTIVE) {
                 return '<span class="switch switch-sm switch-icon"><label><input type="checkbox" checked="checked" onclick="productChangeStatus(\'product-change-status\',' . $row->product_id . ')" name="select"/><span></span></label></span>';
@@ -125,7 +132,7 @@ class Product extends BaseModel
                      </div>';
             return $categoryImage;
         })->addIndexColumn()
-            ->rawColumns(['category_name', 'product_name', 'image', 'sku', 'price', 'action','status'])
+            ->rawColumns(['category_name', 'product_name','product_type', 'image', 'sku', 'price', 'action','status'])
             ->filter(function ($query) {
                 $search_value = request()['search']['value'];
                 $column = request()['columns'];

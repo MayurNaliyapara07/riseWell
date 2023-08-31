@@ -17,7 +17,6 @@ class CreateTrtFlowTable extends Migration
             $table->bigIncrements('trt_flow_id')->index();
             $table->unsignedBigInteger('patients_id')->index();
             $table->string('unique_url',50)->nullable();
-            $table->string('apt',150)->nullable();
             $table->string('current_health_goal',50)->nullable();
             $table->string('toward_health_goal',50)->nullable();
             $table->string('weight_goal',50)->nullable();

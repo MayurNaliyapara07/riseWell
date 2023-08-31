@@ -61,7 +61,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">Sleep</label>
-                                        <select name="sleep" class="form-control" id="">
+                                        <select name="sleep" class="form-control required" id=""
+                                                data-msg-required="Sleep is required">
                                             <option value="">Please select sleep</option>
                                             @if(!empty($getEnergy))
                                                 @foreach($getEnergy as $value)
@@ -75,7 +76,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">Libido</label>
-                                        <select name="libido" class="form-control" id="">
+                                        <select name="libido" class="form-control required" id=""
+                                                data-msg-required="Libido is required">
                                             <option value="">Please select libido</option>
                                             @if(!empty($getEnergy))
                                                 @foreach($getEnergy as $value)
@@ -88,7 +90,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">Memory & Focus</label>
-                                        <select name="memory" class="form-control" id="">
+                                        <select name="memory" class="form-control required" id=""
+                                                data-msg-required="Memory & Focus is required">
                                             <option value="">Please select memory & focus</option>
                                             @if(!empty($getEnergy))
                                                 @foreach($getEnergy as $value)
@@ -101,7 +104,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">Endurance & Strength</label>
-                                        <select name="strength" class="form-control" id="">
+                                        <select name="strength" class="form-control required" id=""
+                                                data-msg-required="Endurance & Strength is required">
                                             <option value="">Please select endurance & strength</option>
                                             @if(!empty($getEnergy))
                                                 @foreach($getEnergy as $value)

@@ -19,6 +19,7 @@
                         <form action="{{route('save-trt-step-one-refill')}}" method="post" enctype="multipart/form-data"
                               class="ajax-form">
                             @csrf
+                            <input type="hidden" name="patients_id" value="{{!empty($patient->patients_id)?$patient->patients_id:''}}">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -70,7 +71,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">Address</label>
-                                        <input type="text" class="form-control" placeholder="Please enter your address"
+                                        <input type="text" class="form-control required" placeholder="Please enter your address"
+                                               data-msg-required="Billing Address is required"
                                                name="billing_address_1"
                                                value="{{!empty($patient) ? $patient->billing_address_1 : old('billing_address_1')}}">
                                     </div>
@@ -78,7 +80,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">APT/Suite #</label>
-                                        <input type="text" class="form-control"
+                                        <input type="text" class="form-control required"
+                                               data-msg-required="APT/Suite is required"
                                                placeholder="Please enter your apt/suite" name="apt"
                                                value="{{!empty($patient) ? $patient->apt : old('apt')}}">
                                     </div>
@@ -86,15 +89,17 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">City</label>
-                                        <input type="text" class="form-control" placeholder="Please enter your city"
+                                        <input type="text" class="form-control required" placeholder="Please enter your city"
                                                name="billing_city_name"
+                                               data-msg-required="Billing City is required"
                                                value="{{!empty($patient) ? $patient->billing_city_name : old('billing_city_name')}}">
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="">State</label>
-                                        <select name="billing_state_id" class="form-control" id="">
+                                        <select name="billing_state_id" class="form-control required" id=""
+                                                data-msg-required="Billing state is required">
                                             <option value="">Select State</option>
                                             @if($state)
                                                 @foreach($state as $value)
@@ -108,8 +113,9 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label for="">Zip Code</label>
-                                        <input type="text" class="form-control" placeholder="Please enter your zip code"
+                                        <input type="text" class="form-control required" placeholder="Please enter your zip code"
                                                name="billing_zipcode"
+                                               data-msg-required="Billing Zipcode is required"
                                                value="{{!empty($patient) ? $patient->billing_zip : old('billing_zip')}}">
                                     </div>
                                 </div>
