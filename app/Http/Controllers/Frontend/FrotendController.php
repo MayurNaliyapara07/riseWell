@@ -155,6 +155,7 @@ class FrotendController extends Controller
     public function trtStep3()
     {
         $patient = session()->get('patient_data');
+
         return view('frontend.trt-form-survey.refill-assessment.step3')->with(compact('patient'));
     }
 
@@ -298,6 +299,7 @@ class FrotendController extends Controller
             'low_blood_pressure' => !empty($step4['low_blood_pressure']) ? $step4['low_blood_pressure'] : '',
             'slow_heart_rate' => !empty($step4['slow_heart_rate']) ? $step4['slow_heart_rate'] : '',
             'weight_loss' => !empty($step4['weight_loss']) ? $step4['weight_loss'] : '',
+            'same_shipping_as_billing' => !empty($step5['same_shipping_as_billing']) ? $step5['same_shipping_as_billing'] : '',
             'same_as_credit_card' => !empty($step5['same_as_credit_card']) ? $step5['same_as_credit_card'] : '',
             'acknowledge' => !empty($step5['acknowledge']) ? $step5['acknowledge'] : '',
         ];
