@@ -220,29 +220,104 @@ class TrtFlow extends BaseModel
         $response['message'] = '';
 
         $rules = [
-
+            'cold_chills' => 'required',
+            'cold_hand_and_feet' => 'required',
+            'decreased_sweating' => 'required',
+            'thinning_skin' => 'required',
+            'excessive_body_hair' => 'required',
+            'nail_brittle' => 'required',
+            'dry_brittle' => 'required',
+            'hair_loss' => 'required',
+            'dry_skin' => 'required',
+            'thinning_public_hair' => 'required',
+            'low_libido' => 'required',
+            'memory_lapsed' => 'required',
+            'difficulty_concentrating' => 'required',
+            'deperssion' => 'required',
+            'stress' => 'required',
+            'anxiety' => 'required',
+            'sleep_disturbances' => 'required',
+            'aches_and_pains' => 'required',
+            'headaches' => 'required',
+            'tired' => 'required',
+            'hoarseness' => 'required',
+            'slowed_reflexes' => 'required',
+            'constipation' => 'required',
+            'hear_palpitation' => 'required',
+            'fast_heart_rate' => 'required',
+            'sugar_cravings' => 'required',
+            'weight_gain' => 'required',
+            'weight_loss_difficulty' => 'required',
+            'decreased_muscle_mass' => 'required',
+            'hot_flashes' => 'required',
+            'excessive_sweating' => 'required',
+            'excessive_facial_hair' => 'required',
+            'increased_acne' => 'required',
+            'oily_skin' => 'required',
+            'irritability' => 'required',
+            'mood_changes' => 'required',
+            'incontinence' => 'required',
+            'puffy_eyes' => 'required',
+            'low_blood_pressure' => 'required',
+            'slow_heart_rate' => 'required',
+            'weight_loss' => 'required',
         ];
+        $message['cold_chills.required'] = 'Cold Chills is required';
+        $message['cold_hand_and_feet.required'] = 'Cold Hands and Feet is required';
+        $message['decreased_sweating.required'] = 'Decreased Sweating  is required';
+        $message['thinning_skin.required'] = 'Thinking Skin is required';
+        $message['excessive_body_hair.required'] = 'Excessive Body Hair is required';
+        $message['nail_brittle.required'] = 'Nail Brittle Or Breaking is required';
+        $message['dry_brittle.required'] = 'Dry and Brittle Hair is required';
+        $message['hair_loss.required'] = 'Hair Loss On Scalp is required';
+        $message['dry_skin.required'] = 'Dry Skin is is required';
+        $message['thinning_public_hair.required'] = 'Thinning Public Hair is required';
+        $message['low_libido.required'] = 'Low Libido is required';
+        $message['memory_lapsed.required'] = 'Memory Lapses is required';
+        $message['difficulty_concentrating.required'] = 'Difficulty Concentratingn is required';
+        $message['deperssion.required'] = 'Depression is required';
+        $message['stress.required'] = 'Stress is required';
+        $message['anxiety.required'] = 'Anxiety is required';
+        $message['sleep_disturbances.required'] = 'Sleep Disturbances is required';
+        $message['aches_and_pains.required'] = 'Aches and Pains is required';
+        $message['headaches.required'] = 'Headaches is required';
+        $message['tired.required'] = 'Tired Or Exhausted is required';
+        $message['hoarseness.required'] = 'Hoarseness is required';
+        $message['slowed_reflexes.required'] = 'Slowed Reflexes is required';
+        $message['constipation.required'] = 'Constipation is required';
+        $message['hear_palpitation.required'] = 'Heart Palpitations is required';
+        $message['fast_heart_rate.required'] = 'Fast Heart Rate is required';
+        $message['sugar_cravings.required'] = 'Sugar Cravings is required';
+        $message['weight_gain.required'] = 'Weight Gain is required';
+        $message['weight_loss_difficulty.required'] = 'Weight Loss Difficulty is required';
+        $message['decreased_muscle_mass.required'] = 'Decreased Muscle Mass is required';
+        $message['hot_flashes.required'] = 'Hot Flashes is required';
+        $message['excessive_sweating.required'] = 'Excessive Sweating is required';
+        $message['excessive_facial_hair.required'] = 'Excessive Facial Hair is required';
+        $message['increased_acne.required'] = 'Increased Acne is required';
+        $message['oily_skin.required'] = 'Oily Skin is required';
+        $message['irritability.required'] = 'Irritability is required';
+        $message['mood_changes.required'] = 'Mood Changes is required';
+        $message['incontinence.required'] = 'Incontinence is required';
+        $message['puffy_eyes.required'] = 'Puffy Eyes Or Swollen Face is required';
+        $message['low_blood_pressure.required'] = 'Low Blood Pressure is required';
+        $message['slow_heart_rate.required'] = 'Slow Heart Rate is required';
+        $message['weight_loss.required'] = 'Weight Loss is required';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
 
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             foreach ($validationResult['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $response['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
-
-        } else {
-
+        }
+        else {
             session()->put('trt_flow.step4', $data);
-
             $response['success'] = true;
             $response['message'] = '';
             $response['redirectUrl'] = '/trt-step5';
-
         }
 
         return $response;
@@ -261,19 +336,15 @@ class TrtFlow extends BaseModel
         $validationResult = $this->validateDataWithRules($rules, $data);
 
         if ($validationResult['success'] == false) {
-
             $response['success'] = false;
-
             foreach ($validationResult['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
             }
-
             $response['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
 
         } else {
 
             session()->put('trt_flow.step5', $data);
-
             $response['success'] = true;
             $response['message'] = '';
             $response['redirectUrl'] = '/trt-step6';
@@ -285,15 +356,11 @@ class TrtFlow extends BaseModel
 
     public function createTRTRecord($request)
     {
-        $step1 = session()->get('trt_flow.step1');
-        $step2 = session()->get('trt_flow.step2');
-        $step3 = session()->get('trt_flow.step3');
-        $step4 = session()->get('trt_flow.step4');
-        $step5 = session()->get('trt_flow.step5');
 
+
+        $result = ['success' => false, 'message' => ''];
         $patientData = [];
         $trtFormData = [];
-        $result = ['success' => false, 'message' => ''];
 
         $patientData['first_name'] = !empty($request['first_name']) ? $request['first_name'] : '';
         $patientData['last_name'] = !empty($request['last_name']) ? $request['last_name'] : '';
@@ -322,7 +389,6 @@ class TrtFlow extends BaseModel
 
         $sameAsShipping = !empty($request['billing_same_as_shipping']) && $request['billing_same_as_shipping'] == 'on' ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;
 
-
         if (!empty($sameAsShipping)) {
             $patientData['billing_address_1'] = $billing_address_1;
             $patientData['billing_address_2'] = $billing_address_2;
@@ -334,7 +400,8 @@ class TrtFlow extends BaseModel
             $patientData['shipping_state_id'] = $billing_state_id;
             $patientData['shipping_city_name'] = $billing_city_name;
             $patientData['shipping_zip'] = $billing_zipcode;
-        } else {
+        }
+        else {
             $patientData['billing_address_1'] = $billing_address_1;
             $patientData['billing_address_2'] = $billing_address_2;
             $patientData['billing_state_id'] = $billing_state_id;
@@ -349,61 +416,60 @@ class TrtFlow extends BaseModel
 
         $trtFormData['additional_information'] = !empty($request['additional_information']) ? $request['additional_information'] : '';
         $trtFormData['experience'] = !empty($request['experience']) ? $request['experience'] : 0;
-        $trtFormData['energy'] = !empty($step2['energy']) ? $step2['energy'] : '';
-        $trtFormData['sleep'] = !empty($step2['sleep']) ? $step2['sleep'] : '';
-        $trtFormData['libido'] = !empty($step2['libido']) ? $step2['libido'] : '';
-        $trtFormData['memory'] = !empty($step2['memory']) ? $step2['memory'] : '';
-        $trtFormData['strength'] = !empty($step2['strength']) ? $step2['strength'] : '';
-        $trtFormData['future_children'] = !empty($step3['future_children']) && $step3['future_children'] == 'Yes' ? 1 : 0;
-        $trtFormData['living_children'] = !empty($step3['living_children']) && $step3['living_children'] == 'Yes' ? 1 : 0;
-        $trtFormData['cream_and_gel'] = !empty($step3['cream_and_gel']) && $step3['cream_and_gel'] == 'Yes' ? 1 : 0;
-        $trtFormData['allergies'] = !empty($step3['allergies']) && $step3['allergies'] == 'Yes' ? 1 : 0;
-        $trtFormData['herbal_or_vitamin'] = !empty($step3['herbal_or_vitamin']) && $step3['herbal_or_vitamin'] == 'Yes' ? 1 : 0;
-        $trtFormData['medications_prescribed'] = !empty($step3['medications_prescribed']) && $step3['medications_prescribed'] == 'Yes' ? 1 : 0;
-        $trtFormData['cold_chills'] = !empty($step4['cold_chills']) ? $step4['cold_chills'] : '';
-        $trtFormData['cold_hand_and_feet'] = !empty($step4['cold_hand_and_feet']) ? $step4['cold_hand_and_feet'] : '';
-        $trtFormData['decreased_sweating'] = !empty($step4['decreased_sweating']) ? $step4['decreased_sweating'] : '';
-        $trtFormData['thinning_skin'] = !empty($step4['thinning_skin']) ? $step4['thinning_skin'] : '';
-        $trtFormData['excessive_body_hair'] = !empty($step4['excessive_body_hair']) ? $step4['excessive_body_hair'] : '';
-        $trtFormData['nail_brittle'] = !empty($step4['nail_brittle']) ? $step4['nail_brittle'] : '';
-        $trtFormData['dry_brittle'] = !empty($step4['dry_brittle']) ? $step4['dry_brittle'] : '';
-        $trtFormData['hair_loss'] = !empty($step4['hair_loss']) ? $step4['hair_loss'] : '';
-        $trtFormData['dry_skin'] = !empty($step4['dry_skin']) ? $step4['dry_skin'] : '';
-        $trtFormData['thinning_public_hair'] = !empty($step4['thinning_public_hair']) ? $step4['thinning_public_hair'] : '';
-        $trtFormData['low_libido'] = !empty($step4['low_libido']) ? $step4['low_libido'] : '';
-        $trtFormData['memory_lapsed'] = !empty($step4['memory_lapsed']) ? $step4['memory_lapsed'] : '';
-        $trtFormData['difficulty_concentrating'] = !empty($step4['difficulty_concentrating']) ? $step4['difficulty_concentrating'] : '';
-        $trtFormData['deperssion'] = !empty($step4['deperssion']) ? $step4['deperssion'] : '';
-        $trtFormData['stress'] = !empty($step4['stress']) ? $step4['stress'] : '';
-        $trtFormData['anxiety'] = !empty($step4['anxiety']) ? $step4['anxiety'] : '';
-        $trtFormData['sleep_disturbances'] = !empty($step4['sleep_disturbances']) ? $step4['sleep_disturbances'] : '';
-        $trtFormData['aches_and_pains'] = !empty($step4['aches_and_pains']) ? $step4['aches_and_pains'] : '';
-        $trtFormData['tired'] = !empty($step4['tired']) ? $step4['tired'] : '';
-        $trtFormData['headaches'] = !empty($step4['headaches']) ? $step4['headaches'] : '';
-        $trtFormData['slowed_reflexes'] = !empty($step4['slowed_reflexes']) ? $step4['slowed_reflexes'] : '';
-        $trtFormData['constipation'] = !empty($step4['constipation']) ? $step4['constipation'] : '';
-        $trtFormData['hear_palpitation'] = !empty($step4['hear_palpitation']) ? $step4['hear_palpitation'] : '';
-        $trtFormData['fast_heart_rate'] = !empty($step4['fast_heart_rate']) ? $step4['fast_heart_rate'] : '';
-        $trtFormData['sugar_cravings'] = !empty($step4['sugar_cravings']) ? $step4['sugar_cravings'] : '';
-        $trtFormData['weight_gain'] = !empty($step4['weight_gain']) ? $step4['weight_gain'] : '';
-        $trtFormData['weight_loss_difficulty'] = !empty($step4['weight_loss_difficulty']) ? $step4['weight_loss_difficulty'] : '';
-        $trtFormData['decreased_muscle_mass'] = !empty($step4['decreased_muscle_mass']) ? $step4['decreased_muscle_mass'] : '';
-        $trtFormData['hot_flashes'] = !empty($step4['hot_flashes']) ? $step4['hot_flashes'] : '';
-        $trtFormData['excessive_sweating'] = !empty($step4['excessive_sweating']) ? $step4['excessive_sweating'] : '';
-        $trtFormData['excessive_facial_hair'] = !empty($step4['excessive_facial_hair']) ? $step4['excessive_facial_hair'] : '';
-        $trtFormData['increased_acne'] = !empty($step4['increased_acne']) ? $step4['increased_acne'] : '';
-        $trtFormData['oily_skin'] = !empty($step4['oily_skin']) ? $step4['oily_skin'] : '';
-        $trtFormData['irritability'] = !empty($step4['irritability']) ? $step4['irritability'] : '';
-        $trtFormData['mood_changes'] = !empty($step4['mood_changes']) ? $step4['mood_changes'] : '';
-        $trtFormData['incontinence'] = !empty($step4['incontinence']) ? $step4['incontinence'] : '';
-        $trtFormData['puffy_eyes'] = !empty($step4['puffy_eyes']) ? $step4['puffy_eyes'] : '';
-        $trtFormData['low_blood_pressure'] = !empty($step4['low_blood_pressure']) ? $step4['low_blood_pressure'] : '';
-        $trtFormData['slow_heart_rate'] = !empty($step4['slow_heart_rate']) ? $step4['slow_heart_rate'] : '';
-        $trtFormData['weight_loss'] = !empty($step4['weight_loss']) ? $step4['weight_loss'] : '';
-        $trtFormData['same_shipping_as_billing'] = !empty($step5['same_shipping_as_billing']) && $step5['same_shipping_as_billing'] == 'Yes' ? 1 : 0;
-        $trtFormData['same_as_credit_card'] = !empty($step5['same_as_credit_card']) && $step5['same_as_credit_card'] == 'Yes' ? 1 : 0;
-        $trtFormData['acknowledge'] = !empty($step5['acknowledge']) && $step5['acknowledge'] == 'Yes' ? 1 : 0;
-        $trtFormData['same_shipping_as_billing'] = !empty($sameAsShiping) ? 1 : 0;
+        $trtFormData['energy'] = !empty($request['energy']) ? $request['energy'] : '';
+        $trtFormData['sleep'] = !empty($request['sleep']) ? $request['sleep'] : '';
+        $trtFormData['libido'] = !empty($request['libido']) ? $request['libido'] : '';
+        $trtFormData['memory'] = !empty($request['memory']) ? $request['memory'] : '';
+        $trtFormData['strength'] = !empty($request['strength']) ? $request['strength'] : '';
+        $trtFormData['future_children'] = !empty($request['future_children']) && $request['future_children'] == 'Yes' ? 1 : 0;
+        $trtFormData['living_children'] = !empty($request['living_children']) && $request['living_children'] == 'Yes' ? 1 : 0;
+        $trtFormData['cream_and_gel'] = !empty($request['cream_and_gel']) && $request['cream_and_gel'] == 'Yes' ? 1 : 0;
+        $trtFormData['allergies'] = !empty($request['allergies']) && $request['allergies'] == 'Yes' ? 1 : 0;
+        $trtFormData['herbal_or_vitamin'] = !empty($request['herbal_or_vitamin']) && $request['herbal_or_vitamin'] == 'Yes' ? 1 : 0;
+        $trtFormData['medications_prescribed'] = !empty($request['medications_prescribed']) && $request['medications_prescribed'] == 'Yes' ? 1 : 0;
+        $trtFormData['cold_chills'] = !empty($request['cold_chills']) ? $request['cold_chills'] : '';
+        $trtFormData['cold_hand_and_feet'] = !empty($request['cold_hand_and_feet']) ? $request['cold_hand_and_feet'] : '';
+        $trtFormData['decreased_sweating'] = !empty($request['decreased_sweating']) ? $request['decreased_sweating'] : '';
+        $trtFormData['thinning_skin'] = !empty($request['thinning_skin']) ? $request['thinning_skin'] : '';
+        $trtFormData['excessive_body_hair'] = !empty($request['excessive_body_hair']) ? $request['excessive_body_hair'] : '';
+        $trtFormData['nail_brittle'] = !empty($request['nail_brittle']) ? $request['nail_brittle'] : '';
+        $trtFormData['dry_brittle'] = !empty($request['dry_brittle']) ? $request['dry_brittle'] : '';
+        $trtFormData['hair_loss'] = !empty($request['hair_loss']) ? $request['hair_loss'] : '';
+        $trtFormData['dry_skin'] = !empty($request['dry_skin']) ? $request['dry_skin'] : '';
+        $trtFormData['thinning_public_hair'] = !empty($request['thinning_public_hair']) ? $request['thinning_public_hair'] : '';
+        $trtFormData['low_libido'] = !empty($request['low_libido']) ? $request['low_libido'] : '';
+        $trtFormData['memory_lapsed'] = !empty($request['memory_lapsed']) ? $request['memory_lapsed'] : '';
+        $trtFormData['difficulty_concentrating'] = !empty($request['difficulty_concentrating']) ? $request['difficulty_concentrating'] : '';
+        $trtFormData['deperssion'] = !empty($request['deperssion']) ? $request['deperssion'] : '';
+        $trtFormData['stress'] = !empty($request['stress']) ? $request['stress'] : '';
+        $trtFormData['anxiety'] = !empty($request['anxiety']) ? $request['anxiety'] : '';
+        $trtFormData['sleep_disturbances'] = !empty($request['sleep_disturbances']) ? $request['sleep_disturbances'] : '';
+        $trtFormData['aches_and_pains'] = !empty($request['aches_and_pains']) ? $request['aches_and_pains'] : '';
+        $trtFormData['tired'] = !empty($request['tired']) ? $request['tired'] : '';
+        $trtFormData['headaches'] = !empty($request['headaches']) ? $request['headaches'] : '';
+        $trtFormData['slowed_reflexes'] = !empty($request['slowed_reflexes']) ? $request['slowed_reflexes'] : '';
+        $trtFormData['constipation'] = !empty($request['constipation']) ? $request['constipation'] : '';
+        $trtFormData['hear_palpitation'] = !empty($request['hear_palpitation']) ? $request['hear_palpitation'] : '';
+        $trtFormData['fast_heart_rate'] = !empty($request['fast_heart_rate']) ? $request['fast_heart_rate'] : '';
+        $trtFormData['sugar_cravings'] = !empty($request['sugar_cravings']) ? $request['sugar_cravings'] : '';
+        $trtFormData['weight_gain'] = !empty($request['weight_gain']) ? $request['weight_gain'] : '';
+        $trtFormData['weight_loss_difficulty'] = !empty($request['weight_loss_difficulty']) ? $request['weight_loss_difficulty'] : '';
+        $trtFormData['decreased_muscle_mass'] = !empty($request['decreased_muscle_mass']) ? $request['decreased_muscle_mass'] : '';
+        $trtFormData['hot_flashes'] = !empty($request['hot_flashes']) ? $request['hot_flashes'] : '';
+        $trtFormData['excessive_sweating'] = !empty($request['excessive_sweating']) ? $request['excessive_sweating'] : '';
+        $trtFormData['excessive_facial_hair'] = !empty($request['excessive_facial_hair']) ? $request['excessive_facial_hair'] : '';
+        $trtFormData['increased_acne'] = !empty($request['increased_acne']) ? $request['increased_acne'] : '';
+        $trtFormData['oily_skin'] = !empty($request['oily_skin']) ? $request['oily_skin'] : '';
+        $trtFormData['irritability'] = !empty($request['irritability']) ? $request['irritability'] : '';
+        $trtFormData['mood_changes'] = !empty($request['mood_changes']) ? $request['mood_changes'] : '';
+        $trtFormData['incontinence'] = !empty($request['incontinence']) ? $request['incontinence'] : '';
+        $trtFormData['puffy_eyes'] = !empty($request['puffy_eyes']) ? $request['puffy_eyes'] : '';
+        $trtFormData['low_blood_pressure'] = !empty($request['low_blood_pressure']) ? $request['low_blood_pressure'] : '';
+        $trtFormData['slow_heart_rate'] = !empty($request['slow_heart_rate']) ? $request['slow_heart_rate'] : '';
+        $trtFormData['weight_loss'] = !empty($request['weight_loss']) ? $request['weight_loss'] : '';
+        $trtFormData['same_shipping_as_billing'] = !empty($request['same_shipping_as_billing']) && $request['same_shipping_as_billing'] == 'Yes' ? 1 : 0;
+        $trtFormData['same_as_credit_card'] = !empty($request['same_as_credit_card']) && $request['same_as_credit_card'] == 'Yes' ? 1 : 0;
+        $trtFormData['acknowledge'] = !empty($request['acknowledge']) && $request['acknowledge'] == 'Yes' ? 1 : 0;
 
         $response = $this->saveTRTRecord($patientData, $trtFormData);
 
@@ -425,6 +491,7 @@ class TrtFlow extends BaseModel
 
     public function saveTRTRecord($patientData, $trtFormData)
     {
+
 
         $response = [];
         $response['success'] = false;
@@ -468,12 +535,14 @@ class TrtFlow extends BaseModel
             $selectedColumn = array($patientsTable . '.patients_id', $patientsTable . '.trt_refill');
             $patientsDetails = $patientsObj->setSelect()->addFieldToFilter($patientsTable, 'patients_id', '=', $patientData['patients_id'])->get($selectedColumn)->first();
             $trtRillCount = !empty($patientsDetails->trt_refill) ? $patientsDetails->trt_refill : "";
+
             if (!empty($trtRillCount) && $trtRillCount == 1) {
                 $refillCount['trt_refill'] = $trtRillCount + 1;
                 TrtFlow::where('patients_id', $patientsId)->update($trtFormData);
                 Patients::where('patients_id', $patientsId)->update($refillCount);
             } else {
                 $trtFormData['patients_id'] = $patientsId;
+                $patientData['trt_refill'] = $trtRillCount + 1;
                 Patients::where('patients_id', $patientsId)->update($patientData);
                 self::create($trtFormData);
             }

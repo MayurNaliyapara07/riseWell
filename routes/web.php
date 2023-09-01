@@ -110,6 +110,8 @@ Auth::routes(['verify' => true]);
 
 Route::middleware(['auth','verified'])->group(function () {
 
+    Route::get('fedex', [\App\Http\Controllers\FedexController::class, 'create'])->name('fedex');
+    Route::get('shipping', [\App\Http\Controllers\FedexController::class, 'shipping'])->name('shipping');
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

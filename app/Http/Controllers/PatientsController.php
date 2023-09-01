@@ -91,6 +91,7 @@ class PatientsController extends BaseController
         $getSchedule = $this->getSchduleList($id);
         $getOrderHistory = $this->getOrderHistory($id);
 
+
         return view('master.patients.profile')->with(compact('getOrderHistory','getLabReport', 'patientDetails', 'visitNote', 'medicalHistory', 'getTimeZone', 'getStatName', 'getBillingStatName', 'getShippingStatName', 'surveyForm','getSchedule'));
 
     }

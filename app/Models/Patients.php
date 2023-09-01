@@ -171,6 +171,7 @@ class Patients extends BaseModel
             $this->table . '.dob',
             $this->table . '.state_id',
             $this->table . '.status',
+            $this->table . '.apt',
             $joinTable,
         );
 

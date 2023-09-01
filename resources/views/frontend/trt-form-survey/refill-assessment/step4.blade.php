@@ -51,7 +51,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="cold_chills" id="cold_chills_{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Cold Chills is required">
                                                 <label for="cold_chills_{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -70,8 +70,9 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="cold_hand_and_feet"
+                                                       data-msg-required="Cold Hands and Feet is required"
                                                        id="cold_hand_and_feet{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required">
                                                 <label for="cold_hand_and_feet{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -91,7 +92,9 @@
                                             <li>
                                                 <input type="radio" name="decreased_sweating"
                                                        id="decreased_sweating{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required"
+                                                       data-msg-required="Decreased Sweating is required"
+                                                >
                                                 <label for="decreased_sweating{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -110,7 +113,8 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="thinning_skin" id="thinning_skin{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required"
+                                                       data-msg-required="Thinking Skin is required">
                                                 <label for="thinning_skin{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -130,7 +134,8 @@
                                             <li>
                                                 <input type="radio" name="excessive_body_hair"
                                                        id="excessive_body_hair{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required"
+                                                       data-msg-required="Excessive Body Hair is required">
                                                 <label for="excessive_body_hair{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -149,7 +154,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="nail_brittle" id="nail_brittle{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required"  data-msg-required="Nail Brittle Or Breaking is required">
                                                 <label for="nail_brittle{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -167,7 +172,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="dry_brittle" id="dry_brittle{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Dry and Brittle Hair is required">
                                                 <label for="dry_brittle{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -185,7 +190,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="hair_loss" id="hair_loss{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Hair Loss On Scalp is required">
                                                 <label for="hair_loss{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -203,7 +208,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="dry_skin" id="dry_skin{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Dry Skin is required">
                                                 <label for="dry_skin{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -223,7 +228,7 @@
                                             <li>
                                                 <input type="radio" name="thinning_public_hair"
                                                        id="thinning_public_hair{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Thinning Public Hair is required">
                                                 <label for="thinning_public_hair{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -241,7 +246,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="low_libido" id="low_libido{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Low Libido is required">
                                                 <label for="low_libido{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -260,7 +265,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="memory_lapsed" id="memory_lapsed{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Memory Lapses is required">
                                                 <label for="memory_lapsed{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -280,7 +285,7 @@
                                             <li>
                                                 <input type="radio" name="difficulty_concentrating"
                                                        id="difficulty_concentrating{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Difficulty Concentrating is required">
                                                 <label for="difficulty_concentrating{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -298,7 +303,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="deperssion" id="deperssion{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Depression is required">
                                                 <label for="deperssion{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -308,7 +313,7 @@
                             </div>
 
                             <div class="check-area">
-                                <h3>Strees</h3>
+                                <h3>Stress</h3>
                                 <p>You Previously Selected :
                                     <span>{{!empty($patient->stress) ? $patient->stress : 'None'}}</span></p>
                                 <ul class="flex-check">
@@ -316,7 +321,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="stress" id="stress{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Stress is required">
                                                 <label for="stress{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -334,7 +339,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="anxiety" id="anxiety{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Anxiety is required">
                                                 <label for="anxiety{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -354,7 +359,7 @@
                                             <li>
                                                 <input type="radio" name="sleep_disturbances"
                                                        id="sleep_disturbances{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Sleep Disturbances is required">
                                                 <label for="sleep_disturbances{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -373,7 +378,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="aches_and_pains" id="aches_and_pains{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Aches and Pains is required">
                                                 <label for="aches_and_pains{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -391,7 +396,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="headaches" id="headaches{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Headaches is required">
                                                 <label for="headaches{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -409,7 +414,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="tired" id="tired{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Tired Or Exhausted is required">
                                                 <label for="tired{{$key}}" class="css-label">{{$value['label']}}</label>
                                             </li>
                                         @endforeach
@@ -426,7 +431,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="hoarseness" id="hoarseness{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Hoarseness is required">
                                                 <label for="hoarseness{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -445,7 +450,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="slowed_reflexes" id="slowed_reflexes{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Slowed Reflexes is required">
                                                 <label for="slowed_reflexes{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -464,7 +469,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="constipation" id="constipation{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Constipation is required">
                                                 <label for="constipation{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -484,7 +489,7 @@
                                             <li>
                                                 <input type="radio" name="hear_palpitation"
                                                        id="hear_palpitation{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Heart Palpitations is required">
                                                 <label for="hear_palpitation{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -503,7 +508,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="fast_heart_rate" id="fast_heart_rate{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Fast Heart Rate is required">
                                                 <label for="fast_heart_rate{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -522,7 +527,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="sugar_cravings" id="sugar_cravings{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Sugar Cravings is required">
                                                 <label for="sugar_cravings{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -540,7 +545,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="weight_gain" id="weight_gain{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Weight Gain is required">
                                                 <label for="weight_gain{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -560,7 +565,7 @@
                                             <li>
                                                 <input type="radio" name="weight_loss_difficulty"
                                                        id="weight_loss_difficulty{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Weight Loss Difficulty is required">
                                                 <label for="weight_loss_difficulty{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -580,7 +585,7 @@
                                             <li>
                                                 <input type="radio" name="decreased_muscle_mass"
                                                        id="decreased_muscle_mass{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Decreased Muscle Mass is required">
                                                 <label for="decreased_muscle_mass{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -598,7 +603,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="hot_flashes" id="hot_flashes{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Hot Flashes is required">
                                                 <label for="hot_flashes{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -618,7 +623,7 @@
                                             <li>
                                                 <input type="radio" name="excessive_sweating"
                                                        id="excessive_sweating{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Excessive Sweating is required">
                                                 <label for="excessive_sweating{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -638,7 +643,7 @@
                                             <li>
                                                 <input type="radio" name="excessive_facial_hair"
                                                        id="excessive_facial_hair{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Excessive Facial Hair is required">
                                                 <label for="excessive_facial_hair{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -657,7 +662,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="increased_acne" id="increased_acne{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Increased Acne is required">
                                                 <label for="increased_acne{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -675,7 +680,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="oily_skin" id="oily_skin{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Oily Skin is required">
                                                 <label for="oily_skin{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -694,7 +699,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="irritability" id="irritability{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Irritability is required">
                                                 <label for="irritability{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -713,7 +718,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="mood_changes" id="mood_changes{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Mood Changes is required">
                                                 <label for="mood_changes{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -732,7 +737,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="incontinence" id="incontinence{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Incontinence is required">
                                                 <label for="incontinence{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -750,7 +755,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="puffy_eyes" id="puffy_eyes{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Puffy Eyes Or Swollen Face is required">
                                                 <label for="puffy_eyes{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -770,7 +775,7 @@
                                             <li>
                                                 <input type="radio" name="low_blood_pressure"
                                                        id="low_blood_pressure{{$key}}" value="{{$value['value']}}"
-                                                       class="css-radioinput">
+                                                       class="css-radioinput required" data-msg-required="Low Blood Pressure is required">
                                                 <label for="low_blood_pressure{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -789,7 +794,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="slow_heart_rate" id="slow_heart_rate{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Slow Heart Rate is required">
                                                 <label for="slow_heart_rate{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
@@ -807,7 +812,7 @@
                                         @foreach($getSymptom as $key=>$value)
                                             <li>
                                                 <input type="radio" name="weight_loss" id="weight_loss{{$key}}"
-                                                       value="{{$value['value']}}" class="css-radioinput">
+                                                       value="{{$value['value']}}" class="css-radioinput required" data-msg-required="Weight Loss is required">
                                                 <label for="weight_loss{{$key}}"
                                                        class="css-label">{{$value['label']}}</label>
                                             </li>
