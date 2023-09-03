@@ -43,11 +43,11 @@ class FrotendController extends Controller
         $flow = $request->flow;
         session()->put('sku', $sku);
         session()->put('product_type', $flow);
+        session()->forget('patient_data');
         $manageSectionObj = new ManageSection();
         $getContent = $manageSectionObj->getData();
         $productObj = new Product();
         $productDetails = $productObj->getProductBySkU($sku,$flow);
-
         return view('frontend.ed-form-survey.get-started')->with(compact('getContent','productDetails'));
     }
 
@@ -241,6 +241,7 @@ class FrotendController extends Controller
             'email' => !empty($step1['email']) ? $step1['email'] : '',
             'dob' => !empty($step1['dob']) ? $step1['dob'] : '',
             'phone_no' => !empty($step1['phone_no']) ? $step1['phone_no'] : '',
+            'country_code' => !empty($step1['country_code']) ? $step1['country_code'] : '',
             'apt' => !empty($step1['apt']) ? $step1['apt'] : '',
             'billing_address_1' => !empty($step1['billing_address_1']) ? $step1['billing_address_1'] : '',
             'billing_city_name' => !empty($step1['billing_city_name']) ? $step1['billing_city_name'] : '',
@@ -303,8 +304,6 @@ class FrotendController extends Controller
             'same_as_credit_card' => !empty($step5['same_as_credit_card']) ? $step5['same_as_credit_card'] : '',
             'acknowledge' => !empty($step5['acknowledge']) ? $step5['acknowledge'] : '',
         ];
-
-
         return $trtFlowObj->createTRTRecord($data);
     }
 }

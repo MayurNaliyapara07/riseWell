@@ -1,4 +1,4 @@
-@inject('baseHelper','App\Helpers\ManageSection\Helper')
+@inject('baseHelper','App\Helpers\Frontend\Helper')
 @extends('layouts.frontend')
 @section('content')
     <?php

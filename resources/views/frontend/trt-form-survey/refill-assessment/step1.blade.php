@@ -1,5 +1,14 @@
+@inject('baseHelper','App\Helpers\Frontend\Helper')
 @extends('layouts.frontend')
 @section('content')
+    <?php
+
+    $default_country_code = $baseHelper->default_country_code();
+    $default_country_phonecode = $baseHelper->default_country_phonecode();
+    $phoneCode = !empty($patient->country_code)?$patient->country_code:$default_country_phonecode;
+    $phoneNo = isset($patient->phone_no) ? "+" . $phoneCode . $patient->phone_no : '';
+
+    ?>
     <!--get-started-->
     <section>
         <div class="trt-section">
@@ -53,8 +62,11 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="">Cell Phone Number</label>
-                                        <input type="text" class="form-control"
-                                               placeholder="Please enter your cell phone nuber" name="phone_no"
+                                        <input type="hidden" id="country_code" name="country_code"
+                                               value="{{ !empty($patient->country_code) ? $patient->country_code:$default_country_phonecode  }}">
+                                        <input type="text" class="form-control required"
+                                               data-msg-required="Phone No is required" id="phone_no"
+                                               placeholder="Please enter your cell phone no" name="phone_no"
                                                @php if(!empty($patient->phone_no)) echo 'readonly' @endphp
                                                value="{{!empty($patient)?$patient->phone_no:old('phone_no')}}">
                                     </div>
@@ -139,3 +151,25 @@
         </div>
     </section>
 @endsection
+@push('scripts')
+    <script>
+        var isPhoneNoValid = false;
+        var input = document.querySelector("#phone_no");
+        const iti = window.intlTelInput(input, {
+            allowExtensions: true,
+            formatOnDisplay: true,
+            allowFormat: true,
+            autoHideDialCode: true,
+            placeholderNumberType: "MOBILE",
+            preventInvalidNumbers: true,
+            separateDialCode: true,
+            initialCountry: "{{$default_country_code}}",
+        });
+        input.addEventListener('countrychange', () => {
+            $('#country_code').val(iti.getSelectedCountryData().dialCode)
+        });
+        @if(isset($phoneNo))
+        iti.setNumber('{{$phoneNo}}');
+        @endif
+    </script>
+@endpush

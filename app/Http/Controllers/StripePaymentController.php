@@ -42,7 +42,6 @@ class StripePaymentController extends Controller
 
     public function checkout($data)
     {
-
         \Stripe\Stripe::setApiKey($this->stripe_secret_key);
 
         $patientId = !empty($data['patients_id']) ? $data['patients_id'] : $data;
@@ -63,87 +62,85 @@ class StripePaymentController extends Controller
 
             $stripePlan = !empty($product->stripe_plan) ? $product->stripe_plan : '';
 
-            if (!empty($stripePlan)) {
+            $productName = !empty($product->product_name) ? $product->product_name : '';
 
-                $productName = !empty($product->product_name) ? $product->product_name : '';
+            $price = !empty($product->price) ? $product->price : 0;
 
-                $price = !empty($product->price) ? $product->price : 0;
+            $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
 
-                $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
+            $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
 
-                $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
+            $processingFees = !empty($product->processing_fees) ? ($product->processing_fees * 100) : 0;
 
-                $processingFees = !empty($product->processing_fees) ? ($product->processing_fees * 100) : 0;
+            $subTotal = $processingFees + $shippingCost;
 
-                $subTotal = $processingFees + $shippingCost;
+            $totalPrice = number_format($subTotal - $discount, 2);
 
-                $totalPrice = number_format($subTotal - $discount, 2);
-
-                $orderDetails = !empty($data['order_details']) ? $data['order_details'] : '';
-                if (!empty($orderDetails) && count($orderDetails) > 0) {
-                    foreach ($orderDetails as $order) {
-                        $lineItems[] = array(
-                            'price' => $order['product_id'],
-                            'quantity' => (int)$order['qty'],
-                        );
-                    }
+            $orderDetails = !empty($data['order_details']) ? $data['order_details'] : '';
+            if (!empty($orderDetails) && count($orderDetails) > 0) {
+                foreach ($orderDetails as $order) {
+                    $lineItems[] = array(
+                        'price' => $order['product_id'],
+                        'quantity' => (int)$order['qty'],
+                    );
                 }
-
-                $customer = $this->stripe->customers->create([
-                    'name' => $customerName,
-                    'phone' => $customerPhoneNo,
-                    'email' => $customerEmail,
-                    'description' => 'Customer',
-                ]);
-
-
-                $discountId = "discount_" . rand(0, 99999);
-                $coupons = $this->stripe->coupons->create([
-                    'name' => 'Coupon',
-                    'currency' => 'usd',
-                    'duration' => 'once',
-                    'id' => $discountId,
-                    'amount_off' => $discount,
-                ]);
-                $couponsId = $coupons->id;
-
-
-                $shippingRates = $this->stripe->shippingRates->create([
-                    'display_name' => 'Shipping Rate & Processing Fees',
-                    'type' => 'fixed_amount',
-                    'fixed_amount' => [
-                        'amount' => $subTotal,
-                        'currency' => 'usd',
-                    ],
-                ]);
-                $shippingRateId = $shippingRates->id;
-
-
-                $session = \Stripe\Checkout\Session::create([
-                    'customer' => !empty($customer->id) ? $customer->id : "",
-                    'line_items' => [
-                        [
-                            'price_data' => [
-                                'product_data' => [
-                                    'name' => $productName
-                                ],
-                                'unit_amount' => $price * 100,
-                                'currency' => 'USD',
-                            ],
-                            'quantity' => 1,
-                        ],
-                    ],
-                    'discounts' => [[
-                        'coupon' => $couponsId,
-                    ]],
-                    'shipping_options' => [['shipping_rate' => $shippingRateId]],
-                    'mode' => 'payment',
-                    'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}&patients_id=$patientId",
-                    'cancel_url' => route('checkout.cancel', [], true),
-                ]);
-
-                return \redirect()->away($session->url);
             }
+
+            $customer = $this->stripe->customers->create([
+                'name' => $customerName,
+                'phone' => $customerPhoneNo,
+                'email' => $customerEmail,
+                'description' => 'Customer',
+            ]);
+
+
+            $discountId = "discount_" . rand(0, 99999);
+            $coupons = $this->stripe->coupons->create([
+                'name' => 'Coupon',
+                'currency' => 'usd',
+                'duration' => 'once',
+                'id' => $discountId,
+                'amount_off' => $discount,
+            ]);
+            $couponsId = $coupons->id;
+
+
+            $shippingRates = $this->stripe->shippingRates->create([
+                'display_name' => 'Shipping Rate & Processing Fees',
+                'type' => 'fixed_amount',
+                'fixed_amount' => [
+                    'amount' => $subTotal,
+                    'currency' => 'usd',
+                ],
+            ]);
+            $shippingRateId = $shippingRates->id;
+
+
+            $session = \Stripe\Checkout\Session::create([
+                'customer' => !empty($customer->id) ? $customer->id : "",
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'product_data' => [
+                                'name' => $productName
+                            ],
+                            'unit_amount' => $price * 100,
+                            'currency' => 'USD',
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
+                'discounts' => [[
+                    'coupon' => $couponsId,
+                ]],
+                'shipping_options' => [['shipping_rate' => $shippingRateId]],
+                'mode' => 'payment',
+                'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}&patients_id=$patientId",
+                'cancel_url' => route('checkout.cancel', [], true),
+            ]);
+
+
+            return \redirect()->away($session->url);
         }
     }
 
@@ -191,7 +188,7 @@ class StripePaymentController extends Controller
         $sessionId = $stripeRecord->id;
         $paymentStatus = $stripeRecord->payment_status;
         $status = $stripeRecord->status;
-        $shippingAndProcessingCost = !empty($stripeRecord->shipping_cost->amount_total)?$stripeRecord->shipping_cost->amount_total:0;
+        $shippingAndProcessingCost = !empty($stripeRecord->shipping_cost->amount_total) ? $stripeRecord->shipping_cost->amount_total : 0;
         $subTotal = !empty($stripeRecord->amount_subtotal) ? $stripeRecord->amount_subtotal : 0;
         $totalAmount = !empty($stripeRecord->amount_total) ? $stripeRecord->amount_total : 0;
         $mode = !empty($stripeRecord->mode) ? $stripeRecord->mode : '';
@@ -215,28 +212,28 @@ class StripePaymentController extends Controller
         $patientsId = !empty($stripeRecord->patients_id) ? $stripeRecord->patients_id : 0;
         if (!empty($invoiceId)) {
             $invoiceDetails = $this->stripe->invoices->retrieve($invoiceId);
-            $productDetails = !empty($invoiceDetails['lines']['data']) ? $invoiceDetails['lines']['data']: '';
+            $productDetails = !empty($invoiceDetails['lines']['data']) ? $invoiceDetails['lines']['data'] : '';
             $invoicePdf = !empty($invoiceDetails['invoice_pdf']) ? $invoiceDetails['invoice_pdf'] : '';
             $discountDetails = !empty($invoiceDetails['discount']) ? json_encode($invoiceDetails['discount']) : "";
         } else {
             $lineItems = !empty($stripeRecord->line_items->data) ? $stripeRecord->line_items->data : "";
-            foreach ($lineItems as $item){
+            foreach ($lineItems as $item) {
                 $productDetails[] = [
-                    'product_name' => !empty($item->description)?$item->description:'',
-                    'qty' =>!empty($item->quantity)?$item->quantity:0,
-                    'currency' =>!empty($item->currency)?$item->currency:'',
-                    'discount' =>!empty($item->amount_discount)?$item->amount_discount:0,
-                    'sub_total' =>!empty($item->amount_subtotal)?$item->amount_subtotal:0,
-                    'total_amount' =>!empty($item->amount_total)?$item->amount_total:0,
-                    'unit_amount' =>!empty($item->price->unit_amount)?$item->price->unit_amount:0,
+                    'product_name' => !empty($item->description) ? $item->description : '',
+                    'qty' => !empty($item->quantity) ? $item->quantity : 0,
+                    'currency' => !empty($item->currency) ? $item->currency : '',
+                    'discount' => !empty($item->amount_discount) ? $item->amount_discount : 0,
+                    'sub_total' => !empty($item->amount_subtotal) ? $item->amount_subtotal : 0,
+                    'total_amount' => !empty($item->amount_total) ? $item->amount_total : 0,
+                    'unit_amount' => !empty($item->price->unit_amount) ? $item->price->unit_amount : 0,
                 ];
             }
-         }
+        }
         if ($paymentStatus == 'paid' && $status == 'complete') {
             $order = [
                 'session_id' => !empty($sessionId) ? $sessionId : '',
                 'patients_id' => $patientsId,
-                'product_details' => !empty($productDetails) ? json_encode($productDetails): '',
+                'product_details' => !empty($productDetails) ? json_encode($productDetails) : '',
                 'shipping_and_processing_amount' => $shippingAndProcessingCost,
                 'discount_details' => !empty($discountDetails) ? $discountDetails : '',
                 'customer_email' => !empty($customerEmail) ? $customerEmail : '',

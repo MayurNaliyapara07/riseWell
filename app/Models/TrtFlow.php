@@ -357,7 +357,6 @@ class TrtFlow extends BaseModel
     public function createTRTRecord($request)
     {
 
-
         $result = ['success' => false, 'message' => ''];
         $patientData = [];
         $trtFormData = [];
@@ -366,6 +365,7 @@ class TrtFlow extends BaseModel
         $patientData['last_name'] = !empty($request['last_name']) ? $request['last_name'] : '';
         $patientData['email'] = !empty($request['email']) ? $request['email'] : '';
         $patientData['phone_no'] = !empty($request['phone_no']) ? $request['phone_no'] : '';
+        $patientData['country_code'] = !empty($request['country_code']) ? $request['country_code'] : '';
         $patientData['dob'] = !empty($request['dob']) ? $request['dob'] : '';
         $patientData['state_id'] = !empty($request['billing_state_id']) ? $request['billing_state_id'] : 0;
         $patientData['trt_refill'] = !empty($request['trt_refill']) ? $request['trt_refill'] : '';
@@ -476,8 +476,7 @@ class TrtFlow extends BaseModel
         if ($response['success']) {
             $result['success'] = true;
             $result['message'] = $response['message'];
-            $result['patients_id'] = $response['patients_id'];
-            $result['redirectUrl'] = '/thank-you';
+            $result['redirectUrl'] = $response['redirectUrl'];
         } else {
             $messages = [];
             foreach ($response['message'] as $key => $responseMessage) {
@@ -545,6 +544,7 @@ class TrtFlow extends BaseModel
                 $patientData['trt_refill'] = $trtRillCount + 1;
                 Patients::where('patients_id', $patientsId)->update($patientData);
                 self::create($trtFormData);
+                $redirectUrl = '/thank-you';
             }
         }
 
@@ -552,6 +552,7 @@ class TrtFlow extends BaseModel
             $patients = Patients::create($patientData);
             $trtFormData['patients_id'] = $patients->patients_id;
             self::create($trtFormData);
+            $redirectUrl = '/checkout/' . $patients->patients_id;
         }
 
         session()->forget('trt_flow.step1');
@@ -562,7 +563,7 @@ class TrtFlow extends BaseModel
 
         $response['success'] = true;
         $response['message'] = 'TRT survey from saved successfully.';
-        $response['patients_id'] = '';
+        $response['redirectUrl'] = $redirectUrl;
         return $response;
 
     }
