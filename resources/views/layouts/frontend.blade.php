@@ -13,6 +13,7 @@
 
         }
     </style>
+    <link href="{{asset('assets/css/intTelInput.css')}}" rel="stylesheet">
     <link href="{{asset('assets/frontend/css/bootstrap.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/frontend/css/style.css?a=1203')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/frontend/css/responsive.css?a=1203')}}" rel="stylesheet" type="text/css" />
@@ -92,6 +93,7 @@
 <script src="{{asset('assets/frontend/js/popper.min.js')}}"></script>
 <script src="{{asset('assets/frontend/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('assets/js/jquery.validate.min.js')}}"></script>
+<script src="{{asset('assets/js/intlTelInput.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.5.0/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
 

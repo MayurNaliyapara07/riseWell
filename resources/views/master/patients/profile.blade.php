@@ -1519,6 +1519,16 @@
                                                                         <table>
                                                                             <tr class="datatable-row">
                                                                                 <td>
+                                                                                <span
+                                                                                    style="width: 300px;">Product Name</span>
+                                                                                </td>
+                                                                                <td class="datatable-cell">
+                                                                            <span
+                                                                                style="width: 300px;">{{!empty($productDetails)?$productDetails->product_name:''}}</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr class="datatable-row">
+                                                                                <td>
                                                         <span
                                                             style="width: 300px;">What's your legal first name ?</span>
                                                                                 </td>
@@ -1996,43 +2006,43 @@
                                                             style="width: 300px;">{{!empty($value->apt) ? $value->apt : ''}}</span>
                                                                             </td>
                                                                         </tr>
-                                                                        <tr class="datatable-row">
-                                                                            <td>
-                                                                                <span style="width: 300px;">What is your current primary health goal?</span>
-                                                                            </td>
-                                                                            <td class="datatable-cell">
-                                                        <span
-                                                            style="width: 300px;">{{!empty($value->current_health_goal) ? $value->current_health_goal : ''}}</span>
-                                                                            </td>
-                                                                        </tr>
+{{--                                                                        <tr class="datatable-row">--}}
+{{--                                                                            <td>--}}
+{{--                                                                                <span style="width: 300px;">What is your current primary health goal?</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                            <td class="datatable-cell">--}}
+{{--                                                        <span--}}
+{{--                                                            style="width: 300px;">{{!empty($value->current_health_goal) ? $value->current_health_goal : ''}}</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                        </tr>--}}
 
-                                                                        <tr class="datatable-row">
-                                                                            <td>
-                                                                                <span style="width: 300px;">My treatment progress towards my health goal(s) is:</span>
-                                                                            </td>
-                                                                            <td class="datatable-cell">
-                                                        <span
-                                                            style="width: 300px;">{{!empty($value->toward_health_goal) ? $value->toward_health_goal : ''}}</span>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr class="datatable-row">
-                                                                            <td>
-                                                                                <span style="width: 300px;">What is your target weight goal?</span>
-                                                                            </td>
-                                                                            <td class="datatable-cell">
-                                                        <span
-                                                            style="width: 300px;">{{!empty($value->weight_goal) ? $value->weight_goal : ''}}</span>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr class="datatable-row">
-                                                                            <td>
-                                                                                <span style="width: 300px;">What is your current weight in lbs?</span>
-                                                                            </td>
-                                                                            <td class="datatable-cell">
-                                                        <span
-                                                            style="width: 300px;">{{!empty($value->weight_lbs) ? $value->weight_lbs : ''}}</span>
-                                                                            </td>
-                                                                        </tr>
+{{--                                                                        <tr class="datatable-row">--}}
+{{--                                                                            <td>--}}
+{{--                                                                                <span style="width: 300px;">My treatment progress towards my health goal(s) is:</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                            <td class="datatable-cell">--}}
+{{--                                                        <span--}}
+{{--                                                            style="width: 300px;">{{!empty($value->toward_health_goal) ? $value->toward_health_goal : ''}}</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                        </tr>--}}
+{{--                                                                        <tr class="datatable-row">--}}
+{{--                                                                            <td>--}}
+{{--                                                                                <span style="width: 300px;">What is your target weight goal?</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                            <td class="datatable-cell">--}}
+{{--                                                        <span--}}
+{{--                                                            style="width: 300px;">{{!empty($value->weight_goal) ? $value->weight_goal : ''}}</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                        </tr>--}}
+{{--                                                                        <tr class="datatable-row">--}}
+{{--                                                                            <td>--}}
+{{--                                                                                <span style="width: 300px;">What is your current weight in lbs?</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                            <td class="datatable-cell">--}}
+{{--                                                        <span--}}
+{{--                                                            style="width: 300px;">{{!empty($value->weight_lbs) ? $value->weight_lbs : ''}}</span>--}}
+{{--                                                                            </td>--}}
+{{--                                                                        </tr>--}}
                                                                         <tr class="datatable-row">
                                                                             <td>
                                                                                 <span

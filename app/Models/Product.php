@@ -267,8 +267,8 @@ class Product extends BaseModel
 
             if (!empty($deleteObj['stripe_plan'])) {
                 if (!empty($deleteObj->type == 'OneTime')){
-                    $stripePrice = $this->stripe->prices->retrieve($deleteObj->stripe_plan);
-                    $this->stripe->products->update($stripePrice->product,['active'=>false]);
+//                    $stripePrice = $this->stripe->prices->retrieve($deleteObj->stripe_plan);
+//                    $this->stripe->products->update($stripePrice->product,['active'=>false]);
                 }
                 else{
                     $stripePlan = $this->stripe->plans->retrieve($deleteObj->stripe_plan);
@@ -291,16 +291,16 @@ class Product extends BaseModel
     public function saveProductStripe($productName, $productType, $price)
     {
         if (!empty($productType) && $productType == "OneTime") {
-            $product_detail = $this->stripe->products->create([
-                'name' => $productName,
-            ]);
-            $product_id = $product_detail->id;
-            $price = $this->stripe->prices->create([
-                'unit_amount' => $price,
-                'currency' => 'usd',
-                'product' => $product_id,
-            ]);
-            return $price->id;
+//            $product_detail = $this->stripe->products->create([
+//                'name' => $productName,
+//            ]);
+//            $product_id = $product_detail->id;
+//            $price = $this->stripe->prices->create([
+//                'unit_amount' => $price,
+//                'currency' => 'usd',
+//                'product' => $product_id,
+//            ]);
+//            return $price->id;
         } else {
             $stripeProduct = $this->stripe->products->create(['name' => $productName]);
             $stripePlanCreation = $this->stripe->plans->create([

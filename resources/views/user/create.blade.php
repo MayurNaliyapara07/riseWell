@@ -95,6 +95,19 @@
 
                                         </div>
                                     </div>
+                                    @if(empty($user))
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label ">Password<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-lg-6">
+                                                <input type="text" name="password" id="password" autocomplete="off"
+                                                       class="form-control required"
+                                                       placeholder="Password" data-msg-required="Password  is required"
+                                                       value="">
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label  ">Phone No<span
                                                     class="text-danger">*</span></label>

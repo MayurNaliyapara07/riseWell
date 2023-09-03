@@ -186,6 +186,7 @@ class User extends BaseModel implements
         $data['country_code'] = $request['country_code'];
         $data['user_type'] = 'User';
         $data['address'] = trim($request['address']);
+        $data['password'] = bcrypt($request['password']);
         if ($request->hasFile('image')) {
             $logo = $request->file('image');
             $dir = $this->getFilesDirectory();
@@ -214,6 +215,7 @@ class User extends BaseModel implements
 
     public function saveUserRecord($data)
     {
+
         if (!empty($data['id'])) {
             $rules['suffix'] = 'required';
             $rules['first_name'] = 'required';

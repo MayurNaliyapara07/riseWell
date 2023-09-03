@@ -56,6 +56,7 @@ class CreateEdFlowTable extends Migration
             $table->string('card_no','15')->nullable();
             $table->string('expire_date',10)->nullable();
             $table->string('card_cvv','5')->nullable();
+            $table->tinyInteger('billing_same_as_shipping')->nullable();
             $table->timestamps();
         });
     }

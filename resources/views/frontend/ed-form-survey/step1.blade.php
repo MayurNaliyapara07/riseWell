@@ -3,6 +3,11 @@
 @section('content')
     <section>
         <?php
+
+        $default_country_code = $baseHelper->default_country_code();
+        $default_country_phonecode = $baseHelper->default_country_phonecode();
+        $phoneCode = !empty($patient->country_code)?$patient->country_code:$default_country_phonecode;
+        $phoneNo = isset($patient->phone_no) ? "+" . $phoneCode . $patient->phone_no : '';
         $getGender = $baseHelper->getGender();
         $getWeekday = $baseHelper->getWeekday();
         $getWeekends = $baseHelper->getWeekend();
@@ -47,7 +52,8 @@
 
                                     <input type="hidden" name="member_id" value="{{!empty($memberId)?$memberId:''}}">
                                     <input type="hidden" name="product_id" value="{{!empty($productId)?$productId:''}}">
-                                    <input type="hidden" name="survey_form_type" value="{{!empty($productType)?$productType:''}}">
+                                    <input type="hidden" name="survey_form_type"
+                                           value="{{!empty($productType)?$productType:''}}">
 
 
                                     <div class="col-lg-6 col-md-6">
@@ -88,7 +94,10 @@
                                     <div class="col-lg-6 col-md-6">
                                         <div class="form-group">
                                             <label for="">Phone Number</label>
+                                            <input type="hidden" id="country_code" name="country_code"
+                                                   value="{{ !empty($patient->country_code) ? $patient->country_code:$default_country_phonecode  }}">
                                             <input type="text" class="form-control required"
+                                                   id="phone_no"
                                                    data-msg-required="Phone No is required"
                                                    placeholder="Please enter your phone number"
                                                    name="phone_no"
@@ -113,8 +122,9 @@
                                                            type="checkbox" name="weekday[]"
                                                            data-msg-required="Weekday is required"
                                                            {{  !empty($selectedWeekday) && in_array($weekday['value'],$selectedWeekday) ?  'checked':'' }}
-                                                           id="checkboxWeekday{{$key}}" >
-                                                    <label for="checkboxWeekday{{$key}}" class="css-label">{{$weekday['label']}} </label>
+                                                           id="checkboxWeekday{{$key}}">
+                                                    <label for="checkboxWeekday{{$key}}"
+                                                           class="css-label">{{$weekday['label']}} </label>
                                                 </li>
                                             @endforeach
                                         @endif
@@ -199,12 +209,12 @@
                                             <label for="policy" class="css-label terms">Click here to consent to <a
                                                     href="#">Privacy Policy</a> and <a href="#">Terms.</a></label>
                                         </li>
-{{--                                        <li>--}}
-{{--                                            <input type="checkbox" name="terms" id="terms"--}}
-{{--                                                   data-msg-required="Terms is required"--}}
-{{--                                                   class="css-checkbox required" {{ !empty($patient) && $patient->terms == 1 ? 'checked' : ''}}>--}}
-{{--                                            <label for="terms" class="css-label terms">I agree to <a href="#"> receive via SMS news and special offers. </a> </label>--}}
-{{--                                        </li>--}}
+                                        {{--                                        <li>--}}
+                                        {{--                                            <input type="checkbox" name="terms" id="terms"--}}
+                                        {{--                                                   data-msg-required="Terms is required"--}}
+                                        {{--                                                   class="css-checkbox required" {{ !empty($patient) && $patient->terms == 1 ? 'checked' : ''}}>--}}
+                                        {{--                                            <label for="terms" class="css-label terms">I agree to <a href="#"> receive via SMS news and special offers. </a> </label>--}}
+                                        {{--                                        </li>--}}
                                     </ul>
 
                                 </div>
@@ -219,12 +229,31 @@
 @endsection
 @push('scripts')
     <script>
-
         function setLocalStorage() {
             var firstName = $('#first_name').val();
             var LastName = $('#last_name').val();
             localStorage.setItem("firstName", firstName);
             localStorage.setItem("lastName", LastName);
         }
+
+        var isPhoneNoValid = false;
+        var input = document.querySelector("#phone_no");
+        const iti = window.intlTelInput(input, {
+            allowExtensions: true,
+            formatOnDisplay: true,
+            allowFormat: true,
+            autoHideDialCode: true,
+            placeholderNumberType: "MOBILE",
+            preventInvalidNumbers: true,
+            separateDialCode: true,
+            initialCountry: "{{$default_country_code}}",
+        });
+        input.addEventListener('countrychange', () => {
+            $('#country_code').val(iti.getSelectedCountryData().dialCode)
+        });
+        @if(isset($phoneNo))
+        iti.setNumber('{{$phoneNo}}');
+        @endif
+
     </script>
 @endpush

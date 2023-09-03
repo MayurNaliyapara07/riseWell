@@ -259,7 +259,6 @@ class EDFlow extends BaseModel
 
     public function createEDFormRecord($request)
     {
-
         $patientsData = [];
         $edFormData = [];
         $result = [
@@ -278,6 +277,7 @@ class EDFlow extends BaseModel
         $patientsData['last_name'] = !empty($step1['last_name']) ? $step1['last_name'] : '';
         $patientsData['email'] = !empty($step1['email']) ? $step1['email'] : '';
         $patientsData['phone_no'] = !empty($step1['phone_no']) ? $step1['phone_no'] : '';
+        $patientsData['country_code'] = !empty($step1['country_code']) ? $step1['country_code'] : '';
         $patientsData['gender'] = !empty($step1['gender']) ? $step1['gender'] : '';
         $patientsData['height'] = !empty($step1['height']) ? $step1['height'] : '';
         $patientsData['weight'] = !empty($step1) ? $step1['weight'] : '';
@@ -295,8 +295,8 @@ class EDFlow extends BaseModel
         $shipping_state_id = !empty($request['shipping_state_id']) ? $request['shipping_state_id'] : null;
         $shipping_city_name = !empty($request['shipping_city_name']) ? $request['shipping_city_name'] : '';
         $shipping_zipcode = !empty($request['shipping_zipcode']) ? $request['shipping_zipcode'] : '';
-        $edFormData['same_as_billing_address'] = !empty($request['billing_same_as_shipping']) && $request['billing_same_as_shipping'] == 'on' ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;;
-        if (!empty($edFormData['same_as_billing_address'])) {
+        $edFormData['billing_same_as_shipping'] = !empty($request['billing_same_as_shipping']) && $request['billing_same_as_shipping'] == 'on' ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;;
+        if (!empty($edFormData['billing_same_as_shipping'])) {
             $patientsData['billing_address_1'] = $billing_address_1;
             $patientsData['billing_address_2'] = $billing_address_2;
             $patientsData['billing_state_id'] = $billing_state_id;
@@ -338,6 +338,9 @@ class EDFlow extends BaseModel
             $edFormData['recreational_drugs'] =  implode(',', $step2['recreational_drugs']);
         }
         $edFormData['medication_prescription'] = !empty($step2['medication_prescription']) ? $step2['medication_prescription'] : '';
+        $edFormData['treat'] = !empty($step2['treat']) ? $step2['treat'] : '';
+        $edFormData['diabetes_level'] = !empty($step2['diabetes_level']) ? $step2['diabetes_level'] : '';
+        $edFormData['cholesterol'] = !empty($step2['cholesterol']) ? $step2['cholesterol'] : '';
         $edFormData['other_conditions'] = !empty($step2['other_conditions']) ? $step2['other_conditions'] : '';
         $edFormData['cardiovascular'] = !empty($step2['cardiovascular']) ? $step2['cardiovascular'] : '';
         $edFormData['diabetes'] = !empty($step2['diabetes']) ? $step2['diabetes'] : '';

@@ -1,5 +1,14 @@
 @extends('layouts.frontend')
 @section('content')
+    <?php
+        $patientsObj = new \App\Models\Patients();
+        $billingStateId = !empty($patient->billing_state_id)?$patient->billing_state_id:"";
+        $shippingStateId = !empty($patient->shipping_state_id)?$patient->shipping_state_id:"";
+        $getBillingState =$patientsObj->getStateName($billingStateId);
+        $getShippingState =$patientsObj->getStateName($shippingStateId);
+        $billingStateName = !empty($getBillingState)?$getBillingState->state_name:"";
+        $shippingStateName = !empty($getShippingState)?$getShippingState->state_name:"";
+    ?>
     <!--get-started-->
     <section>
         <div class="trt-section">
@@ -66,9 +75,9 @@
                             <div class="payment-info">
                                 <h3>Your information currently on file</h3>
                                 <div class="pd-15">
-                                    <p><strong>Billing Address</strong>14002 Bordley Place, Huntersville, NC 28078</p>
-                                    <p><strong>Shipping Address</strong>14002 Bordley Place, Huntersville, NC 28078</p>
-                                    <p><strong>Payment Card</strong>XXXX - XXXX - XXXX - 1375  <span>12/24</span></p>
+                                    <p><strong>Billing Address</strong>{{!empty($patient)?$patient->billing_address_1.",".$patient->billing_city_name.",".$billingStateName.",".$patient->billing_zip:''}}</p>
+                                    <p><strong>Shipping Address</strong>{{!empty($patient)?$patient->shipping_address_1.",".$patient->shipping_city_name.",".$shippingStateName.",".$patient->shipping_zip:''}}8</p>
+                                   
                                 </div>
                             </div>
                         </div>

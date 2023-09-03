@@ -77,9 +77,9 @@ class Helper extends BaseHelper
     const THYROID_4 = " Natural thyroid (armour thyroid, nature-throid, westhroid)";
     const THYROID_5 = "Other";
 
-    const CHOLESTEROL_1 = "Crestor";
-    const CHOLESTEROL_2 = "Atorvastatin";
-    const CHOLESTEROL_3 = "Fluvastatin";
+    const CHOLESTEROL_1 = "Crestor (rosuvastatin)";
+    const CHOLESTEROL_2 = "Atorvastatin (lipitor)";
+    const CHOLESTEROL_3 = "Fluvastatin (lescol)";
     const CHOLESTEROL_4 = "Pitavastatin";
     const CHOLESTEROL_5 = "Pravastatin";
     const CHOLESTEROL_6 = "Other";

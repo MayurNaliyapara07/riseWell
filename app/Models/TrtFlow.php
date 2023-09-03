@@ -421,12 +421,12 @@ class TrtFlow extends BaseModel
         $trtFormData['libido'] = !empty($request['libido']) ? $request['libido'] : '';
         $trtFormData['memory'] = !empty($request['memory']) ? $request['memory'] : '';
         $trtFormData['strength'] = !empty($request['strength']) ? $request['strength'] : '';
-        $trtFormData['future_children'] = !empty($request['future_children']) && $request['future_children'] == 'Yes' ? 1 : 0;
-        $trtFormData['living_children'] = !empty($request['living_children']) && $request['living_children'] == 'Yes' ? 1 : 0;
-        $trtFormData['cream_and_gel'] = !empty($request['cream_and_gel']) && $request['cream_and_gel'] == 'Yes' ? 1 : 0;
-        $trtFormData['allergies'] = !empty($request['allergies']) && $request['allergies'] == 'Yes' ? 1 : 0;
-        $trtFormData['herbal_or_vitamin'] = !empty($request['herbal_or_vitamin']) && $request['herbal_or_vitamin'] == 'Yes' ? 1 : 0;
-        $trtFormData['medications_prescribed'] = !empty($request['medications_prescribed']) && $request['medications_prescribed'] == 'Yes' ? 1 : 0;
+        $trtFormData['future_children'] = !empty($request['future_children']) && $request['future_children'] == 'Yes' ? 1 : null;
+        $trtFormData['living_children'] = !empty($request['living_children']) && $request['living_children'] == 'Yes' ? 1 : null;
+        $trtFormData['cream_and_gel'] = !empty($request['cream_and_gel']) && $request['cream_and_gel'] == 'Yes' ? 1 : null;
+        $trtFormData['allergies'] = !empty($request['allergies']) && $request['allergies'] == 'Yes' ? 1 : null;
+        $trtFormData['herbal_or_vitamin'] = !empty($request['herbal_or_vitamin']) && $request['herbal_or_vitamin'] == 'Yes' ? 1 : null;
+        $trtFormData['medications_prescribed'] = !empty($request['medications_prescribed']) && $request['medications_prescribed'] == 'Yes' ? 1 : null;
         $trtFormData['cold_chills'] = !empty($request['cold_chills']) ? $request['cold_chills'] : '';
         $trtFormData['cold_hand_and_feet'] = !empty($request['cold_hand_and_feet']) ? $request['cold_hand_and_feet'] : '';
         $trtFormData['decreased_sweating'] = !empty($request['decreased_sweating']) ? $request['decreased_sweating'] : '';

@@ -18,7 +18,6 @@
 
     $selectedConjunction = !empty($patient->medication_conjunction) ? explode(',', $patient->medication_conjunction) : '';
     $selectedRecreationalDrugs = !empty($patient->recreational_drugs) ? explode(',', $patient->recreational_drugs) : '';
-
     ?>
     <section>
         <div class="form-area-section">
@@ -178,12 +177,15 @@
                                 </div>
                             </div>
                             <div class="gap-40">
+
                                 <div class="checkbox-area">
                                     <h4>
                                         Death can result if ED meds are used in conjunction with recreational drugs.
                                         Have
                                         you, or are
                                         you currently using any of the following recreational drugs?</h4>
+
+
                                     <ul class="half-flex-check">
                                         @if($getRecreationalDrugs)
                                             @foreach($getRecreationalDrugs as $drugs)
@@ -191,7 +193,7 @@
                                                     <input type="checkbox" name="recreational_drugs[]"
                                                            data-msg-required="Recreational Medication is required"
                                                            value="{{$drugs['value']}}"
-                                                           {{  !empty($selectedRecreationalDrugs) && in_array($drugs['value'],$selectedRecreationalDrugs) ?  'checked':'' }}
+                                                           {{ !empty($selectedRecreationalDrugs) && in_array($drugs['value'],$selectedRecreationalDrugs) ?  'checked':'' }}
                                                            id="recreational_drugs_{{$drugs['key']}}"
                                                            class="css-checkbox required">
                                                     <label for="recreational_drugs_{{$drugs['key']}}"
