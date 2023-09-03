@@ -762,8 +762,6 @@ class BaseModel extends Model
                 return '';
             }
             $extension = explode(';', explode('/', $base64)[1])[0];
-            print_r($base64);
-            exit;
 
             if ($extension) {
                 $fileName = str_replace(' ', '-', strtolower(trim($fileName)));
@@ -1125,6 +1123,7 @@ class BaseModel extends Model
 
     public function dataTableResponse($response)
     {
+
         return [
             'draw' => !empty($response->original['draw']) ? ($response->original['draw']) : 0,
             'recordsTotal' => (!empty($response->original['recordsTotal']) ? $response->original['recordsTotal'] : 0),

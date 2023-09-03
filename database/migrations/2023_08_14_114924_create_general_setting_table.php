@@ -25,6 +25,7 @@ class CreateGeneralSettingTable extends Migration
             $table->string('from_number',255)->nullable();
             $table->string('stripe_key',255)->nullable();
             $table->string('stripe_secret_key',255)->nullable();
+            $table->text('test_email_template')->nullable();
             $table->text('email_template')->nullable();
             $table->text('sms_template')->nullable();
             $table->text('appointment_template')->nullable();

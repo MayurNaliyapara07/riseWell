@@ -10,13 +10,15 @@ class GeneralSetting extends BaseModel
     use HasFactory;
 
     protected $table = "general_setting";
+
     protected $primaryKey = "general_setting_id";
-    protected $fillable = ['site_title', 'zoom_client_url', 'zoom_client_secret_key', 'zoom_account_no', 'zoom_access_token', 'sms_template', 'appointment_template', 'country_code', 'site_logo', 'site_logo_dark', 'mail_config', 'account_sid', 'auth_token', 'from_number', 'stripe_key', 'stripe_secret_key', 'stripe_webhook_key', 'stripe_webhook_url'
-        ,'order_placed','order_approved','order_shipped','order_arrived','order_fulfilled'
-    ];
+
+    protected $fillable = ['site_title', 'zoom_client_url', 'zoom_client_secret_key', 'zoom_account_no', 'zoom_access_token','test_email_template','sms_template', 'appointment_template', 'country_code', 'site_logo', 'site_logo_dark', 'mail_config', 'account_sid', 'auth_token', 'from_number', 'stripe_key', 'stripe_secret_key', 'stripe_webhook_key', 'stripe_webhook_url', 'order_placed', 'order_approved', 'order_shipped', 'order_arrived', 'order_fulfilled'];
 
     protected $entity = 'general_setting';
+
     public $filter;
+
     protected $_helper;
 
     public function __construct(array $attributes = [])
@@ -26,7 +28,6 @@ class GeneralSetting extends BaseModel
         $this->fill($attributes);
         $this->_helper = new Helper();
     }
-
 
     public function createGeneralSetting($request)
     {
@@ -52,6 +53,7 @@ class GeneralSetting extends BaseModel
                 $data['site_logo_dark'] = $fileName;
             }
         }
+        $data['test_email_template'] = $request['test_email_template'];
         $data['sms_template'] = $request['sms_template'];
         $data['appointment_template'] = $request['appointment_template'];
         $data['site_title'] = $request['site_title'];
@@ -135,11 +137,13 @@ class GeneralSetting extends BaseModel
         $data = [];
         $result = ['success' => false, 'message' => ''];
         $data['email'] = $request['email'];
-        $response = $this->send($data);
-
-
+        $response = $this->sendMail($data);
         if ($response['success']) {
             $result['success'] = true;
+            $result['message'] = $response['message'];
+            $result['redirectUrl'] = '/setting';
+        } else if ($response['warning']) {
+            $result['success'] = false;
             $result['message'] = $response['message'];
             $result['redirectUrl'] = '/setting';
         } else {
@@ -152,15 +156,16 @@ class GeneralSetting extends BaseModel
         return $result;
     }
 
-    public function send($data)
+    public function sendMail($data)
     {
-
-        $rules['email'] = 'required|email';
         $response = [];
         $response['success'] = false;
+        $response['warning'] = false;
         $response['message'] = '';
 
+        $rules['email'] = 'required|email';
         $validationResult = $this->validateDataWithRules($rules, $data);
+
         if ($validationResult['success'] == false) {
             $response['success'] = false;
             $response['message'] = ($validationResult['message']);
@@ -168,7 +173,10 @@ class GeneralSetting extends BaseModel
         }
 
         $gs = $this->_helper->gs();
-        if ($gs->mail_config) {
+
+        $mailConfig = $gs->mail_config;
+
+        if (!empty($mailConfig)) {
             $siteName = !empty($gs->site_title) ? $gs->site_title : '';
             $receiverName = explode('@', $data['email'])[0];
             $subject = 'SMTP Configuration Success';
@@ -182,25 +190,24 @@ class GeneralSetting extends BaseModel
                 'subject' => $subject,
                 'message' => $message,
             ], ['email']);
-            $response['success'] = true;
-            $response['message'] = 'Test Mail has been sending successfully.';
         }
 
-        else{
-            $response['success'] = false;
-            $response['message'] = 'Please enable from general settings';
+        else {
+            $response['warning'] = true;
+            $response['message'] = 'Email Configuration Setting is required !!';
         }
 
-        if (session('mail_error')){
-            $response['success'] = false;
+
+        if (session('mail_error')) {
+            $response['warning'] = true;
             $response['message'] = session('mail_error');
-            return $response;
         }
         else{
             $response['success'] = true;
-            $response['message'] = 'Email sent to ' . $data['email']. ' successfully';
-
+            $response['message'] = 'Email sent to ' . $data['email'] . ' successfully';
         }
+
+
         return $response;
     }
 

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\Common\CommonController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\Frontend\FrontendCategoryController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationTemplateController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,13 +42,10 @@ Route::get('/clear-cache', function () {
     echo "Cache Clear successfully";
 });
 
-Route::get('/payment',[\App\Http\Controllers\HomeController::class, 'payment'])->name('payment');;
-Route::get('/checkout/{patientId}',[\App\Http\Controllers\StripePaymentController::class, 'checkout'])->name('checkout');;
-Route::get('success',[\App\Http\Controllers\StripePaymentController::class,'success'])->name('checkout.success');
-Route::post('cancel',[\App\Http\Controllers\StripePaymentController::class,'cancel'])->name('checkout.cancel');
-Route::post('webhook',[\App\Http\Controllers\StripePaymentController::class,'webhook'])->name('checkout.webhook');
-Route::get('verify',[\App\Http\Controllers\HomeController::class,'verify']);
-Route::get('order-placed',[\App\Http\Controllers\HomeController::class,'emailTemplate']);
+Route::get('/checkout/{patientId}',[StripePaymentController::class, 'checkout'])->name('checkout');;
+Route::get('success',[StripePaymentController::class,'success'])->name('checkout.success');
+Route::post('cancel',[StripePaymentController::class,'cancel'])->name('checkout.cancel');
+Route::post('webhook',[StripePaymentController::class,'webhook'])->name('checkout.webhook');
 
 Route::get('survey-form/{flowType}/{uniqueID}',[FrotendController::class, 'index']);
 Route::get('/get-started', [FrotendController::class, 'getStarted'])->name('get-started');
@@ -77,14 +77,15 @@ Route::post('/save-trt-step-five-refill', [FrotendController::class, 'saveTRTSte
 Route::post('/save-trt-step-six-refill', [FrotendController::class, 'saveTRTStepSixRefill'])->name('save-trt-step-six-refill');
 
 
+
 /* Login */
 Route::controller(LoginController::class)->group(function () {
     Route::get('login', 'showLoginForm')->name('login');
     Route::post('login-perform',  'login')->name('login.perform');
     Route::post('logout',  'logout')->name('logout');
 });
-
-
+Route::get('verify',[HomeController::class,'verify']);
+Route::get('sendMail',[HomeController::class,'sendMail']);
 Route::controller(CommonController::class)->group(
     function () {
         Route::post('index-search-list', 'indexSearchList');
@@ -103,15 +104,11 @@ Route::controller(CommonController::class)->group(
         Route::post('get-session-time', 'getSessionTime');
     });
 
-
 Auth::routes();
-
 Auth::routes(['verify' => true]);
 
 Route::middleware(['auth','verified'])->group(function () {
 
-    Route::get('fedex', [\App\Http\Controllers\FedexController::class, 'create'])->name('fedex');
-    Route::get('shipping', [\App\Http\Controllers\FedexController::class, 'shipping'])->name('shipping');
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -129,6 +126,19 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('get-users', [UserController::class,'getUser'])->name('get-users');
     Route::get('user-change-status/{id}', [UserController::class,'userChangeStatus'])->name('user-change-status');
     Route::get('provider-approval-status-update/{id}', [UserController::class,'providerApprovalStatusUpdate'])->name('provider-approval-status-update');
+
+    Route::controller(NotificationTemplateController::class)->group(function () {
+        Route::get('notification-template', 'index')->name('notification-template');
+        Route::get('notification-template/create', 'create')->name('notification-template.create');
+        Route::get('get-notification-template', 'getNotificationTemplate')->name('get-notification-template');
+        Route::get('notification-template/{id}/edit', 'edit')->name('notification-template.edit');
+        Route::post('notification-template', 'store')->name('notification-template.store');
+        Route::put('notification-template/{id}', 'update')->name('notification-template.update');
+        Route::get('update-status/{id}','updateStatus')->name('update-status');
+
+    });
+
+
 
     Route::controller(ProviderController::class)->group(function () {
         Route::get('provider', 'index')->name('provider');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\BaseHelper;
 use App\Http\Controllers\Common\BaseController;
 use App\Models\Order;
 use App\Models\Patients;
@@ -33,149 +34,28 @@ class HomeController extends BaseController
         return view('auth.verify');
     }
 
-    public function emailTemplate()
-    {
+    public function sendMail(){
 
-        $order = Order::first();
-        return view('master.email.order-placed')->with(compact('order'));
-    }
+        $baseHelper = new BaseHelper();
 
-    public function payment()
-    {
-        $data = [
-            'accountNumber' => 740561073,
-            'labelResponseOptions' => "LABEL",
-            "requestedShipment" => [
-                "labelSpecification" => [
-                    "imageType" => "PDF",
-                    "labelStockType" => "PAPER_85X11_TOP_HALF_LABEL",
-                    "labelFormatType" => "COMMON2D",
-                    "labelOrder" => "SHIPPING_LABEL_FIRST",
-                    "customerSpecifiedDetail" => [
-                        "maskedData" => [
-                            [
-                                "value" => "<Error=> Too many levels of nesting to fake this schema>"
-                            ],
-                            [
-                                "value" => "<Error=> Too many levels of nesting to fake this schema>"
-                            ]
-                        ],
-                        "regulatoryLabels" => [
-                            [
-                                "value" => "<Error=> Too many levels of nesting to fake this schema>"
-                            ],
-                            [
-                                "value" => "<Error=> Too many levels of nesting to fake this schema>"
-                            ]
-                        ],
-                        "additionalLabels" => [
-                            [
-                                "value" => "<Error=> Too many levels of nesting to fake this schema>"
-                            ],
-                            [
-                                "value" => "<Error=> Too many levels of nesting to fake this schema>"
-                            ]
-                        ],
-                        "docTabContent" => [
-                            "value" => "<Error=> Too many levels of nesting to fake this schema>"
-                        ],
-                    ],
-                    "printedLabelOrigin" => [
-                        "address" => [
-                            "streetLines" => [
-                                "10 FedEx Parkway",
-                                "Suite 302"
-                            ],
-                            "city" => "Beverly Hills",
-                            "stateOrProvinceCode" => "CA",
-                            "postalCode" => "38127",
-                            "countryCode" => "US",
-                            "residential" => false
-                        ],
-                        "contact" => [
-                            "personName" => "person name",
-                            "emailAddress" => "email address",
-                            "parsedPersonName" => [
-                                "firstName" => "first name",
-                                "lastName" => "last name",
-                                "middleName" => "middle name",
-                                "suffix" => "suffix"
-                            ],
-                            "phoneNumber" => "phone number",
-                            "phoneExtension" => "phone extension",
-                            "companyName" => "company name",
-                            "faxNumber" => "fax number",
-                        ]
-                    ],
-                    "labelRotation" => "UPSIDE_DOWN",
-                    "labelPrintingOrientation" => "TOP_EDGE_OF_TEXT_FIRST",
-                    "returnedDispositionDetail" => true
-                ],
-                "packagingType" => "YOUR_PACKAGING",
-                "pickupType" => "USE_SCHEDULED_PICKUP",
-                "recipients" => [
-                    [
-                        "address" => [
-                            "streetLines" => [
-                                "10 FedEx Parkway",
-                                "Suite 302"
-                            ],
-                            "city" => "Beverly Hills",
-                            "stateOrProvinceCode" => "CA",
-                            "postalCode" => "90210",
-                            "countryCode" => "US",
-                            "residential" => false
-                        ],
-                        "contact" => [
-                            "personName" => "John Taylor",
-                            "emailAddress" => "sample@company.com",
-                            "phoneExtension" => "000",
-                            "phoneNumber" => "XXXX345671",
-                            "companyName" => "FedEx"
-                        ],
-                        "tins" => [
-                            [
-                                "number" => "123567",
-                                "tinType" => "FEDERAL",
-                                "usage" => "usage",
-                                "effectiveDate" => "2000-01-23T04=>56=>07.000+00=>00",
-                                "expirationDate" => "2000-01-23T04=>56=>07.000+00=>00"
-                            ]
-                        ],
-                        "deliveryInstructions" => "Delivery Instructions"
-                    ],
-                ],
-                [
-                    "address" => [
-                        "streetLines" => ["10 FedEx Parkway",
-                            "Suite 302"],
-                        "city" => "Beverly Hills",
-                        "stateOrProvinceCode" => "CA",
-                        "postalCode" => "90210",
-                        "countryCode" => "US",
-                        "residential" => false
-                    ],
-                    "contact" => [
-                        "personName" => "John Taylor",
-                        "emailAddress" => "sample@company.com",
-                        "phoneExtension" => "000",
-                        "phoneNumber" => "XXXX345671",
-                        "companyName" => "FedEx"
-                    ],
-                    "tins" => [
-                        [
-                            "number" => "123567",
-                            "tinType" => "FEDERAL",
-                            "usage" => "usage",
-                            "effectiveDate" => "2000-01-23T04=>56=>07.000+00=>00",
-                            "expirationDate" => "2000-01-23T04=>56=>07.000+00=>00"
-                        ]
-                    ],
-                    "deliveryInstructions" => "Delivery Instructions"
-                ]],
+        $receiverName = explode('@', 'mayurnaliyapara07@gmail.com')[0];
+
+        $subject = 'SMTP Configuration Success';
+
+        $message = 'Your email notification setting is configured successfully for ' . 'riseWell';
+
+        $user = [
+            'username' =>'mayurnaliyapara07@gmail.com',
+            'email' => 'mayurnaliyapara07@gmail.com',
+            'fullname' => $receiverName,
         ];
-        $fedex = Http::post('https=>//apis-sandbox.fedex.com/ship/v1/shipments');
 
+        $send = $baseHelper->notify($user, 'email_template', '', ['email']);
+
+        echo "<pre>";
+        print_r($send);exit();
     }
+
+
 
 }

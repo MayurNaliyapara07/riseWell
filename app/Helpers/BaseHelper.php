@@ -631,6 +631,7 @@ class BaseHelper
 
     function notify($user, $templateName, $shortCodes = null, $sendVia = null, $createLog = true)
     {
+
         $globalShortCodes = [
             'site_name' => 'RiseWell',
         ];
@@ -639,7 +640,11 @@ class BaseHelper
             $user = (object)$user;
         }
 
-        $shortCodes = array_merge($shortCodes ?? [], $globalShortCodes);
+        if (!empty($shortCodes)){
+            $shortCodes = array_merge($shortCodes, $globalShortCodes);
+        }
+
+
         $notify = new \App\Notify\Notify($sendVia);
         $notify->shortCodes = $shortCodes;
         $notify->templateName = $templateName;
@@ -749,6 +754,7 @@ class BaseHelper
         return $title_one;
 
     }
+
 
 
 
