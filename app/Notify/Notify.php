@@ -6,25 +6,80 @@ use App\Helpers\BaseHelper;
 
 class Notify
 {
-	public $templateName;
+    /*
+    |--------------------------------------------------------------------------
+    | Send Notification
+    |--------------------------------------------------------------------------
+    |
+    | The notification will go via some methods which were implemented. Different
+    | classes are available for a particular method. But we need a central position
+    | to serve a notification via every method which is selected. This is
+    | the class that is serving this perspective.
+    |
+    */
 
-	public $shortCodes;
 
-	public $sendVia;
+    /**
+     * Template name, which contain the short codes and messages
+     *
+     * @var string
+     */
+    public $templateName;
 
-	public $user;
+    /**
+     * Short Codes, which will be replaced
+     *
+     * @var array
+     */
+    public $shortCodes;
 
-	public $createLog;
+    /**
+     * Send via email,sms etc
+     *
+     * @var array|null
+     */
+    public $sendVia;
 
-	public $setting;
+    /**
+     * Instance of user, who will get the notification
+     *
+     * @var object
+     */
+    public $user;
 
-	public $userColumn;
+    /**
+     * Notification log will be created or not
+     *
+     * @var bool
+     */
+    public $createLog;
+
+    /**
+     * System general setting's instances
+     *
+     * @var object
+     */
+    public $setting;
+
+    /**
+     * The relational field name like user_id, agent_id
+     *
+     * @var string
+     */
+    public $userColumn;
+
+    /**
+     * Assign value to sendVia and setting property
+     *
+     * @param null $sendVia
+     * @return void
+     */
 
 	public function __construct($sendVia = null)
 	{
-        $this->helper = new BaseHelper();
+        $baseHelper = new BaseHelper();
 		$this->sendVia = $sendVia;
-		$this->setting = $this->helper->gs();
+		$this->setting = $baseHelper->gs();
 	}
 
 	public function send(){
@@ -32,7 +87,6 @@ class Notify
         $methods = [];
 
         //get the notification method classes which are selected
-
         if($this->sendVia){
             foreach ($this->sendVia as $sendVia) {
                 $methods[$sendVia] = $this->notifyMethods($sendVia);
@@ -41,14 +95,8 @@ class Notify
             $methods = $this->notifyMethods();
         }
 
-
-
         //send the notification via methods one by one
         foreach($methods as $method){
-
-            echo "<pre>";
-            print_r($this->templateName);exit();
-
             $notify = new $method;
             $notify->templateName = $this->templateName;
             $notify->shortCodes = $this->shortCodes;

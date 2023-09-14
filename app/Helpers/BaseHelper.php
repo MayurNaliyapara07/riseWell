@@ -631,7 +631,6 @@ class BaseHelper
 
     function notify($user, $templateName, $shortCodes = null, $sendVia = null, $createLog = true)
     {
-
         $globalShortCodes = [
             'site_name' => 'RiseWell',
         ];
@@ -640,10 +639,7 @@ class BaseHelper
             $user = (object)$user;
         }
 
-        if (!empty($shortCodes)){
-            $shortCodes = array_merge($shortCodes, $globalShortCodes);
-        }
-
+        $shortCodes = array_merge($shortCodes ?? [], $globalShortCodes);
 
         $notify = new \App\Notify\Notify($sendVia);
         $notify->shortCodes = $shortCodes;
@@ -703,7 +699,8 @@ class BaseHelper
         return $blog_url;
     }
 
-    public function getAboutUsUrl(){
+    public function getAboutUsUrl()
+    {
         $about_us_url = $this->getManageSectionConfigValueByKey('about_us_url');
         $about_us_url = trim($about_us_url);
         if ($about_us_url == '') {
@@ -712,7 +709,8 @@ class BaseHelper
         return $about_us_url;
     }
 
-    public function getContactUsUrl(){
+    public function getContactUsUrl()
+    {
         $contact_us_url = $this->getManageSectionConfigValueByKey('contact_us_url');
         $contact_us_url = trim($contact_us_url);
         if ($contact_us_url == '') {
@@ -741,21 +739,59 @@ class BaseHelper
         return $consent_to_treat;
     }
 
-    public function getStartedTitle($productName){
+    public function getStartedTitle($productName)
+    {
 
-        $title_one= $this->getManageSectionConfigValueByKey('title_one');
+        $title_one = $this->getManageSectionConfigValueByKey('title_one');
         $title_one = trim($title_one);
         if (!empty($productName)) {
             $title_one = str_replace("{{product_name}}", $productName, $title_one);
-        }
-        else{
+        } else {
             $title_one = str_replace("{{product_name}}", 'Test Product', $title_one);
         }
         return $title_one;
 
     }
 
+    public function getNotificationTemplate($name)
+    {
+        return DB::table('notification_template')->where('name', $name)->first();
+    }
 
+    public function sendSMSNotification($phoneNo, $status = '')
+    {
+
+    }
+
+
+    public function sendMailNotification($email, $status = '')
+    {
+        $gs = $this->gs();
+        $config = $gs->mail_config;
+        if (!empty($config)) {
+            $siteName = !empty($gs->site_title) ? $gs->site_title : '';
+            $receiverName = explode('@', $email)[0];
+            if (!empty($status)) {
+                $template = $this->getNotificationTemplate($status);
+                $message = 'Your Order Is ' . $status;
+                $templateType = $status;
+            } else {
+                $templateType = 'DEFAULT';
+                $template = $this->getNotificationTemplate('DEFAULT');
+                $message = 'Your email notification setting is configured successfully for ' . $siteName;
+            }
+            $subject = $template->subj;
+            $details = [
+                'username' => $email,
+                'email' => $email,
+                'fullname' => $receiverName,
+            ];
+            $this->notify($details, $templateType, [
+                'subject' => $subject,
+                'message' => $message,
+            ], ['email']);
+        }
+    }
 
 
 }

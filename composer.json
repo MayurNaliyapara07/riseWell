@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
         "phpmailer/phpmailer": "^6.8",
+        "spatie/laravel-stripe-webhooks": "^3.5",
         "stripe/stripe-php": "^12.0",
         "twilio/sdk": "^7.7",
         "yajra/laravel-datatables-oracle": "^10.3.1"

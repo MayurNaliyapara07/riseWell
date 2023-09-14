@@ -2,6 +2,7 @@
 @section('content')
     <?php
     $mail_setting = !empty($general_setting->mail_config) ? json_decode($general_setting->mail_config) : "";
+
     ?>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <div class="d-flex flex-column-fluid">
@@ -37,74 +38,130 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
+
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Host
+                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Email Send Method
                                             <span class="text-danger">*</span></label>
                                         <div class="col-lg-9 col-xl-6">
-                                            <input type="text"
-                                                   name="host" autocomplete="off"
-                                                   data-msg-required="Host is required"
-                                                   class="form-control form-control-lg form-control-solid mb-2 required"
-                                                   value="{{!empty($mail_setting->host)?$mail_setting->host    :''}}"
-                                                   placeholder="Host">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Port
-                                            <span class="text-danger">*</span></label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input type="text"
-                                                   name="port" autocomplete="off"
-                                                   data-msg-required="Port is required"
-                                                   class="form-control form-control-lg form-control-solid mb-2 required"
-                                                   value="{{!empty($mail_setting->port)?$mail_setting->port    :''}}"
-                                                   placeholder="Port">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Encryption
-                                            <span class="text-danger">*</span></label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <select name="encryption" autocomplete="off"
+                                            <select name="email_method" autocomplete="off"
                                                     class="form-control form-control-lg form-control-solid mb-2 required"
-                                                    data-msg-required="Encryption is required">
-                                                <option value="">Select Encryption</option>
-                                                <option
-                                                    value="ssl" {{ !empty($mail_setting->encryption) && $mail_setting->encryption == 'ssl' ? 'selected' : '' }}>
-                                                    SSL
-                                                </option>
-                                                <option
-                                                    value="tls" {{ !empty($mail_setting->encryption) && $mail_setting->encryption == 'tls' ? 'selected' : '' }}>
-                                                    TLS
-                                                </option>
+                                                    data-msg-required="Email Method is required">
+                                                <option value="">Select Email Method</option>
+                                                <option value="php" {{ !empty($mail_setting->name) && $mail_setting->name == 'php' ? 'selected' : '' }}>PHP Mail</option>
+                                                <option value="smtp" {{ !empty($mail_setting->name) && $mail_setting->name == 'smtp' ? 'selected' : '' }}>SMTP</option>
+                                                <option value="sendgrid" {{ !empty($mail_setting->name) && $mail_setting->name == 'sendgrid' ? 'selected' : '' }}>SendGrid API</option>
+                                                <option value="mailjet" {{ !empty($mail_setting->name) && $mail_setting->name == 'mailjet' ? 'selected' : '' }}>Mailjet API</option>
+
                                             </select>
 
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">UserName
-                                            <span class="text-danger">*</span></label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input type="text"
-                                                   name="username" autocomplete="off"
-                                                   data-msg-required="UserName is required"
-                                                   class="form-control form-control-lg form-control-solid mb-2 required"
-                                                   value="{{!empty($mail_setting->username)?$mail_setting->username    :''}}"
-                                                   placeholder="UserName">
+
+                                    <div class="configForm" id="smtp">
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">Host
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input type="text"
+                                                       name="host" autocomplete="off"
+                                                       class="form-control form-control-lg form-control-solid mb-2"
+                                                       value="{{!empty($mail_setting->host)?$mail_setting->host    :''}}"
+                                                       placeholder="Host">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">Port
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input type="text"
+                                                       name="port" autocomplete="off"
+                                                       class="form-control form-control-lg form-control-solid mb-2"
+                                                       value="{{!empty($mail_setting->port)?$mail_setting->port:''}}"
+                                                       placeholder="Port">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">Encryption
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <select name="encryption" autocomplete="off"
+                                                        class="form-control form-control-lg form-control-solid mb-2">
+                                                    <option value="">Select Encryption</option>
+                                                    <option
+                                                        value="ssl" {{ !empty($mail_setting->encryption) && $mail_setting->encryption == 'ssl' ? 'selected' : '' }}>
+                                                        SSL
+                                                    </option>
+                                                    <option
+                                                        value="tls" {{ !empty($mail_setting->encryption) && $mail_setting->encryption == 'tls' ? 'selected' : '' }}>
+                                                        TLS
+                                                    </option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">UserName
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input type="text"
+                                                       name="username" autocomplete="off"
+                                                       class="form-control form-control-lg form-control-solid mb-2"
+                                                       value="{{!empty($mail_setting->username)?$mail_setting->username    :''}}"
+                                                       placeholder="UserName">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">Password
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input type="text"
+                                                       name="password" autocomplete="off"
+                                                       class="form-control form-control-lg form-control-solid mb-2"
+                                                       value="{{!empty($mail_setting->password)?$mail_setting->password:''}}"
+                                                       placeholder="Password">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Password
-                                            <span class="text-danger">*</span></label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input type="text"
-                                                   name="password" autocomplete="off"
-                                                   data-msg-required="Password is required"
-                                                   class="form-control form-control-lg form-control-solid mb-2 required"
-                                                   value="{{!empty($mail_setting->password)?$mail_setting->password:''}}"
-                                                   placeholder="Password">
+
+                                    <div class="configForm" id="sendgrid">
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">App Key
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input type="text"
+                                                       name="app_key" autocomplete="off"
+                                                       class="form-control form-control-lg form-control-solid mb-2"
+                                                       value="{{!empty($mail_setting->app_key)?$mail_setting->app_key:''}}"
+                                                       placeholder="SendGrid App key">
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <div class="configForm" id="mailjet">
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">Api Public Key
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input type="text"
+                                                       name="public_key" autocomplete="off"
+                                                       class="form-control form-control-lg form-control-solid mb-2"
+                                                       value="{{!empty($mail_setting->public_key)?$mail_setting->public_key:''}}"
+                                                       placeholder="Mailjet Api Public Key">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label text-alert">Api Secret Key
+                                                <span class="text-danger">*</span></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input type="text"
+                                                       name="secret_key" autocomplete="off"
+                                                       class="form-control form-control-lg form-control-solid mb-2"
+                                                       value="{{!empty($mail_setting->secret_key)?$mail_setting->secret_key:''}}"
+                                                       placeholder="Mailjet Api Secret Key">
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                 </div>
                             </div>
@@ -119,29 +176,30 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="testMailModelLabel">Test Mail</h5>
+                        <h5 class="modal-title" id="testMailModelLabel">@lang('Test Mail Setup')</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
                     </div>
                     <div class="modal-body">
-                       <div class="form-group">
-                            <label>Email<span class="text-danger">*</span></label>
+                        <div class="form-group">
+                            <label>@lang('Sent to')<span class="text-danger">*</span></label>
                             <input type="text"
                                    name="email"
                                    class="form-control" required
                                    style="width: 100%!important;"
                                    autocomplete="off"
-                                   placeholder="Email"
+                                   placeholder="@lang('Email Address')"
                             />
 
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-danger font-weight-bold" data-dismiss="modal">
-                            Close
+                            @lang('Close')
                         </button>
-                        <button type="button" id="sentTestMailButton" class="btn btn-primary font-weight-bold" onclick="sendTestMail()">Save
+                        <button type="button" id="sentTestMailButton" class="btn btn-primary font-weight-bold"
+                                onclick="sendTestMail()">@lang('Submit')
                         </button>
                     </div>
                 </div>
@@ -154,6 +212,7 @@
         $('.summernote').summernote({
             height: 150
         });
+
         function sendTestMail() {
 
             $('#sentTestMailButton').addClass('spinner spinner-white spinner-right');
@@ -173,7 +232,7 @@
                     if (response.success) {
                         $('#sentTestMailButton').removeClass('spinner spinner-white spinner-right');
                         $('#testMailModel').modal('toggle');
-                        swalSuccessWithRedirect(response.message,response.redirectUrl);
+                        swalSuccessWithRedirect(response.message, response.redirectUrl);
                     } else {
                         swalError(response.message);
                         $('#sentTestMailButton').removeClass('spinner spinner-white spinner-right');
@@ -181,5 +240,21 @@
                 },
             });
         }
+
+        var method = '{{ $mail_setting->name }}';
+        emailMethod(method);
+        $('select[name=email_method]').on('change', function () {
+            var method = $(this).val();
+            emailMethod(method);
+        });
+
+        function emailMethod(method) {
+            $('.configForm').addClass('d-none');
+            if (method != 'php') {
+                $(`#${method}`).removeClass('d-none');
+            }
+        }
+
+
     </script>
 @endpush

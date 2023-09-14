@@ -13,6 +13,10 @@ class Order extends BaseModel
     protected $table = "order";
     protected $primaryKey = "order_id";
     protected $fillable = [
+        'order_shipment_status',
+        'lab_shipment_status',
+        'order_tracking_no',
+        'lab_tracking_no',
         'patients_id',
         'session_id',
         'currency',
@@ -38,6 +42,7 @@ class Order extends BaseModel
         'sub_total',
         'total_amount',
         'order_status',
+        'labs_status',
 
     ];
     protected $entity = 'order';
@@ -50,6 +55,9 @@ class Order extends BaseModel
     const ORDER_STATUS_ARRIVED = "OrderArrived";
     const ORDER_STATUS_FULFILLED = "Fulfilled";
     const PAYMENT_STATUS_PAID = "paid";
+    const FEDEX = "Fedex";
+    const USPS = "USPS";
+    const UPS = "UPS";
     const PAYMENT_STATUS_UNPAID = "unpaid";
 
     public function __construct(array $attributes = [])
@@ -64,7 +72,7 @@ class Order extends BaseModel
     {
         $this->setSelect();
 
-        $this->selectColomns([$this->table . '.order_id', $this->table . '.order_status', $this->table . '.customer_name', $this->table . '.customer_email', $this->table . '.payment_status', $this->table . '.status', $this->table . '.sub_total', $this->table . '.total_amount', $this->table . '.invoice_pdf', $this->table . '.created_at']);
+        $this->selectColomns([$this->table . '.order_id',$this->table . '.order_shipment_status', $this->table . '.order_tracking_no', $this->table . '.order_status', $this->table . '.customer_name', $this->table . '.customer_email', $this->table . '.payment_status', $this->table . '.status', $this->table . '.sub_total', $this->table . '.total_amount', $this->table . '.invoice_pdf', $this->table . '.created_at']);
 
         $model = $this->getQueryBuilder();
 
@@ -74,18 +82,34 @@ class Order extends BaseModel
             $query->orderBy($columnsOrderData['columnsOrderField'], $columnsOrderData['columnsOrderType']);
         });
         $query = $query->addColumn('action', function ($row) {
-            $action = '<a href="' . $row->invoice_pdf . '" target="_blank" class="ml-3 btn btn-sm btn-primary btn-clean btn-icon"><i class="la la-file-pdf"></i></a>
+                $action = '<div class="dropdown dropdown-inline">
+                            <a href="#" class="btn btn-sm btn-primary btn-clean btn-icon" data-toggle="dropdown">
+                                <i class="la la-cog"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="nav nav-hoverable flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="' . $row->invoice_pdf . '" target="_blank"><i class="nav-icon la la-file-pdf"></i><span class="nav-text">PDF</span> </a>
+                                        </li>
+                                </ul>
+                            </div>
+                        </div>
+                       <a class="shipmentStatus ml-3 btn btn-sm btn-primary btn-icon" data-toggle="modal"  data-id="' . $row->order_id . '"><i class="fas fa-shipping-fast"></i></a>
                        <a class="orderStatus ml-3 btn btn-sm btn-info btn-clean btn-icon" data-toggle="modal"  data-id="' . $row->order_id . '"><i class="la la-eye-dropper"></i></a>';
             return $action;
-        })->editColumn('customer_email', function ($row) {
-            $paymentId = '<a href="' . route('order.show', $row->order_id) . '" class="text-dark-75 font-weight-bold line-height-sm">' . $row->customer_email . '</a><br>';
-            return $paymentId;
+        })->editColumn('customer_details', function ($row) {
+            $customerDetails = '<span style="width: 250px;">
+                          <div class="d-flex align-items-center">
+                          <div class="symbol symbol-40 symbol-primary flex-shrink-0"><div class="symbol-label">' . $row->customer_name[0] . '</div></div>								<div class="ml-2">
+                          <div class="text-dark-75 font-weight-bold line-height-sm">' . $row->customer_name . '</div>
+                          <a href="' . route('order.show', $row->order_id) . '" class="font-size-sm text-dark-50 text-hover-primary">' . $row->customer_email . '</a></div>
+                          </div></span>';
+            return $customerDetails;
         })->editColumn('order_status', function ($row) {
             $orderStatus = "";
             if ($row->order_status == self::ORDER_STATUS_PLACED) {
-                $orderStatus = '<span class="badge badge-success">Order Placed</span>';
+                $orderStatus = '<span class="badge badge-primary">Order Placed</span>';
             } else if ($row->order_status == self::ORDER_STATUS_APPROVED) {
-                $orderStatus = '<span class="badge badge-primary">Approved</span>';
+                $orderStatus = '<span class="badge badge-success">Approved</span>';
             } else if ($row->order_status == self::ORDER_STATUS_SHIPPED) {
                 $orderStatus = '<span class="badge badge-info">Order Shipped</span>';
             } else if ($row->order_status == self::ORDER_STATUS_ARRIVED) {
@@ -94,7 +118,18 @@ class Order extends BaseModel
                 $orderStatus = '<span class="badge badge-success">Fulfilled</span>';
             }
             return $orderStatus;
-        })->editColumn('payment_status', function ($row) {
+        })->editColumn('order_shipment_status', function ($row) {
+            $shipmentStatus = "";
+            if ($row->order_shipment_status == self::FEDEX) {
+                $shipmentStatus = '<span class="badge badge-primary">'.self::FEDEX.'</span>';
+            } else if ($row->order_shipment_status == self::USPS) {
+                $shipmentStatus = '<span class="badge badge-warning">'.self::USPS.'</span>';
+            } else if ($row->order_shipment_status == self::UPS) {
+                $shipmentStatus = '<span class="badge badge-info">'.self::UPS.'</span>';
+            }
+            return $shipmentStatus;
+        })
+            ->editColumn('payment_status', function ($row) {
             if ($row->payment_status == self::PAYMENT_STATUS_PAID) {
                 $paymentStatus = '<span class="badge badge-success">Paid</span>';
             } else {
@@ -104,7 +139,7 @@ class Order extends BaseModel
         })->editColumn('created_at', function ($row) {
             return $this->displayDate($row->created_at);
         })->addIndexColumn()
-            ->rawColumns(['order_id', 'order_status', 'customer_email', 'payment_status', 'created_at', 'action'])
+            ->rawColumns(['order_id', 'order_tracking_no', 'order_status','order_shipment_status','customer_details', 'payment_status', 'created_at', 'action'])
             ->filter(function ($query) {
                 $search_value = request()['search']['value'];
                 $column = request()['columns'];
@@ -120,6 +155,68 @@ class Order extends BaseModel
                 }
             });
         return $this->dataTableResponse($query->make(true));
+
+    }
+
+    public function createShipmentDetails($request)
+    {
+
+        $data = [];
+        $result = ['success' => false, 'message' => ''];
+        $data['order_id'] = $request['order_id'];
+        if (!empty($request['tracking_type']) && $request['tracking_type'] == 'order'){
+            $data['order_shipment_status'] = $request['shipment_status'];
+            $data['order_tracking_no'] = $request['tracking_no'];
+        }
+        else{
+            $data['lab_shipment_status'] = $request['shipment_status'];
+            $data['lab_tracking_no'] = $request['tracking_no'];
+        }
+
+
+        $response = $this->saveShipmentDetails($data);
+        if ($response['success']) {
+            $result['success'] = true;
+            $result['message'] = $response['message'];
+            $result['order_id'] = $response['order_id'];
+            $result['redirectUrl'] = '/order';
+        } else {
+            $messages = [];
+            foreach ($response['message'] as $key => $responseMessage) {
+                $messages[] = $responseMessage[0];
+            }
+            $result['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
+        }
+
+        return $result;
+    }
+
+    public function saveShipmentDetails($data)
+    {
+        $rules['order_id'] = 'required';
+        $message['order_id.required'] = 'Order Id is required';
+
+        $response = [];
+        $response['success'] = false;
+        $response['message'] = '';
+
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
+        if ($validationResult['success'] == false) {
+            $response['success'] = false;
+            $response['message'] = ($validationResult['message']);
+            return $response;
+        }
+        $this->beforeSave($data);
+
+        $order = self::findOrFail($data['order_id']);
+        $order->update($data);
+        $order_id = $order->order_id;
+        $this->afterSave($data, $order);
+
+        $response['success'] = true;
+        $response['message'] = 'Shipment Status has been updated successfully !';
+        $response['order_id'] = $order_id;
+        return $response;
 
     }
 

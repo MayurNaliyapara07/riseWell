@@ -67,7 +67,7 @@ class SettingsController extends Controller
     }
     public function saveEmailSetting(Request $request){
         $generalSetting = new GeneralSetting();
-        return $generalSetting->createGeneralSetting($request);
+        return $generalSetting->createEmailSetting($request);
     }
     public function saveSMSSetting(Request $request){
         $generalSetting = new GeneralSetting();

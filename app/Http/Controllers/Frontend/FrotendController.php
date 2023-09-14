@@ -18,37 +18,49 @@ class FrotendController extends Controller
 
     public function index(Request $request)
     {
-        $trtFlowObj = new TrtFlow();
         $flowType = !empty($request->flowType) ? $request->flowType : '';
+
         $uniqueUrl = !empty($request->uniqueID) ? $request->uniqueID : '';
+
         if ($flowType == 'ed') {
-            $edFlowObj = new EDFlow();
-            $edFormDetails = $edFlowObj->getUniqueByUrl($uniqueUrl);
+            $edFormDetails = $this->getUniqueByUrl($uniqueUrl);
             session()->put('patient_data', $edFormDetails);
             return $this->step1();
-        } else if ($flowType == 'trt') {
-            $trtFlowDetails = $trtFlowObj->getUniqueByUrl($uniqueUrl);
+        }
+
+        else if ($flowType == 'trt') {
+            $trtFlowDetails = $this->getUniqueByUrl($uniqueUrl);
             session()->put('patient_data', $trtFlowDetails);
             $patient = session()->get('patient_data');
             $state = $trtFlowDetails->getStateList();
             return view('frontend.trt-form-survey.refill-assessment.step1')->with(compact('patient', 'state', 'flowType','uniqueUrl'));
 
         }
-
     }
 
     public function getStarted(Request $request)
     {
         $sku = $request->sku;
+
         $flow = $request->flow;
+
         session()->put('sku', $sku);
+
         session()->put('product_type', $flow);
+
         session()->forget('patient_data');
+
         $manageSectionObj = new ManageSection();
+
         $getContent = $manageSectionObj->getData();
-        $productObj = new Product();
-        $productDetails = $productObj->getProductBySkU($sku,$flow);
-        return view('frontend.ed-form-survey.get-started')->with(compact('getContent','productDetails'));
+
+        $productDetails = $this->getProductBySkU($sku,$flow);
+
+        return view('frontend.get-started')->with(compact('getContent','productDetails'));
+    }
+
+    public function treatMeNow(){
+        return view('frontend.treat-me-now');
     }
 
     public function step1()
@@ -305,5 +317,17 @@ class FrotendController extends Controller
             'acknowledge' => !empty($step5['acknowledge']) ? $step5['acknowledge'] : '',
         ];
         return $trtFlowObj->createTRTRecord($data);
+    }
+
+    public function getProductBySkU($sku,$productType){
+        $productObj = new Product();
+        $result = $productObj->getProductBySkU($sku,$productType);
+        return $result;
+    }
+
+    public function getUniqueByUrl($uniqueUrl){
+        $trtFlowObj = new TrtFlow();
+        $result = $trtFlowObj->getUniqueByUrl($uniqueUrl);
+        return $result;
     }
 }

@@ -16,6 +16,7 @@ class CreateOrderTable extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->bigIncrements('order_id')->index();
             $table->unsignedBigInteger('patients_id')->nullable();
+            $table->string('tracking_no')->nullable();
             $table->string('session_id')->nullable();
             $table->string('currency',50)->nullable();
             $table->string('customer_id',50)->nullable();
@@ -40,6 +41,9 @@ class CreateOrderTable extends Migration
             $table->decimal('total_amount')->nullable();
             $table->decimal('shipping_and_processing_amount')->nullable();
             $table->enum('order_status',['Approved','OrderPlaced','OrderShipped','OrderArrived','Fulfilled'])->nullable();
+            $table->enum('labs_status',['Approved','OrderPlaced','OrderShipped','OrderArrived','Fulfilled'])->nullable();
+            $table->string('order_shipment_status')->nullable();
+            $table->string('lab_shipment_status')->nullable();
             $table->longText('order_placed')->nullable();
             $table->longText('order_approved')->nullable();
             $table->longText('order_shipped')->nullable();

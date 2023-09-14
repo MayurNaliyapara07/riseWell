@@ -1124,6 +1124,7 @@ class BaseModel extends Model
     public function dataTableResponse($response)
     {
 
+
         return [
             'draw' => !empty($response->original['draw']) ? ($response->original['draw']) : 0,
             'recordsTotal' => (!empty($response->original['recordsTotal']) ? $response->original['recordsTotal'] : 0),

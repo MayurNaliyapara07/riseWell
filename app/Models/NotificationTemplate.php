@@ -79,7 +79,6 @@ class NotificationTemplate extends BaseModel
 
         $data['subj'] = $request['subj'];
         $data['email_body'] = $request['email_body'];
-        $data['name'] = strtoupper(str_replace(' ','_',$request['subj']));
         $data['notification_template_id'] = !empty($request['notification_template_id'])?$request['notification_template_id']:'';
         $response = $this->saveRecord($data);
         if ($response['success']) {

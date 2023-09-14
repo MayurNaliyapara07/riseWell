@@ -13,7 +13,7 @@ class GeneralSetting extends BaseModel
 
     protected $primaryKey = "general_setting_id";
 
-    protected $fillable = ['site_title', 'zoom_client_url', 'zoom_client_secret_key', 'zoom_account_no', 'zoom_access_token','test_email_template','sms_template', 'appointment_template', 'country_code', 'site_logo', 'site_logo_dark', 'mail_config', 'account_sid', 'auth_token', 'from_number', 'stripe_key', 'stripe_secret_key', 'stripe_webhook_key', 'stripe_webhook_url', 'order_placed', 'order_approved', 'order_shipped', 'order_arrived', 'order_fulfilled'];
+    protected $fillable = ['email_from','site_title', 'zoom_client_url', 'zoom_client_secret_key', 'zoom_account_no', 'zoom_access_token','test_email_template','sms_template', 'appointment_template', 'country_code', 'site_logo', 'site_logo_dark', 'mail_config', 'account_sid', 'auth_token', 'from_number', 'stripe_key', 'stripe_secret_key', 'stripe_webhook_key', 'stripe_webhook_url', 'order_placed', 'order_approved', 'order_shipped', 'order_arrived', 'order_fulfilled'];
 
     protected $entity = 'general_setting';
 
@@ -29,12 +29,103 @@ class GeneralSetting extends BaseModel
         $this->_helper = new Helper();
     }
 
-    public function createGeneralSetting($request)
-    {
+    public function createEmailSetting($request){
 
         $data = [];
         $result = ['success' => false, 'message' => ''];
         $data['general_setting_id'] = !empty($request['general_setting_id']) ? $request['general_setting_id'] : '';
+        $data['email_method'] = $request['email_method'];
+
+        /* mail config */
+        if ($request['email_method'] == 'php'){
+            $data['name'] = 'php';
+        }
+        elseif ($request['email_method'] == 'smtp'){
+            $data['name'] = 'smtp';
+            $data['host'] = $request['host'];
+            $data['port'] = $request['port'];
+            $data['encryption'] = $request['encryption'];
+            $data['username'] = $request['username'];
+            $data['password'] = $request['password'];
+        }
+        elseif ($request['email_method'] == 'sendgrid') {
+            $data['name'] = 'sendgrid';
+            $data['app_key'] = $request['app_key'];
+        }
+        elseif ($request['email_method'] == 'mailjet') {
+            $data['name'] = 'mailjet';
+            $data['public_key'] = $request['public_key'];
+            $data['secret_key'] = $request['secret_key'];
+        }
+
+        $response = $this->saveEmailSetting($data);
+        if ($response['success']) {
+            $result['success'] = true;
+            $result['message'] = $response['message'];
+            $result['redirectUrl'] = '/setting';
+        }
+        else {
+            $messages = [];
+            foreach ($response['message'] as $key => $responseMessage) {
+                $messages[] = $responseMessage[0];
+            }
+            $result['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
+        }
+        return $result;
+    }
+
+    public function saveEmailSetting($data){
+
+
+        $rules['email_method'] = 'required|in:php,smtp,sendgrid,mailjet';
+        $rules['host'] = 'required_if:email_method,smtp';
+        $rules['port'] = 'required_if:email_method,smtp';
+        $rules['encryption'] = 'required_if:email_method,smtp';
+        $rules['username'] = 'required_if:email_method,smtp';
+        $rules['password'] = 'required_if:email_method,smtp';
+        $rules['app_key'] = 'required_if:email_method,sendgrid';
+        $rules['public_key'] = 'required_if:email_method,mailjet';
+        $rules['secret_key'] = 'required_if:email_method,mailjet';
+        $message['host.required_if'] = ':attribute is required for SMTP configuration';
+        $message['port.required_if'] = ':attribute is required for SMTP configuration';
+        $message['encryption.required_if'] = ':attribute is required for SMTP configuration';
+        $message['username.required_if'] = ':attribute is required for SMTP configuration';
+        $message['password.required_if'] = ':attribute is required for SMTP configuration';
+        $message['app_key.required_if'] = ':attribute is required for SendGrid configuration';
+        $message['public_key.required_if'] = ':attribute is required for Mailjet configuration';
+        $message['secret_key.required_if'] = ':attribute is required for Mailjet configuration';
+
+        $response = [];
+        $response['success'] = false;
+        $response['message'] = '';
+
+        $validationResult = $this->validateDataWithMessage($rules, $data,$message);
+        if ($validationResult['success'] == false) {
+            $response['success'] = false;
+            $response['message'] = ($validationResult['message']);
+            return $response;
+        }
+
+        if (isset($data['general_setting_id']) && $data['general_setting_id'] != '') {
+            $generalSetting = self::findOrFail($data['general_setting_id']);
+            $mailConfig['mail_config'] = $data;
+            $generalSetting->update($mailConfig);
+        } else {
+            $mailConfig['mail_config'] = $data;
+            self::create($mailConfig);
+
+        }
+        $response['success'] = true;
+        $response['message'] = 'Setting has been updated successfully.';
+        return $response;
+    }
+
+    public function createGeneralSetting($request)
+    {
+        $data = [];
+        $result = ['success' => false, 'message' => ''];
+        $data['general_setting_id'] = !empty($request['general_setting_id']) ? $request['general_setting_id'] : '';
+
         if ($request->hasFile('site_logo')) {
             $logo = $request->file('site_logo');
             $dir = $this->getFilesDirectory();
@@ -57,21 +148,13 @@ class GeneralSetting extends BaseModel
         $data['sms_template'] = $request['sms_template'];
         $data['appointment_template'] = $request['appointment_template'];
         $data['site_title'] = $request['site_title'];
+        $data['email_from'] = $request['email_from'];
         $data['country_code'] = $request['country_code'];
         $data['order_placed'] = $request['order_placed'];
         $data['order_approved'] = $request['order_approved'];
         $data['order_shipped'] = $request['order_shipped'];
         $data['order_arrived'] = $request['order_arrived'];
         $data['order_fulfilled'] = $request['order_fulfilled'];
-        $mailConfig = [
-            'name' => 'smtp',
-            'host' => $request['host'],
-            'port' => $request['port'],
-            'encryption' => $request['encryption'],
-            'username' => $request['username'],
-            'password' => $request['password'],
-        ];
-        $data['mail_config'] = json_encode($mailConfig);
         $data['auth_token'] = $request['auth_token'];
         $data['from_number'] = $request['from_number'];
         $data['account_sid'] = $request['account_sid'];
@@ -94,7 +177,8 @@ class GeneralSetting extends BaseModel
             $result['success'] = true;
             $result['message'] = $response['message'];
             $result['redirectUrl'] = '/setting';
-        } else {
+        }
+        else {
             $messages = [];
             foreach ($response['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
@@ -106,12 +190,15 @@ class GeneralSetting extends BaseModel
 
     public function saveGeneralSetting($data)
     {
-        $rules = [];
+
+        $rules[''] = '';
+        $message[''] = '';
+
         $response = [];
         $response['success'] = false;
         $response['message'] = '';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
+        $validationResult = $this->validateDataWithMessage($rules, $data,$message);
         if ($validationResult['success'] == false) {
             $response['success'] = false;
             $response['message'] = ($validationResult['message']);
@@ -134,6 +221,7 @@ class GeneralSetting extends BaseModel
 
     public function sendTestMail($request)
     {
+
         $data = [];
         $result = ['success' => false, 'message' => ''];
         $data['email'] = $request['email'];
@@ -159,6 +247,7 @@ class GeneralSetting extends BaseModel
     public function sendMail($data)
     {
         $response = [];
+
         $response['success'] = false;
         $response['warning'] = false;
         $response['message'] = '';
@@ -172,26 +261,20 @@ class GeneralSetting extends BaseModel
             return $response;
         }
 
-        $gs = $this->_helper->gs();
-
-        $mailConfig = $gs->mail_config;
-
-        if (!empty($mailConfig)) {
-            $siteName = !empty($gs->site_title) ? $gs->site_title : '';
+        $general = $this->_helper->gs();
+        $config = $general->mail_config;
+        if (!empty($config)) {
+            $mail_config = json_decode($config);
             $receiverName = explode('@', $data['email'])[0];
-            $subject = 'SMTP Configuration Success';
-            $message = 'Your email notification setting is configured successfully for ' . $siteName;
+            $subject = strtoupper($mail_config->name).' Configuration Success';
+            $message = 'Your email notification setting is configured successfully for '.$general->site_title;
             $user = [
                 'username' => $data['email'],
                 'email' => $data['email'],
                 'fullname' => $receiverName,
             ];
-            $this->_helper->notify($user, 'DEFAULT', [
-                'subject' => $subject,
-                'message' => $message,
-            ], ['email']);
+            $this->_helper->notify($user, 'DEFAULT', ['subject' => $subject, 'message' => $message,], ['email'],false);
         }
-
         else {
             $response['warning'] = true;
             $response['message'] = 'Email Configuration Setting is required !!';

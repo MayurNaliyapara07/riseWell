@@ -92,6 +92,18 @@
                                     </div>
 
                                     <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Email From
+                                            <span class="text-danger">*</span></label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   name="email_from"
+                                                   data-msg-required="Email From is required"
+                                                   class="form-control form-control-lg form-control-solid mb-2 required"
+                                                   value="{{!empty($general_setting->email_from)?$general_setting->email_from:''}}"
+                                                   placeholder="Email From">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-xl-3 col-lg-3 col-form-label text-alert">Site Title
                                             <span class="text-danger">*</span></label>
                                         <div class="col-lg-9 col-xl-6">

@@ -15,6 +15,7 @@ class CreateGeneralSettingTable extends Migration
     {
         Schema::create('general_setting', function (Blueprint $table) {
             $table->bigIncrements('general_setting_id')->index();
+            $table->string('email_from',255)->nullable();
             $table->string('site_title',50)->nullable();
             $table->string('site_logo',255)->nullable();
             $table->string('site_logo_dark',255)->nullable();

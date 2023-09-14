@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\BaseHelper;
 use App\Http\Controllers\Common\BaseController;
 use App\Models\Order;
+use App\Models\Patients;
 use App\Models\Schedule;
 use App\Notifications\OrderPlaced;
 use App\Notifications\OrderStatus;
@@ -102,24 +104,46 @@ class OrderController extends BaseController
         //
     }
 
-    public function orderTrack($id){
+    public function orderTrack($id)
+    {
         print_r($id);
     }
 
-    public function orderStatusChange(Request $request){
+    public function orderStatusChange(Request $request)
+    {
+
+        $baseHelper = new BaseHelper();
         $orderId = $request->order_id;
-        $orderStatus = $request->order_status;
+        if (!empty($request['tracking_type']) && $request['tracking_type'] == 'order'){
+            $orderStatus = $request->order_status;
+            $field = 'order_status';
+            $message = "Order";
+        }
+        else{
+            $orderStatus = $request->order_status;
+            $field = 'labs_status';
+            $message = "Labs";
+        }
         $orderDetails = $this->_model->loadModel($orderId);
+        $patientsObj = new Patients();
+        $patientsDetails  = $patientsObj->loadModel($orderDetails->patients_id);
         if ((!empty($orderDetails))) {
-            $orderDetails->update(['order_status' => $orderStatus]);
-            $customerEmail = !empty($orderDetails->customer_email)?$orderDetails->customer_email:'';
-            if (!empty($customerEmail)){
-                $order['order_id'] =$orderId;
-                $order['order_status'] =!empty($orderDetails->order_status)?$orderDetails->order_status:'';
-                $order['traking_url'] = url('order-track')."/".$orderId;
-                Mail::to($customerEmail)->send(new OrderStatus($order));
-            }
-            return $this->webResponse('Order Status has been updated successfully.');
+            $orderDetails->update([$field => $orderStatus]);
+            $customerEmail = !empty($orderDetails->customer_email) ? $orderDetails->customer_email : '';
+            $customerPhoneNo = !empty($patientsDetails->phone_no) ? $patientsDetails->country_code."".$patientsDetails->phone_no : '';
+
+
+            $baseHelper->sendMailNotification($customerEmail,$orderStatus);
+            $baseHelper->sendSMSNotification($customerPhoneNo,$orderStatus);
+            return $this->webResponse($message.' Status has been updated successfully.');
         }
     }
+
+
+    public function saveShipmentStatus(Request $request)
+    {
+        return $this->_model->createShipmentDetails($request->all());
+    }
+
+
 }
