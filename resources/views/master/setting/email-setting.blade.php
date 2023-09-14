@@ -241,7 +241,7 @@
             });
         }
 
-        var method = '{{ $mail_setting->name }}';
+        var method = '{{ !empty($mail_setting->name)?$mail_setting->name:'php' }}';
         emailMethod(method);
         $('select[name=email_method]').on('change', function () {
             var method = $(this).val();

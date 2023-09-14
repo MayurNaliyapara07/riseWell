@@ -184,6 +184,7 @@
         });
 
         function orderStatusChange(){
+            $('#orderStatusChange').addClass('spinner spinner-white spinner-right');
             var order_id = $("input[name=order_id]").val();
             var orderStatus = $("select[name=order_status]").val();
             var tracking_type = $("select[name=tracking_type]").val();
@@ -199,10 +200,12 @@
                 success: function (response) {
                     if (response.status) {
                         ajaxTable.ajax.reload();
+                        $('#orderStatusChange').removeClass('spinner spinner-white spinner-right');
                         $('#orderStatus').modal('toggle');
                         swalSuccess(response.message);
                     } else {
                         swalError(response.message);
+                        $('#orderStatusChange').removeClass('spinner spinner-white spinner-right');
                     }
                 },
             });

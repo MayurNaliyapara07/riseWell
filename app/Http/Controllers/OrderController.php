@@ -131,11 +131,15 @@ class OrderController extends BaseController
             $orderDetails->update([$field => $orderStatus]);
             $customerEmail = !empty($orderDetails->customer_email) ? $orderDetails->customer_email : '';
             $customerPhoneNo = !empty($patientsDetails->phone_no) ? $patientsDetails->country_code."".$patientsDetails->phone_no : '';
+            $mailNotification = $baseHelper->sendMailNotification($customerEmail,$orderStatus);
+            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo,$orderStatus);
 
-
-            $baseHelper->sendMailNotification($customerEmail,$orderStatus);
-            $baseHelper->sendSMSNotification($customerPhoneNo,$orderStatus);
-            return $this->webResponse($message.' Status has been updated successfully.');
+            if ($mailNotification['status'] == true || $mailNotification['status'] == null){
+                return $this->webResponse('Email sent to '.$customerEmail.' successfully');
+            }
+            else{
+                return $this->webResponse($mailNotification['message'],false);
+            }
         }
     }
 

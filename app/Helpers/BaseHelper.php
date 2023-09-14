@@ -766,31 +766,39 @@ class BaseHelper
 
     public function sendMailNotification($email, $status = '')
     {
+        $response['status'] = false;
+        $response['message'] = '';
+
+
         $gs = $this->gs();
         $config = $gs->mail_config;
+
         if (!empty($config)) {
-            $siteName = !empty($gs->site_title) ? $gs->site_title : '';
             $receiverName = explode('@', $email)[0];
-            if (!empty($status)) {
-                $template = $this->getNotificationTemplate($status);
-                $message = 'Your Order Is ' . $status;
-                $templateType = $status;
-            } else {
-                $templateType = 'DEFAULT';
-                $template = $this->getNotificationTemplate('DEFAULT');
-                $message = 'Your email notification setting is configured successfully for ' . $siteName;
-            }
+            $template = $this->getNotificationTemplate($status);
+            $message = 'Your Order Is ' . $status;
             $subject = $template->subj;
             $details = [
                 'username' => $email,
                 'email' => $email,
                 'fullname' => $receiverName,
             ];
-            $this->notify($details, $templateType, [
+            $this->notify($details, $status, [
                 'subject' => $subject,
                 'message' => $message,
             ], ['email']);
+        } else {
+            $response['status'] = false;
+            $response['message'] = 'Email Configuration Setting is required !!';
         }
+
+        if (session('mail_error')) {
+            $response['status'] = false;
+            $response['message'] = session('mail_error');
+        }
+
+        return $response;
+
     }
 
 

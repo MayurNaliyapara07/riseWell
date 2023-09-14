@@ -10,6 +10,7 @@
         ])
         <div class="container">
             <div class="row">
+
                 @if(!empty($notificationTemplate->shortcodes))
 
                     <div class="col-lg-12">

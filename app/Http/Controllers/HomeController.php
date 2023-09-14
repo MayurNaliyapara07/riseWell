@@ -34,28 +34,6 @@ class HomeController extends BaseController
         return view('auth.verify');
     }
 
-    public function sendMail(){
-
-        $baseHelper = new BaseHelper();
-
-        $receiverName = explode('@', 'mayurnaliyapara07@gmail.com')[0];
-
-        $subject = 'SMTP Configuration Success';
-
-        $message = 'Your email notification setting is configured successfully for ' . 'riseWell';
-
-        $user = [
-            'username' =>'mayurnaliyapara07@gmail.com',
-            'email' => 'mayurnaliyapara07@gmail.com',
-            'fullname' => $receiverName,
-        ];
-
-        $send = $baseHelper->notify($user, 'email_template', '', ['email']);
-
-        echo "<pre>";
-        print_r($send);exit();
-    }
-
 
 
 }
