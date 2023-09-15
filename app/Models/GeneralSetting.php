@@ -13,7 +13,7 @@ class GeneralSetting extends BaseModel
 
     protected $primaryKey = "general_setting_id";
 
-    protected $fillable = ['email_from','site_title', 'zoom_client_url', 'zoom_client_secret_key', 'zoom_account_no', 'zoom_access_token','test_email_template','sms_template', 'appointment_template', 'country_code', 'site_logo', 'site_logo_dark', 'mail_config', 'account_sid', 'auth_token', 'from_number', 'stripe_key', 'stripe_secret_key', 'stripe_webhook_key', 'stripe_webhook_url', 'order_placed', 'order_approved', 'order_shipped', 'order_arrived', 'order_fulfilled'];
+    protected $fillable = ['email_from', 'site_title', 'site_logo','site_logo_dark','country_code','mail_config','sms_config','stripe_key','stripe_secret_key','stripe_webhook_key','zoom_client_url','zoom_client_secret_key','zoom_account_no','zoom_access_token'];
 
     protected $entity = 'general_setting';
 
@@ -29,7 +29,8 @@ class GeneralSetting extends BaseModel
         $this->_helper = new Helper();
     }
 
-    public function createEmailSetting($request){
+    public function createEmailSetting($request)
+    {
 
         $data = [];
         $result = ['success' => false, 'message' => ''];
@@ -37,22 +38,19 @@ class GeneralSetting extends BaseModel
         $data['email_method'] = $request['email_method'];
 
         /* mail config */
-        if ($request['email_method'] == 'php'){
+        if ($request['email_method'] == 'php') {
             $data['name'] = 'php';
-        }
-        elseif ($request['email_method'] == 'smtp'){
+        } elseif ($request['email_method'] == 'smtp') {
             $data['name'] = 'smtp';
             $data['host'] = $request['host'];
             $data['port'] = $request['port'];
             $data['encryption'] = $request['encryption'];
             $data['username'] = $request['username'];
             $data['password'] = $request['password'];
-        }
-        elseif ($request['email_method'] == 'sendgrid') {
+        } elseif ($request['email_method'] == 'sendgrid') {
             $data['name'] = 'sendgrid';
             $data['app_key'] = $request['app_key'];
-        }
-        elseif ($request['email_method'] == 'mailjet') {
+        } elseif ($request['email_method'] == 'mailjet') {
             $data['name'] = 'mailjet';
             $data['public_key'] = $request['public_key'];
             $data['secret_key'] = $request['secret_key'];
@@ -63,8 +61,7 @@ class GeneralSetting extends BaseModel
             $result['success'] = true;
             $result['message'] = $response['message'];
             $result['redirectUrl'] = '/setting';
-        }
-        else {
+        } else {
             $messages = [];
             foreach ($response['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
@@ -74,7 +71,8 @@ class GeneralSetting extends BaseModel
         return $result;
     }
 
-    public function saveEmailSetting($data){
+    public function saveEmailSetting($data)
+    {
 
 
         $rules['email_method'] = 'required|in:php,smtp,sendgrid,mailjet';
@@ -99,7 +97,7 @@ class GeneralSetting extends BaseModel
         $response['success'] = false;
         $response['message'] = '';
 
-        $validationResult = $this->validateDataWithMessage($rules, $data,$message);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
         if ($validationResult['success'] == false) {
             $response['success'] = false;
             $response['message'] = ($validationResult['message']);
@@ -117,6 +115,115 @@ class GeneralSetting extends BaseModel
         }
         $response['success'] = true;
         $response['message'] = 'Setting has been updated successfully.';
+        return $response;
+    }
+
+    public function createSMSSetting($request)
+    {
+
+        $data = [];
+        $result = ['success' => false, 'message' => ''];
+        $data['general_setting_id'] = !empty($request['general_setting_id']) ? $request['general_setting_id'] : '';
+        $data['sms_method'] = $request['sms_method'];
+
+        /* sms config */
+        if ($request['sms_method'] == 'twilio') {
+            $data['name'] = 'twilio';
+            $data['account_sid'] = $request['account_sid'];
+            $data['auth_token'] = $request['auth_token'];
+            $data['from_number'] = $request['from_number'];
+        } elseif ($request['sms_method'] == 'clickatell') {
+            $data['name'] = 'clickatell';
+            $data['clickatell_api_key'] = $request['clickatell_api_key'];
+        } elseif ($request['sms_method'] == 'infobip') {
+            $data['name'] = 'infobip';
+            $data['infobip_username'] = $request['infobip_username'];
+            $data['infobip_password'] = $request['infobip_password'];
+        } elseif ($request['sms_method'] == 'messageBird') {
+            $data['name'] = 'messageBird';
+            $data['message_bird_api_key'] = $request['message_bird_api_key'];
+        } elseif ($request['sms_method'] == 'nexmo') {
+            $data['name'] = 'nexmo';
+            $data['nexmo_api_key'] = $request['nexmo_api_key'];
+            $data['nexmo_api_secret'] = $request['nexmo_api_secret'];
+        } elseif ($request['sms_method'] == 'smsBroadcast') {
+            $data['name'] = 'smsBroadcast';
+            $data['sms_broadcast_username'] = $request['sms_broadcast_username'];
+            $data['sms_broadcast_password'] = $request['sms_broadcast_password'];
+        } elseif ($request['sms_method'] == 'textMagic') {
+            $data['name'] = 'textMagic';
+            $data['text_magic_username'] = $request['text_magic_username'];
+            $data['apiv2_key'] = $request['apiv2_key'];
+        }
+
+
+        $response = $this->saveSMSSetting($data);
+        if ($response['success']) {
+            $result['success'] = true;
+            $result['message'] = $response['message'];
+            $result['redirectUrl'] = '/sms-setting';
+        } else {
+            $messages = [];
+            foreach ($response['message'] as $key => $responseMessage) {
+                $messages[] = $responseMessage[0];
+            }
+            $result['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
+        }
+        return $result;
+    }
+
+    public function saveSMSSetting($data)
+    {
+        $rules['sms_method'] = 'required|in:clickatell,infobip,messageBird,nexmo,smsBroadcast,twilio,textMagic';
+        $rules['clickatell_api_key'] = 'required_if:sms_method,clickatell';
+        $rules['message_bird_api_key'] = 'required_if:sms_method,messageBird';
+        $rules['nexmo_api_key'] = 'required_if:sms_method,nexmo';
+        $rules['nexmo_api_secret'] = 'required_if:sms_method,nexmo';
+        $rules['infobip_username'] = 'required_if:sms_method,infobip';
+        $rules['infobip_password'] = 'required_if:sms_method,infobip';
+        $rules['sms_broadcast_username'] = 'required_if:sms_method,smsBroadcast';
+        $rules['sms_broadcast_password'] = 'required_if:sms_method,smsBroadcast';
+        $rules['text_magic_username'] = 'required_if:sms_method,textMagic';
+        $rules['apiv2_key'] = 'required_if:sms_method,textMagic';
+        $rules['account_sid'] = 'required_if:sms_method,twilio';
+        $rules['auth_token'] = 'required_if:sms_method,twilio';
+        $rules['from_number'] = 'required_if:sms_method,twilio';
+        $message['clickatell_api_key.required_if'] = ':attribute is required for Clickatelll configuration';
+        $message['message_bird_api_key.required_if'] = ':attribute is required for Message bird configuration';
+        $message['nexmo_api_key.required_if'] = ':attribute is required for Nexmo configuration';
+        $message['nexmo_api_secret.required_if'] = ':attribute is required for Nexmo configuration';
+        $message['infobip_username.required_if'] = ':attribute is required for Infobip configuration';
+        $message['infobip_password.required_if'] = ':attribute is required for Infobip configuration';
+        $message['sms_broadcast_username.required_if'] = ':attribute is required for SMS Broadcase configuration';
+        $message['sms_broadcast_password.required_if'] = ':attribute is required for SMS Broadcase configuration';
+        $message['text_magic_username.required_if'] = ':attribute is required for Text Magic configuration';
+        $message['apiv2_key.required_if'] = ':attribute is required for Text Magic configuration';
+        $message['account_sid.required_if'] = ':attribute is required for Twilio configuration';
+        $message['auth_token.required_if'] = ':attribute is required for Twilio configuration';
+        $message['from_number.required_if'] = ':attribute is required for Twilio configuration';
+
+        $response = [];
+        $response['success'] = false;
+        $response['message'] = '';
+
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
+        if ($validationResult['success'] == false) {
+            $response['success'] = false;
+            $response['message'] = ($validationResult['message']);
+            return $response;
+        }
+
+        if (isset($data['general_setting_id']) && $data['general_setting_id'] != '') {
+            $generalSetting = self::findOrFail($data['general_setting_id']);
+            $mailConfig['sms_config'] = $data;
+            $generalSetting->update($mailConfig);
+        } else {
+            $mailConfig['sms_config'] = $data;
+            self::create($mailConfig);
+
+        }
+        $response['success'] = true;
+        $response['message'] = 'SMS Configuration has been updated successfully.';
         return $response;
     }
 
@@ -177,8 +284,7 @@ class GeneralSetting extends BaseModel
             $result['success'] = true;
             $result['message'] = $response['message'];
             $result['redirectUrl'] = '/setting';
-        }
-        else {
+        } else {
             $messages = [];
             foreach ($response['message'] as $key => $responseMessage) {
                 $messages[] = $responseMessage[0];
@@ -198,7 +304,7 @@ class GeneralSetting extends BaseModel
         $response['success'] = false;
         $response['message'] = '';
 
-        $validationResult = $this->validateDataWithMessage($rules, $data,$message);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
         if ($validationResult['success'] == false) {
             $response['success'] = false;
             $response['message'] = ($validationResult['message']);
@@ -266,16 +372,15 @@ class GeneralSetting extends BaseModel
         if (!empty($config)) {
             $mail_config = json_decode($config);
             $receiverName = explode('@', $data['email'])[0];
-            $subject = strtoupper($mail_config->name).' Configuration Success';
-            $message = 'Your email notification setting is configured successfully for '.$general->site_title;
+            $subject = strtoupper($mail_config->name) . ' Configuration Success';
+            $message = 'Your email notification setting is configured successfully for ' . $general->site_title;
             $user = [
                 'username' => $data['email'],
                 'email' => $data['email'],
                 'fullname' => $receiverName,
             ];
-            $this->_helper->notify($user, 'DEFAULT', ['subject' => $subject, 'message' => $message,], ['email'],false);
-        }
-        else {
+            $this->_helper->notify($user, 'DEFAULT', ['subject' => $subject, 'message' => $message,], ['email'], false);
+        } else {
             $response['warning'] = true;
             $response['message'] = 'Email Configuration Setting is required !!';
         }
@@ -284,8 +389,7 @@ class GeneralSetting extends BaseModel
         if (session('mail_error')) {
             $response['warning'] = true;
             $response['message'] = session('mail_error');
-        }
-        else{
+        } else {
             $response['success'] = true;
             $response['message'] = 'Email sent to ' . $data['email'] . ' successfully';
         }

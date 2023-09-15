@@ -71,7 +71,7 @@ class SettingsController extends Controller
     }
     public function saveSMSSetting(Request $request){
         $generalSetting = new GeneralSetting();
-        return $generalSetting->createGeneralSetting($request);
+        return $generalSetting->createSMSSetting($request);
     }
     public function savePaymentGateWaySetting(Request $request){
         $generalSetting = new GeneralSetting();
