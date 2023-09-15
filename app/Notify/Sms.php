@@ -38,15 +38,16 @@ class Sms extends NotifyProcess implements Notifiable{
 
 		//get message from parent
 		$message = $this->getMessage();
-		if ($this->setting->sn && $message) {
+		if ($this->setting->sms_config && $message) {
 			try {
-				$gateway = $this->setting->sms_config->name;
+                $sms_config = json_decode($this->setting->sms_config);
+				$gateway = $sms_config->name;
                 if($this->mobile){
                     $sendSms = new SmsGateway();
                     $sendSms->to = $this->mobile;
                     $sendSms->from = $this->setting->sms_from;
                     $sendSms->message = strip_tags($message);
-                    $sendSms->config = $this->setting->sms_config;
+                    $sendSms->config = $sms_config;
                     $sendSms->$gateway();
                     $this->createLog('sms');
                 }

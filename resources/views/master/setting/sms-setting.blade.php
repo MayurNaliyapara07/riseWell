@@ -29,6 +29,9 @@
                                         <span class="text-muted font-weight-bold font-size-sm mt-1">Change your sms setting</span>
                                     </div>
                                     <div class="card-toolbar">
+                                        <button type="button" data-toggle="modal" data-target="#testSMSModel"
+                                                class="btn btn-warning mr-2">Test SMS
+                                        </button>
                                         <button type="submit" class="btn btn-primary mr-2">Save</button>
                                         <button type="reset" class="btn btn-danger">Cancel</button>
                                     </div>
@@ -212,6 +215,42 @@
                 </div>
             </div>
         </div>
+        <!-- Modal-->
+        <div class="modal fade" id="testSMSModel" tabindex="-1" role="dialog" aria-labelledby="testSMSModelLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="testMailModelLabel">@lang('Test SMS Setup')</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>@lang('Sent to')<span class="text-danger">*</span></label>
+                            <input type="text"
+                                   name="phone_no"
+                                   class="form-control" required
+                                   style="width: 100%!important;"
+                                   autocomplete="off"
+                                   placeholder="@lang('Phone No')"
+                            />
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-danger font-weight-bold" data-dismiss="modal">
+                            @lang('Close')
+                        </button>
+                        <button type="button" id="sentTestSMSButton" class="btn btn-primary font-weight-bold"
+                                onclick="sendTestSMS()">@lang('Submit')
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 @push('scripts')
@@ -237,6 +276,34 @@
             if(method != 'php') {
                 $(`#${method}`).removeClass('d-none');
             }
+        }
+
+        function sendTestSMS() {
+
+            $('#sentTestSMSButton').addClass('spinner spinner-white spinner-right');
+
+            var phone_no = $("input[name=phone_no]").val();
+            var general_setting_id = $("input[name=general_setting_id]").val();
+
+            $.ajax({
+                url: "/send-test-sms",
+                type: "POST",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: {
+                    phone_no: phone_no,
+                    general_setting_id: general_setting_id,
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#sentTestSMSButton').removeClass('spinner spinner-white spinner-right');
+                        $('#testSMSModel').modal('toggle');
+                        swalSuccessWithRedirect(response.message, response.redirectUrl);
+                    } else {
+                        swalError(response.message);
+                        $('#sentTestSMSButton').removeClass('spinner spinner-white spinner-right');
+                    }
+                },
+            });
         }
     </script>
 @endpush

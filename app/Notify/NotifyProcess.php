@@ -3,6 +3,7 @@
 namespace App\Notify;
 
 use App\Constants\Status;
+use App\Helpers\BaseHelper;
 use App\Models\AdminNotification;
 use App\Models\NotificationLog;
 use App\Models\NotificationTemplate;
@@ -164,10 +165,10 @@ class NotifyProcess{
         $user = $this->user;
         $globalTemplate = $this->globalTemplate;
 
+
+
         //finding the notification template
-
         $template = NotificationTemplate::where('name', $this->templateName)->where($this->statusField, '=',1)->first();
-
         $this->template = $template;
 
         //Getting the notification message from database if use and template exist
@@ -177,6 +178,9 @@ class NotifyProcess{
             if (empty($message)) {
                 $message = $template->$body;
             }
+        }else{
+
+            $message = $this->replaceShortCode($this->receiverName,$this->toAddress,$this->setting->$globalTemplate,$this->message);
         }
 
         //replace the all short cod of template
@@ -237,7 +241,8 @@ class NotifyProcess{
      */
     protected function setSetting(){
         if (!$this->setting) {
-            $this->setting = gs();
+            $baseHelper = new BaseHelper();
+            $this->setting = $baseHelper->gs();
         }
     }
 

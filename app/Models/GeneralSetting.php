@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\GeneralSetting\Helper;
+use App\Notify\Sms;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GeneralSetting extends BaseModel
@@ -335,11 +336,11 @@ class GeneralSetting extends BaseModel
         if ($response['success']) {
             $result['success'] = true;
             $result['message'] = $response['message'];
-            $result['redirectUrl'] = '/setting';
+            $result['redirectUrl'] = '/email-setting';
         } else if ($response['warning']) {
             $result['success'] = false;
             $result['message'] = $response['message'];
-            $result['redirectUrl'] = '/setting';
+            $result['redirectUrl'] = '/email-setting';
         } else {
             $messages = [];
             foreach ($response['message'] as $key => $responseMessage) {
@@ -396,6 +397,73 @@ class GeneralSetting extends BaseModel
 
 
         return $response;
+    }
+
+    public function sendTestSMS($request){
+        $data = [];
+        $result = ['success' => false, 'message' => ''];
+        $data['phone_no'] = $request['phone_no'];
+        $response = $this->sendSMS($data);
+        if ($response['success']) {
+            $result['success'] = true;
+            $result['message'] = $response['message'];
+            $result['redirectUrl'] = '/sms-setting';
+        } else if ($response['warning']) {
+            $result['success'] = false;
+            $result['message'] = $response['message'];
+            $result['redirectUrl'] = '/sms-setting';
+        } else {
+            $messages = [];
+            foreach ($response['message'] as $key => $responseMessage) {
+                $messages[] = $responseMessage[0];
+            }
+            $result['message'] = !empty($messages) ? implode('<br>', $messages) : $messages;
+        }
+        return $result;
+    }
+
+    public function sendSMS($data){
+        $response = [];
+        $response['success'] = false;
+        $response['warning'] = false;
+        $response['message'] = '';
+
+        $rules['phone_no'] = 'required';
+        $validationResult = $this->validateDataWithRules($rules, $data);
+
+        if ($validationResult['success'] == false) {
+            $response['success'] = false;
+            $response['message'] = ($validationResult['message']);
+            return $response;
+        }
+
+        $general = $this->_helper->gs();
+        $config = $general->sms_config;
+        if (!empty($config)) {
+            $sendSms = new Sms;
+            $sendSms->mobile = $data['phone_no'];
+            $sendSms->receiverName = ' ';
+            $sendSms->templateName = 'DEFAULT';
+            $sendSms->message = 'Your sms notification setting is configured successfully for '.$general->site_title;
+            $sendSms->subject = ' ';
+            $sendSms->send();
+
+        }
+        else {
+            $response['warning'] = true;
+            $response['message'] = 'SMS Configuration Setting is required !!';
+        }
+
+        if (session('sms_error')) {
+            $response['warning'] = true;
+            $response['message'] = session('sms_error');
+        } else {
+            $response['success'] = true;
+            $response['message'] = 'SMS sent to ' . $data['phone_no'] . ' successfully';
+        }
+
+        return $response;
+
     }
 
 

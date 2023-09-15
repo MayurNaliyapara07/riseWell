@@ -214,6 +214,7 @@ Route::middleware(['auth','verified'])->group(function () {
 
     Route::controller(SettingsController::class)->group(function (){
         Route::post('send-test-mail', 'sendTestMail')->name('send-test-mail');
+        Route::post('send-test-sms', 'sendTestSMS')->name('send-test-sms');
         Route::get('user-change-password', 'userChangePassword')->name('user-change-password');
         Route::get('general-setting', 'generalSetting')->name('general-setting');
         Route::get('email-setting', 'emailSetting')->name('email-setting');

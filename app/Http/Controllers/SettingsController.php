@@ -88,4 +88,9 @@ class SettingsController extends Controller
         return $generalSetting->sendTestMail($request);
     }
 
+    public function sendTestSMS(Request $request){
+        $generalSetting = new GeneralSetting();
+        return $generalSetting->sendTestSMS($request);
+    }
+
 }
