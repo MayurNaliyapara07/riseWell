@@ -79,6 +79,8 @@ class NotificationTemplate extends BaseModel
 
         $data['subj'] = $request['subj'];
         $data['email_body'] = $request['email_body'];
+        $data['status'] = 1;
+        $data['sms_body'] = $request['sms_body'];
         $data['notification_template_id'] = !empty($request['notification_template_id'])?$request['notification_template_id']:'';
         $response = $this->saveRecord($data);
         if ($response['success']) {
@@ -102,9 +104,11 @@ class NotificationTemplate extends BaseModel
         if (!empty($data['notification_template_id'])) {
             $rules['subj'] = 'required';
             $rules['email_body'] = 'required';
+            $rules['sms_body'] = 'required';
         } else {
             $rules['subj'] = 'required';
             $rules['email_body'] = 'required';
+            $rules['sms_body'] = 'required';
         }
 
         $response = [];

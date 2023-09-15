@@ -41,58 +41,75 @@
                     </div>
                 @endif
 
+                    <div class="col-lg-12">
+                        <div class="card card-custom gutter-b example example-compact">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <h3 class="card-label">
+                                        Template
+                                    </h3>
+                                </div>
+                            </div>
+                            <!--begin::Form-->
+                            <form action="{{(isset($notificationTemplate))?route('notification-template.update',$notificationTemplate->notification_template_id):route('notification-template.store')}}"
+                                  method="post" enctype="multipart/form-data" class="ajax-form">
+                                @csrf
+                                @if(isset($notificationTemplate))
+                                    @method('PUT')
+                                @endif
 
-                <div class="col-lg-12">
-                    <div class="card card-custom gutter-b example example-compact">
-                        <!--begin::Form-->
-                        <form action="{{(isset($notificationTemplate))?route('notification-template.update',$notificationTemplate->notification_template_id):route('notification-template.store')}}"
-                              method="post" enctype="multipart/form-data" class="ajax-form">
-                            @csrf
-                            @if(isset($notificationTemplate))
-                                @method('PUT')
-                            @endif
-
-                            <div class="card-body">
                                 <div class="card-body">
-
-                                    <div class="form-group row">
-                                        <label class="col-lg-3 col-form-label ">Subject<span
-                                                class="text-danger">*</span></label>
-                                        <div class="col-lg-9">
-                                            <input type="text" name="subj" id="subj" autocomplete="off"
-                                                   class="form-control required"
-                                                   placeholder="Subject" data-msg-required="Subject is required"
-                                                   value="{{isset($notificationTemplate)?$notificationTemplate->subj:old('subj')}}">
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label ">Subject<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-lg-9">
+                                                <input type="text" name="subj" id="subj" autocomplete="off"
+                                                       class="form-control required"
+                                                       placeholder="Subject" data-msg-required="Subject is required"
+                                                       value="{{isset($notificationTemplate)?$notificationTemplate->subj:old('subj')}}">
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-lg-3 col-form-label ">Template<span
-                                                class="text-danger">*</span></label>
-                                        <div class="col-lg-9">
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label ">Email Template<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-lg-9">
                                              <textarea type="text"
                                                        name="email_body"
                                                        class="form-control form-control-lg form-control-solid mb-2 summernote">
                                                 {{!empty($notificationTemplate->email_body)?$notificationTemplate->email_body:''}}
                                             </textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label ">SMS Template<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-lg-9">
+                                             <textarea type="text"
+                                                       name="sms_body"
+                                                       rows="5"
+                                                       class="form-control form-control-lg form-control-solid mb-2">
+                                                {{!empty($notificationTemplate->sms_body)?$notificationTemplate->sms_body:''}}
+                                            </textarea>
+                                            </div>
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="card-footer">
-                                    <div class="row">
-                                        <button id="form_submit" class="btn btn-primary mr-2"><i
-                                                class="fas fa-save"></i>Save
-                                        </button>
-                                        <button type="reset" class="btn btn-danger"><i
-                                                class="fas fa-times"></i>Reset
-                                        </button>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <button id="form_submit" class="btn btn-primary mr-2"><i
+                                                    class="fas fa-save"></i>Save
+                                            </button>
+                                            <button type="reset" class="btn btn-danger"><i
+                                                    class="fas fa-times"></i>Reset
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
+
+
             </div>
         </div>
 
