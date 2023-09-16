@@ -521,27 +521,6 @@ class BaseHelper
     }
 
 
-    function twilio($phoneNo, $countryCode, $message)
-    {
-        $gs = $this->gs();
-        $accountSid = !empty($gs->account_sid) ? $gs->account_sid : "";
-        $authToken = !empty($gs->auth_token) ? $gs->auth_token : "";
-        $formNumber = !empty($gs->from_number) ? $gs->from_number : "";
-        if (!empty($accountSid) && !empty($authToken) && !empty($formNumber)) {
-            $client = new Client($accountSid, $authToken);
-            try {
-                $client->messages->create(
-                    "+" . $countryCode . $phoneNo,
-                    array(
-                        'from' => $formNumber,
-                        'body' => $message,
-                    )
-                );
-            } catch (\Exception $e) {
-                return $e->getMessage();
-            }
-        }
-    }
 
     function setWebhookUrl($url)
     {
@@ -738,7 +717,7 @@ class BaseHelper
         return DB::table('notification_template')->where('name', $name)->first();
     }
 
-    public function sendSMSNotification($phoneNo, $orderStatus,$trackingType)
+    public function sendSMSNotification($phoneNo, $orderStatus='',$trackingType='',$message)
     {
 
         $response['status'] = false;
@@ -746,8 +725,11 @@ class BaseHelper
         if ($trackingType == 'order'){
             $message = 'Hi, Your Order Status Is '.$orderStatus.' Thank You for RiseWell';
         }
-        else{
+        else if ($trackingType == 'lbs'){
             $message = 'Hi, Your Labs Status Is '.$orderStatus.' Thank You for RiseWell';
+        }
+        else{
+            $message = $message;
         }
 
         $gs = $this->gs();
@@ -759,7 +741,7 @@ class BaseHelper
             $sendSms->receiverName = '';
             $sendSms->templateName = $orderStatus;
             $sendSms->message = $message;
-            $sendSms->subject = $template->subj;
+            $sendSms->subject = !empty($template->subj)?$template->subj:'';
             $sendSms->send();
 
         }

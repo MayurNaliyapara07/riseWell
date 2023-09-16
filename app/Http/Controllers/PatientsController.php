@@ -279,10 +279,10 @@ class PatientsController extends BaseController
         ];
         $chatObject = new Chat();
         $result = $chatObject->create($data);
-
         event(new \App\Events\TimeLine($result->patients_id, $result->content, 'Chat'));
-        $baseHelper->twilio($phoneNo, $countryCode, $message);
 
+        $phoneNoWtihCountryCode = $countryCode.$phoneNo;
+        $baseHelper->sendSMSNotification($phoneNoWtihCountryCode,'','',$message);
         return response()->json($result);
     }
 
