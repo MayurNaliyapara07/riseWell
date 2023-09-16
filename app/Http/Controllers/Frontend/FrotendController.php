@@ -60,7 +60,9 @@ class FrotendController extends Controller
     }
 
     public function treatMeNow(){
-        return view('frontend.treat-me-now');
+
+        session()->put('product_type','TRT');
+        return $this->step1();
     }
 
     public function step1()
