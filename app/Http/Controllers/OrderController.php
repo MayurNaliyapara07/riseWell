@@ -121,7 +121,7 @@ class OrderController extends BaseController
         }
         else{
             $orderStatus = $request->order_status;
-            $field = 'labs_status';
+            $field = 'lab_status';
         }
         $orderDetails = $this->_model->loadModel($orderId);
         $patientsObj = new Patients();

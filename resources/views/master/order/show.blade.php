@@ -2,6 +2,8 @@
 @extends('layouts.app')
 @section('content')
 
+
+
     <?php
     $currency = !empty($order) ? strtoupper($order->currency) : "";
     $product = $baseHelper->getStripeProductDetails(json_decode($order->product_details));
@@ -96,6 +98,34 @@
 
                     <div class="row">
                         <div class="col-lg-4 col-sm-5">
+                            <table class="table table-clear">
+                                <tbody>
+                                <tr>
+                                    <td class="left">
+                                        <strong>Order Status :</strong>
+                                    </td>
+                                    <td class="right">{{$order->order_status}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left">
+                                        <strong>Labs Status :</strong>
+                                    </td>
+                                    <td class="right">{{$order->lab_status}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left">
+                                        <strong>Order Shipment Status :</strong>
+                                    </td>
+                                    <td class="right">{{$order->order_shipment_status}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="left">
+                                        <strong>Labs Shipment Status :</strong>
+                                    </td>
+                                    <td class="right">{{$order->lab_shipment_status}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="col-lg-4 col-sm-5 ml-auto">
                             <?php

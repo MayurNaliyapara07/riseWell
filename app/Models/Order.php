@@ -107,8 +107,7 @@ class Order extends BaseModel
                        <a class="shipmentStatus ml-3 btn btn-sm btn-primary btn-icon" data-toggle="modal"  data-id="' . $row->order_id . '"><i class="fas fa-shipping-fast"></i></a>
                        <a class="orderStatus ml-3 btn btn-sm btn-info btn-clean btn-icon" data-toggle="modal"  data-id="' . $row->order_id . '"><i class="la la-eye-dropper"></i></a>';
             return $action;
-        })
-            ->editColumn('customer_details', function ($row) {
+        })->editColumn('customer_details', function ($row) {
             $customerDetails = '<span style="width: 250px;">
                           <div class="d-flex align-items-center">
                           <div class="symbol symbol-40 symbol-info flex-shrink-0">
@@ -138,22 +137,22 @@ class Order extends BaseModel
             return $orderStatus;
         })->editColumn('lab_status', function ($row) {
                 $labsStatus = "";
-                if ($row->labs_status == self::ORDER_STATUS_PLACED) {
+                if ($row->lab_status == self::ORDER_STATUS_PLACED) {
                     $labsStatus = '<span class="badge badge-primary">Order Placed</span>';
                 }
-                else if ($row->labs_status == self::ORDER_STATUS_APPROVED) {
+                else if ($row->lab_status == self::ORDER_STATUS_APPROVED) {
                     $labsStatus = '<span class="badge badge-success">Order Approved</span>';
                 }
-                else if ($row->labs_status == self::ORDER_STATUS_SHIPPED) {
+                else if ($row->lab_status == self::ORDER_STATUS_SHIPPED) {
                     $labsStatus = '<span class="badge badge-info">Order Shipped</span>';
                 }
-                else if ($row->labs_status == self::ORDER_STATUS_ARRIVED) {
+                else if ($row->lab_status == self::ORDER_STATUS_ARRIVED) {
                     $labsStatus = '<span class="badge badge-warning">Order Arrived</span>';
                 }
-                else if ($row->labs_status == self::ORDER_STATUS_FULFILLED) {
+                else if ($row->lab_status == self::ORDER_STATUS_FULFILLED) {
                     $labsStatus = '<span class="badge badge-success">Fulfilled</span>';
                 }
-                else if ($row->labs_status == self::ORDER_STATUS_READY) {
+                else if ($row->lab_status == self::ORDER_STATUS_READY) {
                     $labsStatus = '<span class="badge badge-primary">Labs Ready</span>';
                 }
                 return $labsStatus;
