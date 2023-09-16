@@ -114,15 +114,14 @@ class OrderController extends BaseController
 
         $baseHelper = new BaseHelper();
         $orderId = $request->order_id;
-        if (!empty($request['tracking_type']) && $request['tracking_type'] == 'order'){
+        $trackingType = $request['tracking_type'];
+        if (!empty($trackingType) && $trackingType == 'order'){
             $orderStatus = $request->order_status;
             $field = 'order_status';
-            $message = "Order";
         }
         else{
             $orderStatus = $request->order_status;
             $field = 'labs_status';
-            $message = "Labs";
         }
         $orderDetails = $this->_model->loadModel($orderId);
         $patientsObj = new Patients();
@@ -131,9 +130,8 @@ class OrderController extends BaseController
             $orderDetails->update([$field => $orderStatus]);
             $customerEmail = !empty($orderDetails->customer_email) ? $orderDetails->customer_email : '';
             $customerPhoneNo = !empty($patientsDetails->phone_no) ? $patientsDetails->country_code."".$patientsDetails->phone_no : '';
-            $mailNotification = $baseHelper->sendMailNotification($customerEmail,$orderStatus);
-            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo,$orderStatus);
-
+            $mailNotification = $baseHelper->sendMailNotification($customerEmail,$orderStatus,$trackingType);
+            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo,$orderStatus,$trackingType);
             if ($mailNotification['status'] == true || $mailNotification['status'] == null){
                 return $this->webResponse('Email sent to '.$customerEmail.' successfully');
             }

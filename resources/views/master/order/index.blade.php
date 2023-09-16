@@ -9,18 +9,20 @@
         <div class="container-fluid">
             <div class="card card-custom">
                 <div class="card-body">
-
                     <div class="table-responsive">
-                        <table class="table table-striped- table-bordered table-hover table-checkable"
-                               id="order_table" style="margin-top: 13px !important;width:auto !important;">
+                        <table class="table table-striped- table-bordered table-hover table-checkable" id="order_table" cellspacing="0" width="100%">
+
                             <thead>
                             <tr>
                                 <th>Customer Details</th>
-                                <th>Tracking No</th>
                                 <th>Order Id</th>
-                                <th>Payment Status</th>
+                                <th>Tracking No</th>
+{{--                                <th>Labs Tracking No</th>--}}
                                 <th>Order Status</th>
-                                <th>Shipment Status</th>
+{{--                                <th>Labs Status</th>--}}
+                                <th>Payment Status</th>
+                                <th>Order Shipment Status</th>
+{{--                                <th>Labs Shipment Status</th>--}}
                                 <th>Created At</th>
                                 <th>Action</th>
                             </tr>
@@ -56,9 +58,11 @@
                             <select name="order_status" class="form-control" style="width: 100%;!important;">
                                 <option value="">Select Status</option>
                                 <option value="Approved">Approved</option>
-                                <option value="OrderShipped">Order Shipped</option>
-                                <option value="OrderArrived">Order Arrived</option>
+                                <option value="Placed">Order Placed</option>
+                                <option value="Shipped">Order Shipped</option>
+                                <option value="Arrived">Order Arrived</option>
                                 <option value="Fulfilled">Fulfilled</option>
+                                <option value="LabsReady" id="labs_ready">Labs Ready</option>
                             </select>
                         </div>
 
@@ -128,39 +132,51 @@
             ajax: "{{url(!empty($AJAX_PATH)?$AJAX_PATH:'/')}}",
             lengthMenu: [[10, 25, 50, 100, 500, 1000000], [10, 25, 50, 100, 500, "All"]],
             columns: [
+
                 {
                     data: 'customer_details',
                     name: 'customer_details',
-                },
-                {
-                    data: 'order_tracking_no',
-                    name: 'order_tracking_no',
                 },
                 {
                     data: 'order_id',
                     name: 'order_id',
                 },
                 {
-                    data: 'payment_status',
-                    name: 'payment_status',
+                    data: 'order_tracking_no',
+                    name: 'order_tracking_no',
                 },
+                // {
+                //     data: 'lab_tracking_no',
+                //     name: 'lab_tracking_no',
+                // },
                 {
                     data: 'order_status',
                     name: 'order_status',
+                },
+                // {
+                //     data: 'labs_status',
+                //     name: 'labs_status',
+                // },
+
+                {
+                    data: 'payment_status',
+                    name: 'payment_status',
                 },
 
                 {
                     data: 'order_shipment_status',
                     name: 'order_shipment_status',
                 },
-
+                // {
+                //     data: 'lab_shipment_status',
+                //     name: 'lab_shipment_status',
+                // },
                 {
                     data: 'created_at',
                     name: 'created_at',
                     orderable: false,
                     searchable: false
                 },
-
                 {
                     data: 'action',
                     name: 'action',
@@ -237,6 +253,18 @@
                 },
             });
         }
+
+
+        $('#labs_ready').hide();
+        $('select[name=tracking_type]').on('change', function () {
+            var trackingType = $(this).val();
+            if(trackingType == 'lbs'){
+                $('#labs_ready').show();
+            }
+            else{
+                $('#labs_ready').hide();
+            }
+        });
 
     </script>
 

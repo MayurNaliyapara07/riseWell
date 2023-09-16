@@ -61,13 +61,23 @@
                                 <div class="card-body">
                                     <div class="card-body">
                                         <div class="form-group row">
-                                            <label class="col-lg-3 col-form-label ">Subject<span
+                                            <label class="col-lg-3 col-form-label ">Order Subject<span
                                                     class="text-danger">*</span></label>
                                             <div class="col-lg-9">
                                                 <input type="text" name="subj" id="subj" autocomplete="off"
                                                        class="form-control required"
                                                        placeholder="Subject" data-msg-required="Subject is required"
                                                        value="{{isset($notificationTemplate)?$notificationTemplate->subj:old('subj')}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label ">Labs Subject<span
+                                                    class="text-danger"></span></label>
+                                            <div class="col-lg-9">
+                                                <input type="text" name="labs_subj" id="labs_subj" autocomplete="off"
+                                                       class="form-control required"
+                                                       placeholder="Subject" data-msg-required="Labs Subject is required"
+                                                       value="{{isset($notificationTemplate)?$notificationTemplate->labs_subj:old('labs_subj')}}">
                                             </div>
                                         </div>
                                         <div class="form-group row">

@@ -13,7 +13,7 @@ class NotificationTemplate extends BaseModel
 
     protected $primaryKey="notification_template_id";
 
-    protected $fillable = [ 'name', 'subj', 'email_body', 'sms_body', 'shortcodes', 'status'];
+    protected $fillable = [ 'name', 'subj', 'labs_subj','email_body', 'sms_body', 'shortcodes', 'status'];
 
     protected $entity = 'notification_template';
 
@@ -76,8 +76,8 @@ class NotificationTemplate extends BaseModel
     {
         $data = [];
         $result = ['success' => false, 'message' => ''];
-
         $data['subj'] = $request['subj'];
+        $data['labs_subj'] = $request['labs_subj'];
         $data['email_body'] = $request['email_body'];
         $data['status'] = 1;
         $data['sms_body'] = $request['sms_body'];

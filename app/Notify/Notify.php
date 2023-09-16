@@ -18,7 +18,12 @@ class Notify
     |
     */
 
-
+    /**
+     * Subject,
+     *
+     * @var string
+     */
+    public $subject;
     /**
      * Template name, which contain the short codes and messages
      *
@@ -99,6 +104,7 @@ class Notify
         foreach($methods as $method){
             $notify = new $method;
             $notify->templateName = $this->templateName;
+            $notify->subject = $this->subject;
             $notify->shortCodes = $this->shortCodes;
             $notify->user = $this->user;
             $notify->setting = $this->setting;

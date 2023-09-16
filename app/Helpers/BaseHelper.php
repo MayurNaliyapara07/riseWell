@@ -8,6 +8,7 @@ use App\Mail\Notify;
 use App\Models\GeneralSetting;
 use App\Models\ManageSection;
 use App\Models\User;
+use App\Notify\Sms;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -629,27 +630,6 @@ class BaseHelper
         return $dt->format("Y-m-d H:i:s");
     }
 
-    function notify($user, $templateName, $shortCodes = null, $sendVia = null, $createLog = true)
-    {
-        $globalShortCodes = [
-            'site_name' => 'RiseWell',
-        ];
-
-        if (gettype($user) == 'array') {
-            $user = (object)$user;
-        }
-
-        $shortCodes = array_merge($shortCodes ?? [], $globalShortCodes);
-
-        $notify = new \App\Notify\Notify($sendVia);
-        $notify->shortCodes = $shortCodes;
-        $notify->templateName = $templateName;
-        $notify->user = $user;
-        $notify->createLog = $createLog;
-        $notify->userColumn = isset($user->id) ? $user->getForeignKey() : 'user_id';
-        $notify->send();
-    }
-
     public function getManageSectionConfigValueByKey($key)
     {
         $manager_section_setting = ManageSection::where('name', $key)->first();
@@ -758,35 +738,68 @@ class BaseHelper
         return DB::table('notification_template')->where('name', $name)->first();
     }
 
-    public function sendSMSNotification($phoneNo, $status = '')
+    public function sendSMSNotification($phoneNo, $orderStatus,$trackingType)
     {
 
+        $response['status'] = false;
+        $response['message'] = '';
+        if ($trackingType == 'order'){
+            $message = 'Hi, Your Order Status Is '.$orderStatus.' Thank You for RiseWell';
+        }
+        else{
+            $message = 'Hi, Your Labs Status Is '.$orderStatus.' Thank You for RiseWell';
+        }
+
+        $gs = $this->gs();
+        $config = $gs->sms_config;
+        if (!empty($config)) {
+            $template = $this->getNotificationTemplate($orderStatus);
+            $sendSms = new Sms;
+            $sendSms->mobile = $phoneNo;
+            $sendSms->receiverName = '';
+            $sendSms->templateName = $orderStatus;
+            $sendSms->message = $message;
+            $sendSms->subject = $template->subj;
+            $sendSms->send();
+
+        }
+        else {
+            $response['status'] = false;
+            $response['message'] = 'SMS Configuration Setting is required !!';
+        }
+
+        if (session('sms_error')) {
+            $response['status'] = false;
+            $response['message'] = session('sms_error');
+        }
+
+        return $response;
     }
 
 
-    public function sendMailNotification($email, $status = '')
+    public function sendMailNotification($email, $orderStatus,$trackingType)
     {
         $response['status'] = false;
         $response['message'] = '';
-
-
         $gs = $this->gs();
         $config = $gs->mail_config;
 
         if (!empty($config)) {
+            $template = $this->getNotificationTemplate($orderStatus);
+            if ($trackingType == 'order'){
+                $subject = $template->subj;
+            }
+            else{
+                $subject = $template->labs_subj;
+            }
+
             $receiverName = explode('@', $email)[0];
-            $template = $this->getNotificationTemplate($status);
-            $message = 'Your Order Is ' . $status;
-            $subject = $template->subj;
             $details = [
                 'username' => $email,
                 'email' => $email,
                 'fullname' => $receiverName,
             ];
-            $this->notify($details, $status, [
-                'subject' => $subject,
-                'message' => $message,
-            ], ['email']);
+            $this->notify($details, $orderStatus, $subject,'', ['email']);
         } else {
             $response['status'] = false;
             $response['message'] = 'Email Configuration Setting is required !!';
@@ -800,6 +813,24 @@ class BaseHelper
         return $response;
 
     }
+
+    function notify($user, $templateName,$subject,$sendVia = null, $createLog = true)
+    {
+
+        if (gettype($user) == 'array') {
+            $user = (object)$user;
+        }
+
+        $notify = new \App\Notify\Notify($sendVia);
+        $notify->templateName = $templateName;
+        $notify->subject = $subject;
+        $notify->user = $user;
+        $notify->createLog = $createLog;
+        $notify->userColumn = isset($user->id) ? $user->getForeignKey() : 'user_id';
+        $notify->send();
+    }
+
+
 
 
 }

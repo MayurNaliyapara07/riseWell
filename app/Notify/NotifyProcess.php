@@ -87,6 +87,13 @@ class NotifyProcess{
      */
     public $template;
 
+    /**
+     * Notification Subject instance
+     *
+     * @var object
+     */
+    public $subject;
+
 
     /**
      * Message, if the email template doesn't exists
@@ -112,12 +119,6 @@ class NotifyProcess{
     public $notifyConfig;
 
 
-    /**
-     * Subject of notification
-     *
-     * @var string
-     */
-    public $subject;
 
 
     /**
@@ -158,14 +159,13 @@ class NotifyProcess{
      * @return string
      */
     protected function getMessage(){
+
         $this->prevConfiguration();
         $this->setSetting();
 
         $body = $this->body;
         $user = $this->user;
         $globalTemplate = $this->globalTemplate;
-
-
 
         //finding the notification template
         $template = NotificationTemplate::where('name', $this->templateName)->where($this->statusField, '=',1)->first();
@@ -193,9 +193,6 @@ class NotifyProcess{
         //Check email enable
         if (!$this->template && $this->templateName) return false;
 
-        //set subject to property
-        $this->getSubject();
-
 
         $this->finalMessage = $message;
 
@@ -222,17 +219,7 @@ class NotifyProcess{
      *
      * @return void
      */
-    protected function getSubject(){
-        if ($this->template) {
-            $subject = $this->template->subj;
-            if ($this->shortCodes) {
-                foreach ($this->shortCodes as $code => $value) {
-                    $subject = str_replace('{{' . $code . '}}', $value, $subject);
-                }
-            }
-            $this->subject = $subject;
-        }
-    }
+
 
     /**
      * Set the setting if not set yet

@@ -17,6 +17,7 @@ class CreateNotificationTemplateTable extends Migration
             $table->bigIncrements('notification_template_id')->index();
             $table->string('name')->nullable();
             $table->string('subj')->nullable();
+            $table->string('labs_subj')->nullable();
             $table->text('email_body')->nullable();
             $table->text('sms_body')->nullable();
             $table->text('shortcodes')->nullable();

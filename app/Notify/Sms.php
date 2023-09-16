@@ -59,17 +59,7 @@ class Sms extends NotifyProcess implements Notifiable{
 
 	}
 
-    /**
-    * Configure some properties
-    *
-    * @return void
-    */
-	public function prevConfiguration(){
-		//Check If User
-		if ($this->user) {
-			$this->mobile = $this->user->mobile;
-			$this->receiverName = $this->user->fullname;
-		}
-		$this->toAddress = $this->mobile;
-	}
+    public function prevConfiguration(){
+
+    }
 }
