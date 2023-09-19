@@ -27,13 +27,11 @@
 <body>
 
 
-<div id='toTop' class="hvr-pulse"><img src="{{$baseHelper->siteLogo()}}" alt="top" /></div>
-
-
+<div id='toTop' class="hvr-pulse"><img src="{{asset('assets/frontend/images/top_arrow.png')}}" alt="top" /></div>
 <header>
     <div class="secondheader">
         <div class="logo">
-            <a href="#"><img src="{{asset('assets/frontend/images/light-logo-horizontal.png')}}" alt=""></a>
+            <a href="{{$baseHelper->getWebsiteUrl()}}"><img src="{{asset('assets/frontend/images/light-logo-horizontal.png')}}" alt="Logo"></a>
         </div>
         <div class="right-number">
             Have Questions? <span>CALL TODAY</span>
@@ -50,7 +48,7 @@
     <div class="footer-main">
         <div class="container">
             <div class="logo-box">
-                <a href="#"><img src="{{$baseHelper->siteLogo()}}" alt=""></a>
+                <a href="{{$baseHelper->getWebsiteUrl()}}"><img src="{{$baseHelper->siteLogo()}}" alt="Logo"></a>
             </div>
             <div class="footer-menu-area">
                 <div class="row">
@@ -67,7 +65,7 @@
                             <ul class="link">
                                 <li>Mon – Fri</li>
                                 <li>Email us anytime</li>
-                                <li><a href="#" class="email">Support@RiseWell.health</a></li>
+                                <li><a href="mailto:{{$baseHelper->getSupportEmail()}}" class="email">{{$baseHelper->getSupportEmail()}}</a></li>
                             </ul>
                         </div>
                         <div class="footer-info">

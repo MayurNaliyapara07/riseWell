@@ -19,17 +19,15 @@ class FrotendController extends Controller
     public function index(Request $request)
     {
         $flowType = !empty($request->flowType) ? $request->flowType : '';
-
         $uniqueUrl = !empty($request->uniqueID) ? $request->uniqueID : '';
-
         if ($flowType == 'ed') {
-            $edFormDetails = $this->getUniqueByUrl($uniqueUrl);
+            $edFormDetails = $this->getUniqueByUrl($uniqueUrl,$flowType);
             session()->put('patient_data', $edFormDetails);
             return $this->step1();
         }
 
         else if ($flowType == 'trt') {
-            $trtFlowDetails = $this->getUniqueByUrl($uniqueUrl);
+            $trtFlowDetails = $this->getUniqueByUrl($uniqueUrl,$flowType);
             session()->put('patient_data', $trtFlowDetails);
             $patient = session()->get('patient_data');
             $state = $trtFlowDetails->getStateList();
@@ -327,9 +325,16 @@ class FrotendController extends Controller
         return $result;
     }
 
-    public function getUniqueByUrl($uniqueUrl){
-        $trtFlowObj = new TrtFlow();
-        $result = $trtFlowObj->getUniqueByUrl($uniqueUrl);
+    public function getUniqueByUrl($uniqueUrl,$flowType){
+        if ($flowType == 'ed'){
+            $edFlowObj = new EDFlow();
+            $result = $edFlowObj->getUniqueByUrl($uniqueUrl);
+        }
+        else{
+            $trtFlowObj = new TrtFlow();
+            $result = $trtFlowObj->getUniqueByUrl($uniqueUrl);
+        }
+
         return $result;
     }
 }

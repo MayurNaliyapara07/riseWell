@@ -122,9 +122,7 @@
                             <div class="gap-40">
                                 <div class="checkbox-area">
                                     <h4>Please select your blood pressure medication.</h4>
-
                                     <ul class="flex-check">
-
                                         @if($getBloodPressureMedication)
                                             @foreach($getBloodPressureMedication as $key=>$bloodPressureMedication)
                                                 <li>

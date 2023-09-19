@@ -74,6 +74,7 @@ $hoursList = $baseHelper->makeOpeningHoursOptions();
                                             <!-- Start Provider Information -->
                                             <div class="pb-5" data-wizard-type="step-content"
                                                  data-wizard-state="current">
+
                                                 <form class="form ajax-form"
                                                       action="{{route('provider.update',$provider->id)}}" method="post"
                                                       enctype="multipart/form-data">
@@ -1129,7 +1130,6 @@ $hoursList = $baseHelper->makeOpeningHoursOptions();
                                                         Save
                                                     </button>
                                                 </form>
-
 
                                             </div>
                                             <!-- End Working Hour Information -->

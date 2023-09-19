@@ -57,11 +57,13 @@ class PatientsController extends BaseController
 
     public function saveVisitNote(Request $request)
     {
+        $request->merge(['current_tab' => 'visit_note']);
         return $this->_model->createVisitNote($request);
     }
 
     public function saveMedication(Request $request)
     {
+        $request->merge(['current_tab' => 'medications']);
         return $this->_model->createMedication($request);
     }
 
@@ -73,6 +75,7 @@ class PatientsController extends BaseController
 
     public function saveLabReport(Request $request)
     {
+        $request->merge(['current_tab' => 'labs']);
         return $this->_model->createLabReport($request);
     }
 

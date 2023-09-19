@@ -628,6 +628,26 @@ class BaseHelper
         return $phoneNo;
     }
 
+    public function getWebsiteUrl()
+    {
+        $url = $this->getManageSectionConfigValueByKey('website_url');
+        $url = trim($url);
+        if ($url == '') {
+            $url = '#';
+        }
+        return $url;
+    }
+
+    public function getSupportEmail()
+    {
+        $mail = $this->getManageSectionConfigValueByKey('support_email');
+        $mail = trim($mail);
+        if ($mail == '') {
+            $mail = 'Support@RiseWell.health';
+        }
+        return $mail;
+    }
+
     public function getPrivacyPolicyUrl()
     {
         $privacy_policy = $this->getManageSectionConfigValueByKey('privacy_policy');

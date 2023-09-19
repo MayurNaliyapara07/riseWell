@@ -3,7 +3,7 @@
 @section('content')
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         @include('layouts.sub-header', [
-             'title' => 'Event',
+             'title' => 'Schedule',
              'directory'=> 'master',
              'action'=>'Create',
              'back' => 'event'
@@ -29,12 +29,12 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-lg-3 col-form-label ">Event Name<span
+                                        <label class="col-lg-3 col-form-label ">Schedule Name<span
                                                 class="text-danger">*</span></label>
                                         <div class="col-lg-6">
                                             <input type="text" name="event_name" autocomplete="off"
                                                    class="form-control required"
-                                                   placeholder="Event Name" data-msg-required="Event Name is required"
+                                                   placeholder="Schedule Name" data-msg-required="Schedule Name is required"
                                                    value="{{isset($event)?$event->event_name:old('event_name')}}">
                                         </div>
                                     </div>

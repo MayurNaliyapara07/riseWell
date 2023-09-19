@@ -5,7 +5,7 @@
 
     $default_country_code = $baseHelper->default_country_code();
     $default_country_phonecode = $baseHelper->default_country_phonecode();
-    $phoneCode = !empty($patient->country_code)?$patient->country_code:$default_country_phonecode;
+    $phoneCode = !empty($patient->country_code) ? $patient->country_code : $default_country_phonecode;
     $phoneNo = isset($patient->phone_no) ? "+" . $phoneCode . $patient->phone_no : '';
 
     ?>
@@ -71,7 +71,8 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">DOB</label>
-                                                <input type="date" class="form-control required" placeholder="" name="dob"
+                                                <input type="date" class="form-control required" placeholder=""
+                                                       name="dob"
                                                        data-msg-required="DOB is required"
                                                        @php if(!empty($patient->dob)) echo 'readonly' @endphp
                                                        value="{{!empty($patient) ? $patient->dob : old('dob')}}">
@@ -143,15 +144,43 @@
                                                     shipping</label>
                                             </div>
                                         </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="shipping-check">
+                                                <input type="checkbox" id="terms" name="terms" class="css-checkbox required" data-msg-required="Please accept Privacy Policy & Terms">
+                                                <label for="terms" class="css-label">Click here to consent to
+                                                    <a href="{{$baseHelper->getPrivacyPolicyUrl()}}">Privacy Policy</a>
+                                                    and
+                                                    <a href="{{$baseHelper->getTermsAndConditionsUrl()}}">Terms &
+                                                        Conditions</a>.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="shipping-check">
+                                                <input type="checkbox" id="consent_to_treat" name="consent_to_treat" class="css-checkbox required" data-msg-required="Please accept Consent to treat">
+                                                <label for="consent_to_treat" class="css-label">Click here to accept the
+                                                    <a href="{{$baseHelper->getConsentToTreatUrl()}}">Consent to
+                                                        Treat.</a>
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="btn-area">
+                                            <button type="submit" class="btn-continue">Continue</button>
+                                        </div>
+
+
                                     </div>
-                                    <div class="btn-area">
-                                        <button type="submit" class="btn-continue">Continue</button>
-                                    </div>
+
                                 </div>
                                 <div class="summary-box">
                                     <h3>Order Summary</h3>
                                     <div class="product-img">
-                                        <img src="{{!empty($productDetails->image)?asset('uploads/images/product/'.$productDetails->image):asset('assets/media/products/default.png')}}" alt="">
+                                        <img
+                                            src="{{!empty($productDetails->image)?asset('uploads/images/product/'.$productDetails->image):asset('assets/media/products/default.png')}}"
+                                            alt="">
                                     </div>
                                     <div class="product-name">Hormone Test Kit</div>
                                     <ul class="point">
@@ -164,7 +193,9 @@
                                         <li>Shipping Cost :<span>${{$productDetails->shipping_cost}}</span></li>
                                         <li>Processing Fees :<span>${{$productDetails->processing_fees}}</span></li>
                                         <li>Discount :<span>${{$productDetails->discount}}</span></li>
-                                        <li class="total">Total :<span>${{($productDetails->price+$productDetails->shipping_cost+$productDetails->processing_fees) - $productDetails->discount}}</span></li>
+                                        <li class="total">Total
+                                            :<span>${{($productDetails->price+$productDetails->shipping_cost+$productDetails->processing_fees) - $productDetails->discount}}</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

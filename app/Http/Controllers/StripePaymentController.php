@@ -15,6 +15,7 @@ class StripePaymentController extends Controller
 {
 
     protected $stripe;
+
     protected $stripe_secret_key;
 
     public function __construct()
@@ -255,11 +256,11 @@ class StripePaymentController extends Controller
                 'status' => !empty($status) ? $status : '',
                 'sub_total' => !empty($subTotal) ? $subTotal : '',
                 'total_amount' => !empty($totalAmount) ? $totalAmount : '',
-                'order_status' => 'OrderPlaced',
+                'order_status' => 'Placed',
             ];
+
             $order = Order::create($order);
-            $order['traking_url'] = url('order-track') . "/" . $order->order_id;
-//            Mail::to($customerEmail)->send(new OrderPlaced($order));
+            Mail::to($customerEmail)->send(new OrderPlaced($order));
             return redirect()->route('home');
         }
 

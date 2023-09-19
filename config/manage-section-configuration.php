@@ -4,6 +4,20 @@ return [
     'cms_settings'=>[
         'label' => 'CMS Settings',
         'fields' => [
+            'website_url' => [
+                'value' => '',
+                'label' => 'Website Url',
+                'notes' => 'Website Url',
+                'type' => 'text',
+                'class' => 'col-lg-6',
+            ],
+            'support_email' => [
+                'value' => '',
+                'label' => 'Support Email',
+                'notes' => 'Support Email',
+                'type' => 'text',
+                'class' => 'col-lg-6',
+            ],
             'privacy_policy' => [
                 'value' => '',
                 'label' => 'Privacy Policy',
@@ -71,7 +85,7 @@ return [
         ]
     ],
     'get_started' => [
-        'label' => 'Get Stated',
+        'label' => 'Get Started',
         'fields' => [
             'title_one' => [
                 'value' => '',

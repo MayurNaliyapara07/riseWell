@@ -25,9 +25,9 @@
                             @if(isset($patients))
                                 @method('PUT')
                             @endif
+
                             <div class="card-body">
                                 <div class="card-body">
-
                                     <div class="form-group row">
                                         <label class="col-lg-1 col-form-label ">Image <span
                                                     class="text-danger"></span></label>

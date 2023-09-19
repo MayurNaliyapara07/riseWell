@@ -17,6 +17,7 @@ class CreateEdFlowTable extends Migration
             $table->bigIncrements('ed_flow_id')->index();
             $table->unsignedBigInteger('patients_id')->index();
             $table->tinyInteger('policy')->nullable();
+            $table->tinyInteger('consent_to_treat')->nullable();
             $table->tinyInteger('terms')->nullable();
             $table->tinyInteger('vitals')->nullable();
             $table->tinyInteger('medical_problems')->nullable();
@@ -30,7 +31,7 @@ class CreateEdFlowTable extends Migration
             $table->string('blood_pressure_medication',150)->nullable();
             $table->string('medications',150)->nullable();
             $table->string('medication_conjunction',150)->nullable();
-            $table->string('recreational_drugs',150)->nullable();
+            $table->text('recreational_drugs')->nullable();
             $table->string('medication_prescription',150)->nullable();
             $table->string('other_conditions',150)->nullable();
             $table->string('treat',150)->nullable();

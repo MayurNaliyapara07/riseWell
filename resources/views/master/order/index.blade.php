@@ -17,20 +17,20 @@
                             <tr>
                                 <th colspan="1">Customer Information</th>
                                 <th colspan="3">Tracking Information</th>
-                                <th colspan="2">Order Status Information</th>
-                                <th colspan="2">Shipment Information</th>
+                                <th colspan="2">Sending To Patients </th>
+                                <th colspan="2">Receiving To Patients </th>
                                 <th colspan="1"></th>
                                 <th colspan="1"></th>
                             </tr>
                             <tr>
-                                <th>Customer</th>
+                                <th>Name & Email</th>
                                 <th>Order Id</th>
                                 <th>Order No</th>
                                 <th>Labs No</th>
-                                <th>Order</th>
-                                <th>Labs</th>
-                                <th>Order</th>
-                                <th>Labs</th>
+                                <th>Status</th>
+                                <th>Shipper</th>
+                                <th>Status</th>
+                                <th>Shipper</th>
                                 <th>Payment Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -91,12 +91,32 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Sending To Patients</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Shipping Information</h5>
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
+
                     </div>
                     <div class="modal-body">
+                        <div class="form-group ml-5">
+                        <ul class="nav nav-tabs nav-tabs-line">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#sending">
+                                    <span class="nav-icon"><i class="fas fa-arrow-alt-circle-up"></i> </span>
+                                    <span class="nav-text">Sending To Patients</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#receiving">
+                                    <span class="nav-icon"><i class="
+fas fa-arrow-circle-down"></i></span>
+                                    <span class="nav-text">Receiving To Patients</span>
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
                         <input type="hidden" id="order_id" name="order_id" value="">
                         <div class="form-group">
                             <label>Type<span class="text-danger">*</span></label>
@@ -169,13 +189,14 @@
                     name: 'order_status',
                 },
                 {
-                    data: 'lab_status',
-                    name: 'lab_status',
-                },
-                {
                     data: 'order_shipment_status',
                     name: 'order_shipment_status',
                 },
+                {
+                    data: 'lab_status',
+                    name: 'lab_status',
+                },
+
                 {
                     data: 'lab_shipment_status',
                     name: 'lab_shipment_status',

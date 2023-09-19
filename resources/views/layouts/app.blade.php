@@ -251,7 +251,7 @@
             fill="#000000"/>
     </g>
                                             </svg>
-                                         </span><span class="menu-text">Event</span>
+                                         </span><span class="menu-text">Schedule</span>
                             </a>
                         </li>
 
@@ -2654,7 +2654,6 @@
                     cache: false,
                     data: formData,
                     success: function (response) {
-                        console.log(response, "RESPONSE");
                         if (response.success) {
                             var route = "/";
                             if (response?.redirectUrl) {

@@ -100,7 +100,8 @@ class Order extends BaseModel
                             </a>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="nav nav-hoverable flex-column">
-                                        <li class="nav-item"><a class="nav-link" href="' . $row->invoice_pdf . '" target="_blank"><i class="nav-icon la la-file-pdf"></i><span class="nav-text">PDF</span></a></li>
+                                       <li class="nav-item"><a class="nav-link" href="' . $row->invoice_pdf . '" target="_blank"><i class="nav-icon la la-file-pdf"></i><span class="nav-text">PDF</span></a></li>
+                                       <li class="nav-item"><a class="nav-link" href="'.route('order.show', $row->order_id).'"><i class="nav-icon la la-eye"></i><span class="nav-text">View</span></a></li>
                                 </ul>
                             </div>
                         </div>

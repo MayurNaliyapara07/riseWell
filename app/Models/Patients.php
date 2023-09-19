@@ -228,9 +228,9 @@ class Patients extends BaseModel
 
     public function createRecord($request)
     {
-
         $data = [];
         $result = ['success' => false, 'message' => ''];
+        $data['current_url'] = $request['current_url'];
         $data['first_name'] = $request['first_name'];
         $data['last_name'] = $request['last_name'];
         $data['gender'] = $request['gender'];
@@ -276,13 +276,20 @@ class Patients extends BaseModel
             }
         }
 
-        $response = $this->saveRecord($data);
+        if ($request['current_url'] == 'profile'){
+            $redirectUrl = ('show');
+        }
+        else{
+            $redirectUrl = '/patients';
+        }
 
+
+        $response = $this->saveRecord($data);
         if ($response['success']) {
             $result['success'] = true;
             $result['message'] = $response['message'];
             $result['patients_id'] = $response['patients_id'];
-            $result['redirectUrl'] = '/patients';
+            $result['redirectUrl'] = $redirectUrl;
         } else {
             $messages = [];
             foreach ($response['message'] as $key => $responseMessage) {
@@ -350,6 +357,7 @@ class Patients extends BaseModel
             $data['icd_code'] = collect($json)->pluck('value')->toArray();
         }
         $data['visit_note'] = $request['visit_note'];
+        session(['current_tab' => $request['current_tab']]);
         $response = $this->saveVisitNoteRecord($data);
 
         if ($response['success']) {
@@ -410,6 +418,7 @@ class Patients extends BaseModel
         $result = ['success' => false, 'message' => ''];
         $data['patients_id'] = $request['patients_id'];
         $data['medication_details'] = $request['medication_details'];
+        session(['current_tab' => $request['current_tab']]);
         $response = $this->saveMedicationRecord($data);
         if ($response['success']) {
             $result['success'] = true;
@@ -464,6 +473,7 @@ class Patients extends BaseModel
         $result = ['success' => false, 'message' => ''];
         $data['patients_id'] = $request['patients_id'];
         $data['lab_detail'] = $request['lab_detail'];
+        session(['current_tab' => $request['current_tab']]);
         $response = $this->saveLabReportRecord($data);
         if ($response['success']) {
             $result['success'] = true;
@@ -506,7 +516,7 @@ class Patients extends BaseModel
         }
 
         $response['success'] = true;
-        $response['message'] = 'Patients Lab Report has been created successfully.';
+        $response['message'] = 'Patients Lab has been created successfully.';
         $response['patients_lab_report_id'] = $result['patients_lab_report_id'];
         return $response;
     }

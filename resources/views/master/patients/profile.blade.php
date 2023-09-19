@@ -1,8 +1,25 @@
 @inject('baseHelper','App\Helpers\Frontend\Helper')
 @extends('layouts.app')
 @section('content')
-
     <?php
+    $selectedTab = session('current_tab');
+    $visitNoteTab = '';
+    $medicationTab = '';
+    $lbsTab = '';
+    $memberInfoTab = '';
+    if(!empty($selectedTab) && $selectedTab == 'visit_note'){
+        $visitNoteTab = 'active';
+    }
+    elseif ($selectedTab == 'medications'){
+        $medicationTab = 'active';
+    }
+    elseif ($selectedTab == 'labs'){
+        $lbsTab = 'active';
+    }
+    else{
+        $memberInfoTab = 'active';
+    }
+
     $default_country_code = $baseHelper->default_country_code();
     $default_country_phonecode = $baseHelper->default_country_phonecode();
     $phoneCode = !empty($patientDetails->country_code) ? $patientDetails->country_code : $default_country_phonecode;
@@ -41,8 +58,8 @@
                                     <div class="mr-3">
                                         <div class="d-flex align-items-center mr-3">
                                             <!--begin::Name-->
-                                            <a href="#"
-                                               class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">{{!empty($patientDetails->patients_name)?$patientDetails->patients_name:''}}</a>
+
+                                            <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">{{!empty($patientDetails->patients_name)?$patientDetails->patients_name:''}}</a>
                                             <!--end::Name-->
 
                                             <span
@@ -58,11 +75,11 @@
                                             @endif
 
 
+
                                         </div>
                                         <!--begin::Contacts-->
                                         <div class="d-flex flex-wrap my-2">
-                                            <a href="#"
-                                               class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                            <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
 															<span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
 																<svg xmlns="http://www.w3.org/2000/svg"
@@ -137,15 +154,6 @@
                                         text objectives could be merely to inform people.
                                         <br/>A second could be persuade people.
                                     </div>
-                                    <!--end::Description-->
-                                    <!--begin::Progress-->
-                                    {{--                                    <div class="d-flex mt-4 mt-sm-0">--}}
-                                    {{--                                        <span class="font-weight-bold mr-4">Progress</span>--}}
-                                    {{--                                        <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">--}}
-                                    {{--                                            <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                        <span class="font-weight-bolder text-dark ml-4">78%</span>--}}
-                                    {{--                                    </div>--}}
                                     <!--end::Progress-->
                                 </div>
                                 <!--end::Content-->
@@ -163,8 +171,8 @@
                         <div class="card-toolbar">
                             <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-tabs-bold nav-tabs-line-3x"
                                 role="tablist">
-                                <li class="nav-item mr-3">
-                                    <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_2">
+                                <li class="nav-item">
+                                    <a class="nav-link {{$memberInfoTab}}" data-toggle="tab" href="#tab_1">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Chat-check.svg-->
@@ -190,8 +198,8 @@
                                         <span class="nav-text font-weight-bold">Member Info</span>
                                     </a>
                                 </li>
-                                <li class="nav-item mr-3">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_3">
+                                <li class="nav-item">
+                                    <a class="nav-link {{$visitNoteTab}}" data-toggle="tab" href="#tab_2">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Devices/Display1.svg-->
@@ -215,8 +223,8 @@
                                         <span class="nav-text font-weight-bold">Visit</span>
                                     </a>
                                 </li>
-                                <li class="nav-item mr-3">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_4">
+                                <li class="nav-item">
+                                    <a class="nav-link {{$medicationTab}}" data-toggle="tab" href="#tab_3">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Devices/Display1.svg-->
@@ -240,8 +248,8 @@
                                         <span class="nav-text font-weight-bold">Medication</span>
                                     </a>
                                 </li>
-                                <li class="nav-item mr-3">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_5">
+                                <li class="nav-item">
+                                    <a class="nav-link {{$lbsTab}}" data-toggle="tab" href="#tab_4">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Home/Globe.svg-->
@@ -265,31 +273,8 @@
                                         <span class="nav-text font-weight-bold">Labs</span>
                                     </a>
                                 </li>
-                                {{--                                <li class="nav-item">--}}
-                                {{--                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_6">--}}
-                                {{--														<span class="nav-icon mr-2">--}}
-                                {{--															<span class="svg-icon mr-3">--}}
-                                {{--																<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->--}}
-                                {{--																<svg xmlns="http://www.w3.org/2000/svg"--}}
-                                {{--                                                                     xmlns:xlink="http://www.w3.org/1999/xlink"--}}
-                                {{--                                                                     width="24px" height="24px" viewBox="0 0 24 24"--}}
-                                {{--                                                                     version="1.1">--}}
-                                {{--																	 <g stroke="none" stroke-width="1" fill="none"--}}
-                                {{--                                                                        fill-rule="evenodd">--}}
-                                {{--        <rect x="0" y="0" width="24" height="24"/>--}}
-                                {{--        <path--}}
-                                {{--            d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z"--}}
-                                {{--            fill="#000000"/>--}}
-                                {{--    </g>--}}
-                                {{--																</svg>--}}
-                                {{--                                                                <!--end::Svg Icon-->--}}
-                                {{--															</span>--}}
-                                {{--														</span>--}}
-                                {{--                                        <span class="nav-text font-weight-bold">Settings</span>--}}
-                                {{--                                    </a>--}}
-                                {{--                                </li>--}}
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_7"
+                                    <a class="nav-link" data-toggle="tab" href="#tab_5"
                                        onclick="chatHistory({{$patientDetails->patients_id}})">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
@@ -314,7 +299,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_8">
+                                    <a class="nav-link" data-toggle="tab" href="#tab_6">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
@@ -337,7 +322,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_9">
+                                    <a class="nav-link" data-toggle="tab" href="#tab_7">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
@@ -363,7 +348,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_10">
+                                    <a class="nav-link" data-toggle="tab" href="#tab_8">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
@@ -389,7 +374,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_11"
+                                    <a class="nav-link" data-toggle="tab" href="#tab_9"
                                        onclick="getTimeLine({{$patientDetails->patients_id}})">
 														<span class="nav-icon mr-2">
 															<span class="svg-icon mr-3">
@@ -416,7 +401,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#kt_apps_contacts_view_tab_12">
+                                    <a class="nav-link" data-toggle="tab" href="#tab_10">
 										<span class="nav-icon mr-2">
                                             <span class="svg-icon mr-3">
 																<!--begin::Svg Icon | path:assets/media/svg/icons/Devices/Display1.svg-->
@@ -445,7 +430,7 @@
                     </div>
                     <div class="card-body">
                         <div class="tab-content pt-5">
-                            <div class="tab-pane active" id="kt_apps_contacts_view_tab_2" role="tabpanel">
+                            <div class="tab-pane {{$memberInfoTab}}" id="tab_1" role="tabpanel">
                                 <form
                                     action="{{ isset($patientDetails) ? route('patients.update',$patientDetails->patients_id):''}}"
                                     method="post" enctype="multipart/form-data" class="ajax-form">
@@ -459,6 +444,10 @@
                                             <h3 class="font-size-h6 mb-5">Member Info:</h3>
                                         </div>
                                     </div>
+
+                                    <input name="current_url" type="hidden" placeholder="" value="profile"/>
+
+
                                     <!--end::Heading-->
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-lg-3 text-right col-form-label">Image</label>
@@ -486,6 +475,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-lg-3 text-right col-form-label">Member Id<span
                                                 class="text-danger">*</span></label>
@@ -648,7 +638,7 @@
                                                 class="text-danger">*</span></label>
                                         <div class="col-lg-9 col-xl-6">
                                             <div class="input-group input-group-lg input-group-solid">
-                                                <select name="state_id"
+                                                <select name="state_id" style="width: 100% !important;"
                                                         class="form-control form-control-lg form-control-solid state-select2">
                                                     @if(!empty($patientDetails))
                                                         <option
@@ -722,7 +712,7 @@
                                         <label class="col-xl-3 col-lg-3 text-right col-form-label">State</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <div class="input-group input-group-lg input-group-solid">
-                                                <select name="billing_state_id"
+                                                <select name="billing_state_id" style="width: 100% !important;"
                                                         class="form-control form-control-lg form-control-solid state-select2">
                                                     @if(!empty($patientDetails))
                                                         <option
@@ -791,7 +781,7 @@
                                         <label class="col-xl-3 col-lg-3 text-right col-form-label">State</label>
                                         <div class="col-lg-9 col-xl-6">
                                             <div class="input-group input-group-lg input-group-solid">
-                                                <select name="shipping_state_id"
+                                                <select name="shipping_state_id" style="width: 100% !important;"
                                                         class="form-control form-control-lg form-control-solid state-select2">
                                                     @if(!empty($patientDetails))
                                                         <option
@@ -875,11 +865,10 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_3" role="tabpanel">
+                            <div class="tab-pane {{$visitNoteTab}}" id="tab_2" role="tabpanel">
                                 <form action="{{route('visit-note')}}" method="post" enctype="multipart/form-data"
                                       class="ajax-form">
                                     @csrf
-
 
                                     <div class="row">
                                         <div class="col-lg-9 col-xl-6 offset-xl-3">
@@ -887,8 +876,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-
-
                                         <input type="hidden" name="patients_id"
                                                value="{{!empty($patientDetails)?$patientDetails->patients_id:''}}">
                                         <label class="col-xl-3 col-lg-3 text-right col-form-label">ICD10 Code</label>
@@ -973,7 +960,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_4" role="tabpanel">
+                            <div class="tab-pane {{$medicationTab}}" id="tab_3" role="tabpanel">
                                 <div class="row">
                                     <label class="col-xl-3"></label>
                                     <div class="col-lg-9 col-xl-6">
@@ -1108,7 +1095,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_5" role="tabpanel">
+                            <div class="tab-pane {{$lbsTab}}" id="tab_4" role="tabpanel">
                                 <div class="row">
                                     <label class="col-xl-3"></label>
                                     <div class="col-lg-9 col-xl-6">
@@ -1237,15 +1224,7 @@
 
 
                             </div>
-                            {{--                            <div class="tab-pane" id="kt_apps_contacts_view_tab_6" role="tabpanel">--}}
-                            {{--                                <div class="row">--}}
-                            {{--                                    <label class="col-xl-3"></label>--}}
-                            {{--                                    <div class="col-lg-9 col-xl-6">--}}
-                            {{--                                        <h3 class="font-size-h6 mb-5">Settings:</h3>--}}
-                            {{--                                    </div>--}}
-                            {{--                                </div>--}}
-                            {{--                            </div>--}}
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_7" role="tabpanel">
+                            <div class="tab-pane" id="tab_5" role="tabpanel">
                                 <div class="row">
                                     <label class="col-xl-2"></label>
                                     <div class="col-lg-10 col-xl-8">
@@ -1260,7 +1239,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_8" role="tabpanel">
+                            <div class="tab-pane" id="tab_6" role="tabpanel">
                                 <div class="row">
                                     @if(!empty($getOrderHistory))
                                         <div class="container-fluid">
@@ -1326,7 +1305,7 @@
 
                                 </div>
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_9" role="tabpanel">
+                            <div class="tab-pane" id="tab_7" role="tabpanel">
                                 <div class="row">
                                     <label class="col-xl-3"></label>
                                     <div class="col-lg-9 col-xl-6">
@@ -1407,7 +1386,7 @@
 
 
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_10" role="tabpanel">
+                            <div class="tab-pane" id="tab_8" role="tabpanel">
                                 <div class="row">
                                     @if(!empty($getSchedule))
                                         <div class="container-fluid">
@@ -1459,7 +1438,7 @@
 
                                 </div>
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_11" role="tabpanel">
+                            <div class="tab-pane" id="tab_9" role="tabpanel">
                                 <div class="row">
                                     <label class="col-xl-2"></label>
                                     <div class="col-lg-10 col-xl-8">
@@ -1473,7 +1452,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="kt_apps_contacts_view_tab_12" role="tabpanel">
+                            <div class="tab-pane" id="tab_10" role="tabpanel">
 
                                 @if(count($surveyForm) > 0)
                                     @foreach($surveyForm as $key=>$value)

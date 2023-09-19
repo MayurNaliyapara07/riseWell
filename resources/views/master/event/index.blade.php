@@ -2,7 +2,7 @@
 @section('content')
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         @include('layouts.sub-header',[
-            'title' => 'Event',
+            'title' => 'Schedule',
             'directory'=>'master',
             'create'=>'event.create',
         ])
@@ -15,7 +15,7 @@
                         <table class="table table-striped- table-bordered table-hover table-checkable" id="event_table" style="margin-top: 13px !important">
                             <thead>
                             <tr>
-                                <th>Event Name</th>
+                                <th>Schedule Name</th>
                                 <th>Location</th>
                                 <th>Action</th>
                             </tr>

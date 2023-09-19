@@ -6,7 +6,7 @@
 
         $default_country_code = $baseHelper->default_country_code();
         $default_country_phonecode = $baseHelper->default_country_phonecode();
-        $phoneCode = !empty($patient->country_code)?$patient->country_code:$default_country_phonecode;
+        $phoneCode = !empty($patient->country_code) ? $patient->country_code : $default_country_phonecode;
         $phoneNo = isset($patient->phone_no) ? "+" . $phoneCode . $patient->phone_no : '';
         $getGender = $baseHelper->getGender();
         $getWeekday = $baseHelper->getWeekday();
@@ -169,7 +169,7 @@
                                     <div class="row md-30">
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <label for="">Height</label>
+                                                <label for="">Height (Ft & Inches)</label>
                                                 <input type="text" class="form-control required" placeholder="Height"
                                                        name="height"
                                                        data-msg-required="Height is required"
@@ -178,7 +178,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
-                                                <label for="">Weight</label>
+                                                <label for="">Weight (lbs)</label>
                                                 <input type="text" class="form-control required"
                                                        data-msg-required="Weight is required"
                                                        placeholder="Weight" name="weight"
@@ -206,15 +206,14 @@
                                             <input type="checkbox" name="policy" id="policy"
                                                    data-msg-required="Privacy Policy is required"
                                                    class="css-checkbox required" {{ !empty($patient) && $patient->policy == 1 ? 'checked' : ''}}>
-                                            <label for="policy" class="css-label terms">Click here to consent to <a
-                                                    href="#">Privacy Policy</a> and <a href="#">Terms.</a></label>
+                                            <label for="policy" class="css-label terms">Click here to consent to <a href="{{$baseHelper->getPrivacyPolicyUrl()}}">Privacy Policy</a> and <a href="{{$baseHelper->getTermsAndConditionsUrl()}}">Terms.</a></label>
                                         </li>
-                                        {{--                                        <li>--}}
-                                        {{--                                            <input type="checkbox" name="terms" id="terms"--}}
-                                        {{--                                                   data-msg-required="Terms is required"--}}
-                                        {{--                                                   class="css-checkbox required" {{ !empty($patient) && $patient->terms == 1 ? 'checked' : ''}}>--}}
-                                        {{--                                            <label for="terms" class="css-label terms">I agree to <a href="#"> receive via SMS news and special offers. </a> </label>--}}
-                                        {{--                                        </li>--}}
+                                        <li>
+                                            <input type="checkbox" name="consent_to_treat" id="consent_to_treat"
+                                                   data-msg-required="Consent To Treat is required"
+                                                   class="css-checkbox required" {{ !empty($patient) && $patient->consent_to_treat == 1 ? 'checked' : ''}}>
+                                            <label for="consent_to_treat" class="css-label terms">Click here to accept <a href="{{$baseHelper->getConsentToTreatUrl()}}"> Consent To Treat. </a> </label>
+                                        </li>
                                     </ul>
 
                                 </div>

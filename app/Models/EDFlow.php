@@ -323,6 +323,7 @@ class EDFlow extends BaseModel
 
         $edFormData['weekday'] = !empty($step1['weekday']) ? implode(',', $step1['weekday']) : '';
         $edFormData['weekend'] = !empty($step1['weekend']) ? implode(',', $step1['weekend']) : '';
+        $edFormData['consent_to_treat'] = !empty($step1['consent_to_treat']) && $step1['consent_to_treat'] == "on" ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;;
         $edFormData['policy'] = !empty($step1['policy']) && $step1['policy'] == "on" ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;;
         $edFormData['terms'] = !empty($step1['terms']) && $step1['terms'] == "on" ? self::STATUS_ACTIVE : self::STATUS_INCTIVE;;
         $edFormData['vitals'] = !empty($step2['vitals']) ? $step2['vitals'] : '';
@@ -392,14 +393,16 @@ class EDFlow extends BaseModel
         $response['success'] = false;
         $response['message'] = '';
 
-        $rules['billing_address_1'] = 'required';
-        $rules['billing_state_id'] = 'required|numeric';
-        $rules['billing_city_name'] = 'required';
-        $rules['billing_zip'] = 'required';
-        $message['billing_address_1.required'] = 'Billing Address is required';
-        $message['billing_city_name.required'] = 'Billing City is required';
-        $message['billing_state_id.required'] = 'Billing State is required';
-        $message['billing_zip.required'] = 'Billing ZipCode is required';
+        $rules['product_id'] = 'required';
+        $rules['shipping_address_1'] = 'required';
+        $rules['shipping_state_id'] = 'required|numeric';
+        $rules['shipping_city_name'] = 'required';
+        $rules['shipping_zip'] = 'required';
+        $message['product_id.required'] = 'Please Select Product is required';
+        $message['shipping_address_1.required'] = 'Shipping Address is required';
+        $message['shipping_city_name.required'] = 'Shipping City is required';
+        $message['shipping_state_id.required'] = 'Shipping State is required';
+        $message['shipping_zip.required'] = 'Shipping ZipCode is required';
 
         $validationResult = $this->validateDataWithMessage($rules, $patientsData, $message);
         if ($validationResult['success'] == false) {

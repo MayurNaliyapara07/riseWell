@@ -27,6 +27,7 @@ class Helper extends BaseHelper
     const BLOOD_PRESSURE_MEDICATION_HYDROCHLOROTHIAZIDE = "Hydrochlorothiazide";
     const BLOOD_PRESSURE_MEDICATION_AMLODIPINE = "Amlodipine";
     const BLOOD_PRESSURE_MEDICATION_OTHER = "Other";
+    const BLOOD_PRESSURE_MEDICATION_NONEAPPLY = "NoneApply";
 
 
     const MEDICATIONS_CONJUNCTION_1 = "Nitrograd";
@@ -56,6 +57,7 @@ class Helper extends BaseHelper
     const CARDIOVASCULAR_3 = "Atorvastatin";
     const CARDIOVASCULAR_4 = "Warfarin";
     const CARDIOVASCULAR_5 = "Other";
+    const CARDIOVASCULAR_6 = "NoneApply";
 
     const DIABETES_1 = "Lantus";
     const DIABETES_2 = "Lyrica";
@@ -65,6 +67,7 @@ class Helper extends BaseHelper
     const DIABETES_6 = "Metformin";
     const DIABETES_7 = "Glipizide";
     const DIABETES_8 = "Other";
+    const DIABETES_9 = "NoneApply";
 
     const DIABETES_LEVEL_1 = "5.7";
     const DIABETES_LEVEL_2 = "6.4";
@@ -76,6 +79,7 @@ class Helper extends BaseHelper
     const THYROID_3 = "Liotrix (thyrolar)";
     const THYROID_4 = " Natural thyroid (armour thyroid, nature-throid, westhroid)";
     const THYROID_5 = "Other";
+    const THYROID_6 = "NoneApply";
 
     const CHOLESTEROL_1 = "Crestor (rosuvastatin)";
     const CHOLESTEROL_2 = "Atorvastatin (lipitor)";
@@ -83,23 +87,27 @@ class Helper extends BaseHelper
     const CHOLESTEROL_4 = "Pitavastatin";
     const CHOLESTEROL_5 = "Pravastatin";
     const CHOLESTEROL_6 = "Other";
+    const CHOLESTEROL_7 = "NoneApply";
 
     const BEWATHING_1 = "Ventolin HFA";
     const BEWATHING_2 = "Advair Diskus";
     const BEWATHING_3 = "Spiriva Handihaler";
     const BEWATHING_4 = "Other";
+    const BEWATHING_5 = "NoneApply";
 
     const  GASTROESOPHAGEAL_1 = "Nexium";
     const  GASTROESOPHAGEAL_2 = "Rabeprazole";
     const  GASTROESOPHAGEAL_3 = "Lansoprazole";
     const  GASTROESOPHAGEAL_4 = "Omeprazole";
     const  GASTROESOPHAGEAL_5 = "Other";
+    const  GASTROESOPHAGEAL_6 = "NoneApply";
 
     const HYPERACTIVITY_1 = "Exedrine";
     const HYPERACTIVITY_2 = "Adderall";
     const HYPERACTIVITY_3 = "Ritalin";
     const HYPERACTIVITY_4 = "Concerta";
     const HYPERACTIVITY_5 = "Other";
+    const HYPERACTIVITY_6 = "NoneApply";
 
     const TREAT_WITH_1 = "Viagra";
     const TREAT_WITH_2 = "Levitra";
@@ -161,7 +169,6 @@ class Helper extends BaseHelper
     }
 
 
-
     public function getGender()
     {
         return $this->gender();
@@ -205,6 +212,7 @@ class Helper extends BaseHelper
             ['key' => self::BLOOD_PRESSURE_MEDICATION_HYDROCHLOROTHIAZIDE, 'value' => self::BLOOD_PRESSURE_MEDICATION_HYDROCHLOROTHIAZIDE, 'label' => 'Hydrochlorothiazide (Esidrix, Hydrodiuril) Losartan (Cozaar)'],
             ['key' => self::BLOOD_PRESSURE_MEDICATION_AMLODIPINE, 'value' => self::BLOOD_PRESSURE_MEDICATION_AMLODIPINE, 'label' => 'Amlodipine (Norvasc, Lotrel) Diltiazem (Cardizem, Tiazac)'],
             ['key' => self::BLOOD_PRESSURE_MEDICATION_OTHER, 'value' => self::BLOOD_PRESSURE_MEDICATION_OTHER, 'label' => 'Other'],
+            ['key' => self::BLOOD_PRESSURE_MEDICATION_NONEAPPLY, 'value' => self::BLOOD_PRESSURE_MEDICATION_NONEAPPLY, 'label' => 'None Apply'],
         ];
     }
 
@@ -243,13 +251,13 @@ class Helper extends BaseHelper
     public function getTreat()
     {
         return [
-//            ['key' => self::TREAT_1, 'value' => self::TREAT_1, 'label' => 'Cardiovascular disease (Heart) (Excluding Blood Pressure)'],
+            ['key' => self::TREAT_1, 'value' => self::TREAT_1, 'label' => 'Cardiovascular disease (Heart) (Excluding Blood Pressure)'],
             ['key' => self::TREAT_2, 'value' => self::TREAT_2, 'label' => 'Diabetes'],
             ['key' => self::TREAT_3, 'value' => self::TREAT_3, 'label' => 'Thyroid'],
             ['key' => self::TREAT_4, 'value' => self::TREAT_4, 'label' => 'Cholesterol'],
             ['key' => self::TREAT_5, 'value' => self::TREAT_5, 'label' => 'Lung'],
-//            ['key' => self::TREAT_6, 'value' => self::TREAT_6, 'label' => 'Gastroesophageal reflux'],
-//            ['key' => self::TREAT_7, 'value' => self::TREAT_7, 'label' => 'Attention deficit hyperactivity disorder Other (ADHD)'],
+            ['key' => self::TREAT_6, 'value' => self::TREAT_6, 'label' => 'Gastroesophageal reflux'],
+            ['key' => self::TREAT_7, 'value' => self::TREAT_7, 'label' => 'Attention deficit hyperactivity disorder Other (ADHD)'],
             ['key' => self::TREAT_8, 'value' => self::TREAT_8, 'label' => 'Other'],
         ];
     }
@@ -262,6 +270,7 @@ class Helper extends BaseHelper
             ['key' => self::CARDIOVASCULAR_3, 'value' => self::CARDIOVASCULAR_3, 'label' => 'Atorvastatin (Lipitor)'],
             ['key' => self::CARDIOVASCULAR_4, 'value' => self::CARDIOVASCULAR_4, 'label' => 'Warfarin (Coumadin)'],
             ['key' => self::CARDIOVASCULAR_5, 'value' => self::CARDIOVASCULAR_5, 'label' => 'Other'],
+            ['key' => self::CARDIOVASCULAR_6, 'value' => self::CARDIOVASCULAR_6, 'label' => 'None Apply'],
         ];
     }
 
@@ -272,10 +281,11 @@ class Helper extends BaseHelper
             ['key' => self::DIABETES_2, 'value' => self::DIABETES_2, 'label' => 'Lyrica (pregabalin)'],
             ['key' => self::DIABETES_3, 'value' => self::DIABETES_3, 'label' => 'Januvia (sitagliptin) '],
             ['key' => self::DIABETES_4, 'value' => self::DIABETES_4, 'label' => 'NovoLog®/NovoRapid® (insulin aspart)'],
-//            ['key' => self::DIABETES_5, 'value' => self::DIABETES_5, 'label' => 'Humalog® (insulin lispro injection),Victoza® (liraglutide)'],
-//            ['key' => self::DIABETES_6, 'value' => self::DIABETES_6, 'label' => 'Metformin'],
-//            ['key' => self::DIABETES_7, 'value' => self::DIABETES_7, 'label' => 'Glipizide'],
-//            ['key' => self::DIABETES_8, 'value' => self::DIABETES_8, 'label' => 'Other'],
+            ['key' => self::DIABETES_5, 'value' => self::DIABETES_5, 'label' => 'Humalog® (insulin lispro injection),Victoza® (liraglutide)'],
+            ['key' => self::DIABETES_6, 'value' => self::DIABETES_6, 'label' => 'Metformin'],
+            ['key' => self::DIABETES_7, 'value' => self::DIABETES_7, 'label' => 'Glipizide'],
+            ['key' => self::DIABETES_8, 'value' => self::DIABETES_8, 'label' => 'Other'],
+            ['key' => self::DIABETES_9, 'value' => self::DIABETES_9, 'label' => 'None Apply'],
         ];
     }
 
@@ -297,6 +307,7 @@ class Helper extends BaseHelper
             ['key' => self::THYROID_3, 'value' => self::THYROID_3, 'label' => 'Liotrix (thyrolar)'],
             ['key' => self::THYROID_4, 'value' => self::THYROID_4, 'label' => 'Natural thyroid (armour thyroid, nature-throid, westhroid)'],
             ['key' => self::THYROID_5, 'value' => self::THYROID_5, 'label' => 'Other'],
+            ['key' => self::THYROID_6, 'value' => self::THYROID_6, 'label' => 'None Apply'],
         ];
     }
 
@@ -306,9 +317,10 @@ class Helper extends BaseHelper
             ['key' => self::CHOLESTEROL_1, 'value' => self::CHOLESTEROL_1, 'label' => 'Crestor (rosuvastatin)'],
             ['key' => self::CHOLESTEROL_2, 'value' => self::CHOLESTEROL_2, 'label' => 'Atorvastatin (lipitor)'],
             ['key' => self::CHOLESTEROL_3, 'value' => self::CHOLESTEROL_3, 'label' => 'Fluvastatin (lescol)'],
-//            ['key' => self::CHOLESTEROL_4, 'value' => self::CHOLESTEROL_4, 'label' => 'Pitavastatin (livalo)'],
-//            ['key' => self::CHOLESTEROL_5, 'value' => self::CHOLESTEROL_5, 'label' => 'Pravastatin (pravachol)'],
+            ['key' => self::CHOLESTEROL_4, 'value' => self::CHOLESTEROL_4, 'label' => 'Pitavastatin (livalo)'],
+            ['key' => self::CHOLESTEROL_5, 'value' => self::CHOLESTEROL_5, 'label' => 'Pravastatin (pravachol)'],
             ['key' => self::CHOLESTEROL_6, 'value' => self::CHOLESTEROL_6, 'label' => 'Other'],
+            ['key' => self::CHOLESTEROL_7, 'value' => self::CHOLESTEROL_7, 'label' => 'None Apply'],
         ];
     }
 
@@ -319,6 +331,7 @@ class Helper extends BaseHelper
             ['key' => self::BEWATHING_2, 'value' => self::BEWATHING_2, 'label' => 'Advair Diskus (fluticasone)'],
             ['key' => self::BEWATHING_3, 'value' => self::BEWATHING_3, 'label' => 'Spiriva Handihaler (tiotropium)'],
             ['key' => self::BEWATHING_4, 'value' => self::BEWATHING_4, 'label' => 'Other'],
+            ['key' => self::BEWATHING_5, 'value' => self::BEWATHING_5, 'label' => 'None Apply'],
         ];
     }
 
@@ -328,8 +341,9 @@ class Helper extends BaseHelper
             ['key' => self::GASTROESOPHAGEAL_1, 'value' => self::GASTROESOPHAGEAL_1, 'label' => 'Nexium (esomeprazole)'],
             ['key' => self::GASTROESOPHAGEAL_2, 'value' => self::GASTROESOPHAGEAL_2, 'label' => 'Rabeprazole (aciphex)'],
             ['key' => self::GASTROESOPHAGEAL_3, 'value' => self::GASTROESOPHAGEAL_3, 'label' => 'Lansoprazole (prevacid)'],
-//            ['key' => self::GASTROESOPHAGEAL_4, 'value' => self::GASTROESOPHAGEAL_4, 'label' => 'Omeprazole (prilosec, zegerid)'],
+            ['key' => self::GASTROESOPHAGEAL_4, 'value' => self::GASTROESOPHAGEAL_4, 'label' => 'Omeprazole (prilosec, zegerid)'],
             ['key' => self::GASTROESOPHAGEAL_5, 'value' => self::GASTROESOPHAGEAL_5, 'label' => 'Other'],
+            ['key' => self::GASTROESOPHAGEAL_6, 'value' => self::GASTROESOPHAGEAL_6, 'label' => 'None Apply'],
         ];
     }
 
@@ -338,9 +352,10 @@ class Helper extends BaseHelper
         return [
             ['key' => self::HYPERACTIVITY_1, 'value' => self::HYPERACTIVITY_1, 'label' => 'Exedrine®, Vyvanse® (lisdexamfetamine)'],
             ['key' => self::HYPERACTIVITY_2, 'value' => self::HYPERACTIVITY_2, 'label' => 'Adderall (amphetamine)'],
-//            ['key' => self::HYPERACTIVITY_3, 'value' => self::HYPERACTIVITY_3, 'label' => 'Ritalin®, Concerta,® Metadate®,Focalin®,Daytrana® (methylphenidate)'],
-//            ['key' => self::HYPERACTIVITY_4, 'value' => self::HYPERACTIVITY_4, 'label' => 'Concerta (methylphenidate)'],
+            ['key' => self::HYPERACTIVITY_3, 'value' => self::HYPERACTIVITY_3, 'label' => 'Ritalin®, Concerta,® Metadate®,Focalin®,Daytrana® (methylphenidate)'],
+            ['key' => self::HYPERACTIVITY_4, 'value' => self::HYPERACTIVITY_4, 'label' => 'Concerta (methylphenidate)'],
             ['key' => self::HYPERACTIVITY_5, 'value' => self::HYPERACTIVITY_5, 'label' => 'Other'],
+            ['key' => self::HYPERACTIVITY_6, 'value' => self::HYPERACTIVITY_6, 'label' => 'None Apply'],
         ];
     }
 
@@ -370,9 +385,9 @@ class Helper extends BaseHelper
         return [
             ['key' => self::SEXUAL_STIMULATION_1, 'value' => self::SEXUAL_STIMULATION_1, 'label' => 'Almost never or never'],
             ['key' => self::SEXUAL_STIMULATION_2, 'value' => self::SEXUAL_STIMULATION_2, 'label' => 'A few times (much less than half the time)'],
-            ['key' => self::SEXUAL_STIMULATION_2, 'value' => self::SEXUAL_STIMULATION_2, 'label' => 'Sometimes (about half the time)'],
+            ['key' => self::SEXUAL_STIMULATION_3, 'value' => self::SEXUAL_STIMULATION_3, 'label' => 'Sometimes (about half the time)'],
             ['key' => self::SEXUAL_STIMULATION_4, 'value' => self::SEXUAL_STIMULATION_4, 'label' => 'Most times (much more than half the time)'],
-            ['key' => self::SEXUAL_STIMULATION_4, 'value' => self::SEXUAL_STIMULATION_4, 'label' => 'Almost always or always'],
+            ['key' => self::SEXUAL_STIMULATION_5, 'value' => self::SEXUAL_STIMULATION_5, 'label' => 'Almost always or always'],
         ];
     }
 
