@@ -1132,7 +1132,6 @@ class BaseModel extends Model
     }
     public function dataTableSearch()
     {
-
         $search_value = request()['search']['value'];
         $column = request()['columns'];
         if (!empty($search_value)) {

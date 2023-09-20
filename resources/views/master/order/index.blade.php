@@ -17,8 +17,8 @@
                             <tr>
                                 <th colspan="1">Customer Information</th>
                                 <th colspan="3">Tracking Information</th>
-                                <th colspan="2">Sending To Patients </th>
-                                <th colspan="2">Receiving To Patients </th>
+                                <th colspan="2">Sending To Patients</th>
+                                <th colspan="2">Receiving To Patients</th>
                                 <th colspan="1"></th>
                                 <th colspan="1"></th>
                             </tr>
@@ -99,47 +99,82 @@
 
                     </div>
                     <div class="modal-body">
+                        <input type="hidden" id="shipping_order_id" name="order_id" value="">
                         <div class="form-group ml-5">
-                        <ul class="nav nav-tabs nav-tabs-line">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#sending">
-                                    <span class="nav-icon"><i class="fas fa-arrow-alt-circle-up"></i> </span>
-                                    <span class="nav-text">Sending To Patients</span>
-                                </a>
-                            </li>
+                            <ul class="nav nav-tabs nav-tabs-line">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#sending">
+                                        <span class="nav-icon"><i class="fas fa-arrow-alt-circle-up"></i> </span>
+                                        <span class="nav-text">Sending To Patients</span>
+                                    </a>
+                                </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#receiving">
-                                    <span class="nav-icon"><i class="
-fas fa-arrow-circle-down"></i></span>
-                                    <span class="nav-text">Receiving To Patients</span>
-                                </a>
-                            </li>
-                        </ul>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#receiving">
+                                        <span class="nav-icon"><i class="fas fa-arrow-circle-down"></i></span>
+                                        <span class="nav-text">Receiving To Patients</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                        <input type="hidden" id="order_id" name="order_id" value="">
-                        <div class="form-group">
-                            <label>Type<span class="text-danger">*</span></label>
-                            <select name="tracking_type" id="tracking_type" class="form-control"
-                                    style="width: 100%;!important;">
-                                <option value="">Select Type</option>
-                                <option value="order">ORDER</option>
-                                <option value="lbs">LABS</option>
-                            </select>
+                        <div class="tab-content mt-5" id="myTabContent">
+                            <div class="tab-pane fade show active" id="sending" role="tabpanel"
+                                 aria-labelledby="sending">
+                                <div class="form-group">
+                                    <label>Type<span class="text-danger">*</span></label>
+                                    <select name="tracking_type" class="form-control" id="sending_tracking_type"
+                                            style="width: 100%;!important;">
+                                        <option value="">Select Type</option>
+                                        <option value="order">ORDER</option>
+                                        <option value="lab">LABS</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Shipment Status<span class="text-danger">*</span></label>
+                                    <select name="shipment_status" class="form-control" id="sending_shipment_status"
+                                            style="width: 100%;!important;">
+                                        <option value="">Select Status</option>
+                                        <option value="Fedex">FedEx</option>
+                                        <option value="USPS">USPS</option>
+                                        <option value="UPS">UPS</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tracking No<span class="text-danger">*</span></label>
+                                    <input type="text" name="tracking_no" class="form-control" id="sending_tracking_no"
+                                           placeholder="Tracking No">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="receiving" role="tabpanel" aria-labelledby="receiving">
+                                <input type="hidden" name="receiving_type" id="receiving_type" value="receiving">
+                                <div class="form-group">
+                                    <label>Type<span class="text-danger">*</span></label>
+                                    <select name="tracking_type" class="form-control" id="receiving_tracking_type"
+                                            style="width: 100%;!important;">
+                                        <option value="">Select Type</option>
+                                        <option value="order">ORDER</option>
+                                        <option value="lab">LABS</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Shipment Status<span class="text-danger">*</span></label>
+                                    <select name="shipment_status" class="form-control" id="receiving_shipment_status"
+                                            style="width: 100%;!important;">
+                                        <option value="">Select Status</option>
+                                        <option value="Fedex">FedEx</option>
+                                        <option value="USPS">USPS</option>
+                                        <option value="UPS">UPS</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tracking No<span class="text-danger">*</span></label>
+                                    <input type="text" name="tracking_no" class="form-control" id="receiving_tracking_no"
+                                           placeholder="Tracking No">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Shipment Status<span class="text-danger">*</span></label>
-                            <select name="shipment_status" class="form-control" style="width: 100%;!important;">
-                                <option value="">Select Status</option>
-                                <option value="Fedex">FedEx</option>
-                                <option value="USPS">USPS</option>
-                                <option value="UPS">UPS</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Tracking No<span class="text-danger">*</span></label>
-                            <input type="text" name="tracking_no" class="form-control" placeholder="Tracking No">
-                        </div>
+
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger font-weight-bold" data-dismiss="modal">Close
@@ -177,20 +212,20 @@ fas fa-arrow-circle-down"></i></span>
                     name: 'order_id',
                 },
                 {
-                    data: 'order_tracking_no',
-                    name: 'order_tracking_no',
+                    data: 'sending_order_tracking_no',
+                    name: 'sending_order_tracking_no',
                 },
                 {
-                    data: 'lab_tracking_no',
-                    name: 'lab_tracking_no',
+                    data: 'sending_lab_tracking_no',
+                    name: 'sending_lab_tracking_no',
                 },
                 {
                     data: 'order_status',
                     name: 'order_status',
                 },
                 {
-                    data: 'order_shipment_status',
-                    name: 'order_shipment_status',
+                    data: 'sending_order_shipment_status',
+                    name: 'sending_order_shipment_status',
                 },
                 {
                     data: 'lab_status',
@@ -198,8 +233,8 @@ fas fa-arrow-circle-down"></i></span>
                 },
 
                 {
-                    data: 'lab_shipment_status',
-                    name: 'lab_shipment_status',
+                    data: 'sending_lab_shipment_status',
+                    name: 'sending_lab_shipment_status',
                 },
                 {
                     data: 'payment_status',
@@ -257,19 +292,25 @@ fas fa-arrow-circle-down"></i></span>
         }
 
         function saveShipmentStatus() {
-            var order_id = $("input[name=order_id]").val();
-            var shipment_status = $("select[name=shipment_status]").val();
-            var tracking_no = $("input[name=tracking_no]").val();
-            var tracking_type = $('#tracking_type').val();
+            var order_id = $('#shipping_order_id').val();
+            var sending_shipment_status = $('#sending_shipment_status').val();
+            var sending_tracking_no = $('#sending_tracking_no').val();
+            var sending_tracking_type = $('#sending_tracking_type').val();
+            var receiving_shipment_status = $('#receiving_shipment_status').val();
+            var receiving_tracking_no = $('#receiving_tracking_no').val();
+            var receiving_tracking_type = $('#receiving_tracking_type').val();
             $.ajax({
                 url: "/save-shipment-status",
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 data: {
                     order_id: order_id,
-                    shipment_status: shipment_status,
-                    tracking_no: tracking_no,
-                    tracking_type: tracking_type,
+                    sending_shipment_status: sending_shipment_status,
+                    sending_tracking_no: sending_tracking_no,
+                    sending_tracking_type: sending_tracking_type,
+                    receiving_shipment_status: receiving_shipment_status,
+                    receiving_tracking_no: receiving_tracking_no,
+                    receiving_tracking_type: receiving_tracking_type,
                 },
                 success: function (response) {
                     if (response.success) {

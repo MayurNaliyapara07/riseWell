@@ -15,10 +15,16 @@ class Order extends BaseModel
     protected $primaryKey = "order_id";
 
     protected $fillable = [
-        'order_shipment_status',
-        'lab_shipment_status',
-        'order_tracking_no',
-        'lab_tracking_no',
+
+        'sending_order_shipment_status',
+        'sending_lab_shipment_status',
+        'receiving_order_shipment_status',
+        'receiving_lab_shipment_status',
+        'sending_order_tracking_no',
+        'sending_lab_tracking_no',
+        'receiving_order_tracking_no',
+        'receiving_lab_tracking_no',
+
         'patients_id',
         'session_id',
         'currency',
@@ -29,7 +35,6 @@ class Order extends BaseModel
         'customer_address',
         'product_details',
         'discount_details',
-        'shipping_and_processing_amount',
         'invoice_id',
         'invoice_pdf',
         'mode',
@@ -43,6 +48,7 @@ class Order extends BaseModel
         'status',
         'sub_total',
         'total_amount',
+        'shipping_and_processing_amount',
         'order_status',
         'lab_status',
 
@@ -66,6 +72,8 @@ class Order extends BaseModel
 
     const ORDER_STATUS_READY = "LabsReady";
 
+    const ORDER_STATUS_DELIVERED= "Delivered";
+
     const PAYMENT_STATUS_PAID = "paid";
 
     const FEDEX = "Fedex";
@@ -87,7 +95,7 @@ class Order extends BaseModel
     public function getOrder()
     {
         $this->setSelect();
-        $this->selectColomns([$this->table . '.order_id',$this->table.'.lab_shipment_status',$this->table.'.lab_tracking_no',$this->table . '.order_shipment_status', $this->table . '.order_tracking_no', $this->table . '.order_status', $this->table . '.customer_name', $this->table . '.customer_email', $this->table . '.payment_status', $this->table . '.status', $this->table.'.lab_status', $this->table . '.invoice_pdf', $this->table . '.created_at']);
+        $this->selectColomns([$this->table . '.order_id',$this->table.'.sending_lab_shipment_status',$this->table.'.sending_lab_tracking_no',$this->table . '.sending_order_shipment_status', $this->table . '.sending_order_tracking_no', $this->table . '.order_status', $this->table . '.customer_name', $this->table . '.customer_email', $this->table . '.payment_status', $this->table . '.status', $this->table.'.lab_status', $this->table . '.invoice_pdf', $this->table . '.created_at']);
         $model = $this->getQueryBuilder();
         $columnsOrderData = $this->getOrderByFieldAndValue(request()->get("order"), request()->get("columns"), $this->primaryKey, 'DESC');
         $query = DataTables::of($model)->order(function ($query) use ($columnsOrderData) {
@@ -135,6 +143,9 @@ class Order extends BaseModel
             else if ($row->order_status == self::ORDER_STATUS_FULFILLED) {
                 $orderStatus = '<span class="badge badge-success">Fulfilled</span>';
             }
+            else if ($row->order_status == self::ORDER_STATUS_DELIVERED) {
+                $orderStatus = '<span class="badge badge-primary">Delivered</span>';
+            }
             return $orderStatus;
         })->editColumn('lab_status', function ($row) {
                 $labsStatus = "";
@@ -158,27 +169,27 @@ class Order extends BaseModel
                 }
                 return $labsStatus;
             })
-            ->editColumn('order_shipment_status', function ($row) {
+            ->editColumn('sending_order_shipment_status', function ($row) {
             $shipmentStatus = "";
-            if ($row->order_shipment_status == self::FEDEX) {
+            if ($row->sending_order_shipment_status == self::FEDEX) {
                 $shipmentStatus = '<span class="badge badge-primary">'.self::FEDEX.'</span>';
             }
-            else if ($row->order_shipment_status == self::USPS) {
+            else if ($row->sending_order_shipment_status == self::USPS) {
                 $shipmentStatus = '<span class="badge badge-warning">'.self::USPS.'</span>';
             }
-            else if ($row->order_shipment_status == self::UPS) {
+            else if ($row->sending_order_shipment_status == self::UPS) {
                 $shipmentStatus = '<span class="badge badge-info">'.self::UPS.'</span>';
             }
             return $shipmentStatus;
-        })->editColumn('lab_shipment_status', function ($row) {
+        })->editColumn('sending_lab_shipment_status', function ($row) {
                 $LabsShipmentStatus = "";
-                if ($row->lab_shipment_status == self::FEDEX) {
+                if ($row->sending_lab_shipment_status == self::FEDEX) {
                     $LabsShipmentStatus = '<span class="badge badge-primary">'.self::FEDEX.'</span>';
                 }
-                else if ($row->lab_shipment_status == self::USPS) {
+                else if ($row->sending_lab_shipment_status == self::USPS) {
                     $LabsShipmentStatus = '<span class="badge badge-warning">'.self::USPS.'</span>';
                 }
-                else if ($row->lab_shipment_status == self::UPS) {
+                else if ($row->sending_lab_shipment_status == self::UPS) {
                     $LabsShipmentStatus = '<span class="badge badge-info">'.self::UPS.'</span>';
                 }
                 return $LabsShipmentStatus;
@@ -194,7 +205,7 @@ class Order extends BaseModel
             ->editColumn('created_at', function ($row) {
             return $this->displayDate($row->created_at);
         })->addIndexColumn()
-            ->rawColumns(['order_id', 'order_tracking_no','lab_tracking_no', 'order_status','lab_status','order_shipment_status','lab_shipment_status','customer_details', 'payment_status', 'created_at', 'action'])
+            ->rawColumns(['order_id', 'sending_order_tracking_no','sending_lab_tracking_no', 'order_status','lab_status','sending_order_shipment_status','sending_lab_shipment_status','customer_details', 'payment_status', 'created_at', 'action'])
             ->filter(function ($query) {
                 $search_value = request()['search']['value'];
                 $column = request()['columns'];
@@ -205,8 +216,10 @@ class Order extends BaseModel
                             $query->orWhere('customer_name', "LIKE", '%' . trim($search_value) . '%');
                             $query->orWhere('payment_status', "LIKE", '%' . trim($search_value) . '%');
                             $query->orWhere('status', "LIKE", '%' . trim($search_value) . '%');
-                            $query->orWhere('order_tracking_no', "LIKE", '%' . trim($search_value) . '%');
-                            $query->orWhere('order_shipment_status', "LIKE", '%' . trim($search_value) . '%');
+                            $query->orWhere('sending_order_tracking_no', "LIKE", '%' . trim($search_value) . '%');
+                            $query->orWhere('sending_order_shipment_status', "LIKE", '%' . trim($search_value) . '%');
+                            $query->orWhere('sending_lab_tracking_no', "LIKE", '%' . trim($search_value) . '%');
+                            $query->orWhere('sending_lab_shipment_status', "LIKE", '%' . trim($search_value) . '%');
                             $query->orWhere('order_id', "LIKE", '%' . trim($search_value) . '%');
                         }
                     }
@@ -218,16 +231,26 @@ class Order extends BaseModel
 
     public function createShipmentDetails($request)
     {
+
+
         $data = [];
         $result = ['success' => false, 'message' => ''];
         $data['order_id'] = $request['order_id'];
-        if (!empty($request['tracking_type']) && $request['tracking_type'] == 'order'){
-            $data['order_shipment_status'] = $request['shipment_status'];
-            $data['order_tracking_no'] = $request['tracking_no'];
+        if (!empty($request['sending_tracking_type']) && $request['sending_tracking_type'] == 'order'){
+            $data['sending_order_shipment_status'] = $request['sending_shipment_status'];
+            $data['sending_order_tracking_no'] = $request['sending_tracking_no'];
         }
-        else{
-            $data['lab_shipment_status'] = $request['shipment_status'];
-            $data['lab_tracking_no'] = $request['tracking_no'];
+        else if (!empty($request['sending_tracking_type']) && $request['sending_tracking_type'] == 'lab'){
+            $data['sending_lab_shipment_status'] = $request['sending_shipment_status'];
+            $data['sending_lab_tracking_no'] = $request['sending_tracking_no'];
+        }
+        else if (!empty($request['receiving_tracking_type']) && $request['receiving_tracking_type'] == 'order'){
+            $data['receiving_order_shipment_status'] = $request['receiving_shipment_status'];
+            $data['receiving_order_tracking_no'] = $request['receiving_tracking_no'];
+        }
+        else if (!empty($request['receiving_tracking_type']) && $request['receiving_tracking_type'] == 'lab'){
+            $data['receiving_lab_shipment_status'] = $request['receiving_shipment_status'];
+            $data['receiving_lab_tracking_no'] = $request['receiving_tracking_no'];
         }
         $response = $this->saveShipmentDetails($data);
         if ($response['success']) {

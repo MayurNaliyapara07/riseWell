@@ -818,11 +818,9 @@ class BaseHelper
 
     function notify($user, $templateName,$subject,$sendVia = null, $createLog = true)
     {
-
         if (gettype($user) == 'array') {
             $user = (object)$user;
         }
-
         $notify = new \App\Notify\Notify($sendVia);
         $notify->templateName = $templateName;
         $notify->subject = $subject;
@@ -831,6 +829,9 @@ class BaseHelper
         $notify->userColumn = isset($user->id) ? $user->getForeignKey() : 'user_id';
         $notify->send();
     }
+
+
+
 
 
 

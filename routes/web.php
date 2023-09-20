@@ -3,6 +3,7 @@
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FedexController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\Common\CommonController;
@@ -232,6 +233,10 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::post('save-zoom-setting','saveZoomSetting')->name('save-zoom-setting');
         Route::put('user-update/{id}', 'userUpdate')->name('user-update');
         Route::post('change-password', 'updatePassword')->name('change-password');
+    });
+
+    Route::controller(FedexController::class)->group(function () {
+        Route::get('fedex','getTrackingDetails')->name('fedex');
     });
 
 });

@@ -16,7 +16,16 @@ class CreateOrderTable extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->bigIncrements('order_id')->index();
             $table->unsignedBigInteger('patients_id')->nullable();
-            $table->string('tracking_no')->nullable();
+
+            $table->string('sending_order_shipment_status')->nullable();
+            $table->string('sending_lab_shipment_status')->nullable();
+            $table->string('receiving_order_shipment_status')->nullable();
+            $table->string('receiving_lab_shipment_status')->nullable();
+            $table->string('sending_order_tracking_no')->nullable();
+            $table->string('sending_lab_tracking_no')->nullable();
+            $table->string('receiving_order_tracking_no')->nullable();
+            $table->string('receiving_lab_tracking_no')->nullable();
+
             $table->string('session_id')->nullable();
             $table->string('currency',50)->nullable();
             $table->string('customer_id',50)->nullable();
@@ -40,15 +49,8 @@ class CreateOrderTable extends Migration
             $table->decimal('sub_total')->nullable();
             $table->decimal('total_amount')->nullable();
             $table->decimal('shipping_and_processing_amount')->nullable();
-            $table->enum('order_status',['Approved','Placed','Shipped','Arrived','Fulfilled'])->nullable();
-            $table->enum('labs_status',['Approved','Placed','Shipped','Arrived','Fulfilled','LabsReady'])->nullable();
-            $table->string('order_shipment_status')->nullable();
-            $table->string('lab_shipment_status')->nullable();
-            $table->longText('order_placed')->nullable();
-            $table->longText('order_approved')->nullable();
-            $table->longText('order_shipped')->nullable();
-            $table->longText('order_arrived')->nullable();
-            $table->longText('order_fulfilled')->nullable();
+            $table->enum('order_status',['Approved','Placed','Shipped','Arrived','Fulfilled','Delivered'])->nullable();
+            $table->enum('lab_status',['Approved','Placed','Shipped','Arrived','Fulfilled','Delivered','LabsReady'])->nullable();
             $table->timestamps();
         });
     }
