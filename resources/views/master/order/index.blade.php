@@ -187,6 +187,26 @@
             </div>
         </div>
 
+        <div class="modal fade" id="trackingHistory" data-backdrop="static" tabindex="-1" role="dialog"
+             aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tracking History </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="order_id" name="order_id" value="">
+                        <div data-scroll="true" data-height="500">
+                            <div id="trackingHistoryTimeline">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 @push('scripts')
@@ -257,11 +277,36 @@
             $('#orderStatus').modal('show');
         });
 
+        $(document).on("click", ".trackingHistory", function () {
+            var Id = $(this).data('id');
+            trackingHistory(Id);
+            $('#trackingHistory').modal('show');
+
+        });
+
         $(document).on("click", ".shipmentStatus", function () {
             var Id = $(this).data('id');
             $("input[name=order_id]").val(Id);
             $('#shipmentStatus').modal('show');
         });
+
+        function trackingHistory(orderId){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '{{ url('get-tracking-history') }}',
+                type: 'POST',
+                data: {
+                    order_id: orderId
+                },
+                success: function (response) {
+                    $.each(response[0], function(key, value) {
+                        $('#trackingHistoryTimeline').append('<div class="timeline timeline-3 mt-3"><div class="timeline-items"><div class="timeline-item"><div class="timeline-media"><i class="flaticon2-notification fl text-primary"></i></div><div class="timeline-content"><div class="d-flex align-items-center justify-content-between mb-3"><div class="mr-2"><span class="text-muted ml-2">'+value.date+'</span><span class="label label-light-primary font-weight-bolder label-inline ml-2">'+value.status+'</span></div></div><p class="p-0">'+value.description+'</p></div></div></div></div>');
+                    });
+                }
+            });
+        }
 
         function orderStatusChange() {
             $('#orderStatusChange').addClass('spinner spinner-white spinner-right');
@@ -323,7 +368,6 @@
                 },
             });
         }
-
 
         $('#labs_ready').hide();
         $('select[name=tracking_type]').on('change', function () {

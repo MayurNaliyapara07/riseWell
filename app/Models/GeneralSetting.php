@@ -371,16 +371,7 @@ class GeneralSetting extends BaseModel
         $general = $this->_helper->gs();
         $config = $general->mail_config;
         if (!empty($config)) {
-            $mail_config = json_decode($config);
-            $receiverName = explode('@', $data['email'])[0];
-            $subject = strtoupper($mail_config->name) . ' Configuration Success';
-            $message = 'Your email notification setting is configured successfully for ' . $general->site_title;
-            $user = [
-                'username' => $data['email'],
-                'email' => $data['email'],
-                'fullname' => $receiverName,
-            ];
-            $this->_helper->notify($user, 'DEFAULT', ['subject' => $subject, 'message' => $message,], ['email'], false);
+            $this->_helper->sendMailNotification($data['email'], 'DEFAULT', 'TestMail');
         } else {
             $response['warning'] = true;
             $response['message'] = 'Email Configuration Setting is required !!';

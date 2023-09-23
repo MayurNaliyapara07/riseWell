@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Helpers\BaseHelper;
 use App\Http\Controllers\Common\BaseController;
 use App\Models\Order;
+use App\Models\OrderWiseStatus;
 use App\Models\Patients;
 use App\Models\Schedule;
 use App\Notifications\OrderPlaced;
 use App\Notifications\OrderStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
@@ -111,32 +114,36 @@ class OrderController extends BaseController
 
     public function orderStatusChange(Request $request)
     {
-
         $baseHelper = new BaseHelper();
         $orderId = $request->order_id;
         $trackingType = $request['tracking_type'];
-        if (!empty($trackingType) && $trackingType == 'order'){
+        if (!empty($trackingType) && $trackingType == 'order') {
             $orderStatus = $request->order_status;
             $field = 'order_status';
-        }
-        else{
+        } else {
             $orderStatus = $request->order_status;
             $field = 'lab_status';
         }
         $orderDetails = $this->_model->loadModel($orderId);
         $patientsObj = new Patients();
-        $patientsDetails  = $patientsObj->loadModel($orderDetails->patients_id);
+        $patientsDetails = $patientsObj->loadModel($orderDetails->patients_id);
         if ((!empty($orderDetails))) {
+
             $orderDetails->update([$field => $orderStatus]);
+
+            OrderWiseStatus::updateOrCreate(
+                ['order_id' => $orderId, 'status' => 'Order' . $orderStatus],
+                ['description' => 'Your Order is ' . $orderStatus, 'date' => Carbon::now()]
+            );
+
             $customerEmail = !empty($orderDetails->customer_email) ? $orderDetails->customer_email : '';
-            $customerPhoneNo = !empty($patientsDetails->phone_no) ? $patientsDetails->country_code."".$patientsDetails->phone_no : '';
-            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo,$orderStatus,$trackingType,'');
-            $mailNotification = $baseHelper->sendMailNotification($customerEmail,$orderStatus,$trackingType);
-            if ($mailNotification['status'] == true || $mailNotification['status'] == null){
-                return $this->webResponse('Email sent to '.$customerEmail.' successfully');
-            }
-            else{
-                return $this->webResponse($mailNotification['message'],false);
+            $customerPhoneNo = !empty($patientsDetails->phone_no) ? $patientsDetails->country_code . "" . $patientsDetails->phone_no : '';
+            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo, $orderStatus, $trackingType, '');
+            $mailNotification = $baseHelper->sendMailNotification($customerEmail, $orderStatus, $trackingType);
+            if ($mailNotification['status'] == true || $mailNotification['status'] == null) {
+                return $this->webResponse('Email sent to ' . $customerEmail . ' successfully');
+            } else {
+                return $this->webResponse($mailNotification['message'], false);
             }
         }
     }
@@ -147,5 +154,16 @@ class OrderController extends BaseController
         return $this->_model->createShipmentDetails($request->all());
     }
 
+    public function getTrackingHistory(Request $request)
+    {
+        $orderId = $request->post('order_id');
+        if (!empty($orderId)) {
+            $timeLine =  DB::table('order_wise_status')
+                ->select(['status','date','order_id','description', DB::raw("date_format(date, '%d %M %Y %h:%i')as date")])
+                ->where('order_id', $orderId)
+                ->get()->toArray();
+            return response()->json([$timeLine], 200);
+        }
+    }
 
 }

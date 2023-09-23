@@ -71,6 +71,8 @@ class Email extends NotifyProcess implements Notifiable
     }
 
     protected function sendSmtpMail(){
+
+
         $mail = new PHPMailer(true);
         $config = json_decode($this->setting->mail_config);
         $general = $this->setting;
@@ -91,10 +93,13 @@ class Email extends NotifyProcess implements Notifiable
         $mail->setFrom($general->email_from, $general->site_name);
         $mail->addAddress($this->email, $this->receiverName);
         $mail->addReplyTo($general->email_from, $general->site_name);
+
         // Content
         $mail->isHTML(true);
         $mail->Subject = $this->subject;
         $mail->Body    = $this->finalMessage;
+
+
         $mail->send();
     }
 

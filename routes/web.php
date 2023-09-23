@@ -42,7 +42,7 @@ Route::get('/clear-cache', function () {
     Artisan::call('config:clear');
     echo "Cache Clear successfully";
 });
-Route::stripeWebhooks('webhook-route-configured-at-the-stripe-dashboard');
+
 Route::get('/checkout/{patientId}',[StripePaymentController::class, 'checkout'])->name('checkout');;
 Route::get('success',[StripePaymentController::class,'success'])->name('checkout.success');
 Route::post('cancel',[StripePaymentController::class,'cancel'])->name('checkout.cancel');
@@ -211,6 +211,7 @@ Route::middleware(['auth','verified'])->group(function () {
         Route::get('order-track/{id}', 'orderTrack')->name('order.track');
         Route::post('order-status-change', 'orderStatusChange')->name('order-status-change');
         Route::post('save-shipment-status', 'saveShipmentStatus')->name('save-shipment-status');
+        Route::post('get-tracking-history', 'getTrackingHistory')->name('get-tracking-history');
     });
 
     Route::controller(SettingsController::class)->group(function (){

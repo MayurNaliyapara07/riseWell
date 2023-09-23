@@ -25,124 +25,168 @@ class StripePaymentController extends Controller
         $this->stripe = new \Stripe\StripeClient($this->stripe_secret_key);
     }
 
-    public function oneTimeCheckout($data)
-    {
-        $orderType = !empty($data['order_type']) ? $data['order_type'] : "";
-        if ($orderType == "OneTime") {
-            $mode = 'payment';
-        } else {
-            $mode = 'subscription';
-        }
-        $patientsId = !empty($data['patients_id']) ? $data['patients_id'] : '';
-        $orderDetails['order_details'] = $data['order_details'];
-        $orderDetails['patients_id'] = $patientsId;
-        $orderDetails['mode'] = $mode;
-        return $this->checkout($orderDetails);
-
-    }
-
-    public function checkout($data)
+    public function checkout($patientId)
     {
         \Stripe\Stripe::setApiKey($this->stripe_secret_key);
 
-        $patientId = !empty($data['patients_id']) ? $data['patients_id'] : $data;
-
         $patients = $this->getPatientDetails($patientId);
-
         $productId = !empty($patients) ? $patients->product_id : '';
 
         if (isset($productId)) {
+            $customerDetails = [
+                'customer_name' => !empty($patients) ? $patients->first_name . " " . $patients->last_name : '',
+                'customer_email' => !empty($patients) ? $patients->email : '',
+                'customer_phone_no' => !empty($patients) ? $patients->phone_no : '',
+            ];
 
             $product = $this->getProductDetails($productId);
-
-            $customerName = !empty($patients) ? $patients->first_name . " " . $patients->last_name : '';
-
-            $customerEmail = !empty($patients) ? $patients->email : '';
-
-            $customerPhoneNo = !empty($patients) ? $patients->phone_no : '';
-
-            $stripePlan = !empty($product->stripe_plan) ? $product->stripe_plan : '';
-
             $productName = !empty($product->product_name) ? $product->product_name : '';
-
-            $price = !empty($product->price) ? $product->price : 0;
-
+            $price = !empty($product->price) ? ($product->price * 100) : 0;
             $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
-
             $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
-
             $processingFees = !empty($product->processing_fees) ? ($product->processing_fees * 100) : 0;
-
             $subTotal = $processingFees + $shippingCost;
 
-            $totalPrice = number_format($subTotal - $discount, 2);
+            /* stripe create customer */
+            $customer = $this->createCustomer($customerDetails);
 
-            $orderDetails = !empty($data['order_details']) ? $data['order_details'] : '';
-            if (!empty($orderDetails) && count($orderDetails) > 0) {
-                foreach ($orderDetails as $order) {
-                    $lineItems[] = array(
-                        'price' => $order['product_id'],
-                        'quantity' => (int)$order['qty'],
-                    );
-                }
-            }
+            /* stripe create coupon */
+            $couponsId = $this->createCoupon($discount);
 
-            $customer = $this->stripe->customers->create([
-                'name' => $customerName,
-                'phone' => $customerPhoneNo,
-                'email' => $customerEmail,
-                'description' => 'Customer',
-            ]);
+            /* stripe create shipping rate & processing fees */
+            $shippingRateId = $this->createShippingRate($subTotal);
 
+            $lineItems =  [
+                [
+                    'price_data' => [
+                        'product_data' => [
+                            'name' => $productName
+                        ],
+                        'unit_amount' => $price,
+                        'currency' => 'USD',
+                    ],
+                    'quantity' => 1,
+                ],
+            ];
+            return $this->createSessionCheckout($customer,$lineItems,$couponsId,$shippingRateId,$patientId);
 
+        }
+    }
+
+    public function oneTimeCheckout($request)
+    {
+        \Stripe\Stripe::setApiKey($this->stripe_secret_key);
+
+        $order_details = !empty($request['order_details']) ? $request['order_details'] : '';
+
+        /* get patients details */
+        $patientId = !empty($request['patients_id']) ? $request['patients_id'] : '';
+        $patients = $this->getPatientDetails($patientId);
+        $customerDetails = [
+            'customer_name' => !empty($patients) ? $patients->first_name . " " . $patients->last_name : '',
+            'customer_email' => !empty($patients) ? $patients->email : '',
+            'customer_phone_no' => !empty($patients) ? $patients->phone_no : '',
+        ];
+
+        /* get product details */
+        $lineItems = array();
+        $discountPrice = $shippingRates = 0;
+        foreach ($order_details as $value) {
+            $productId = $value['product_id'];
+            $qty = $value['qty'];
+            $product = $this->getProductDetails($productId);
+            $productName = !empty($product->product_name) ? $product->product_name : '';
+            $price = !empty($product->price) ? ($product->price * 100) : 0;
+            $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
+            $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
+            $processingFees = !empty($product->processing_fees) ? ($product->processing_fees * 100) : 0;
+            $subTotal = $processingFees + $shippingCost;
+            $lineItems[] = array(
+                'price_data' => array(
+                    'product_data' => array(
+                        'name' => $productName
+                    ),
+                    'unit_amount' => $price,
+                    'currency' => 'USD',
+                ),
+                'quantity' => $qty,
+            );
+            $discountPrice += $discount;
+            $shippingRates += $subTotal;
+        }
+
+        /* stripe create customer */
+        $customer = $this->createCustomer($customerDetails);
+
+        /* stripe create coupon */
+        $couponsId = $this->createCoupon($discountPrice);
+
+        /* stripe create shipping rate & processing fees */
+        $shippingRateId = $this->createShippingRate($shippingRates);
+
+        return $this->createSessionCheckout($customer,$lineItems,$couponsId,$shippingRateId,$patientId);
+    }
+
+    public function createCustomer($data)
+    {
+        $customer = $this->stripe->customers->create([
+            'name' => $data['customer_name'],
+            'phone' => $data['customer_phone_no'],
+            'email' => $data['customer_email'],
+            'description' => 'Customer',
+        ]);
+        return $customer->id;
+    }
+
+    public function createCoupon($discountPrice)
+    {
+        if ($discountPrice > 0) {
             $discountId = "discount_" . rand(0, 99999);
             $coupons = $this->stripe->coupons->create([
                 'name' => 'Coupon',
                 'currency' => 'usd',
                 'duration' => 'once',
                 'id' => $discountId,
-                'amount_off' => $discount,
+                'amount_off' => $discountPrice,
             ]);
-            $couponsId = $coupons->id;
+            $couponsId = ['coupon' => $coupons->id];
+        } else {
+            $couponsId = [];
+        }
+        return $couponsId;
+    }
 
-
+    public function createShippingRate($shippingRates)
+    {
+        if ($shippingRates > 0) {
             $shippingRates = $this->stripe->shippingRates->create([
                 'display_name' => 'Shipping Rate & Processing Fees',
                 'type' => 'fixed_amount',
                 'fixed_amount' => [
-                    'amount' => $subTotal,
+                    'amount' => $shippingRates,
                     'currency' => 'usd',
                 ],
             ]);
-            $shippingRateId = $shippingRates->id;
-
-
-            $session = \Stripe\Checkout\Session::create([
-                'customer' => !empty($customer->id) ? $customer->id : "",
-                'line_items' => [
-                    [
-                        'price_data' => [
-                            'product_data' => [
-                                'name' => $productName
-                            ],
-                            'unit_amount' => $price * 100,
-                            'currency' => 'USD',
-                        ],
-                        'quantity' => 1,
-                    ],
-                ],
-                'discounts' => [[
-                    'coupon' => $couponsId,
-                ]],
-                'shipping_options' => [['shipping_rate' => $shippingRateId]],
-                'mode' => 'payment',
-                'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}&patients_id=$patientId",
-                'cancel_url' => route('checkout.cancel', [], true),
-            ]);
-
-
-            return \redirect()->away($session->url);
+            $shippingRateId = ['shipping_rate' => $shippingRates->id];
+        } else {
+            $shippingRateId = [];
         }
+
+        return $shippingRateId;
+    }
+
+    public function createSessionCheckOut($customer,$lineItems,$couponsId,$shippingRateId,$patientId){
+        $session = \Stripe\Checkout\Session::create([
+            'customer' => $customer,
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'discounts' => [$couponsId],
+            'shipping_options' => [$shippingRateId],
+            'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}&patients_id=$patientId",
+            'cancel_url' => route('checkout.cancel', [], true),
+        ]);
+
+        return \redirect()->away($session->url);
     }
 
     public function success(Request $request)
@@ -263,7 +307,6 @@ class StripePaymentController extends Controller
             Mail::to($customerEmail)->send(new OrderPlaced($order));
             return redirect()->route('home');
         }
-
 
     }
 

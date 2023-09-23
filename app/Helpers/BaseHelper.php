@@ -788,7 +788,7 @@ class BaseHelper
 
         if (!empty($config)) {
             $template = $this->getNotificationTemplate($orderStatus);
-            if ($trackingType == 'order'){
+            if ($trackingType == 'order' || $trackingType == 'TestMail'){
                 $subject = $template->subj;
             }
             else{

@@ -24,13 +24,25 @@ class CommonController extends Controller
     public function getProduct(){
         $searchTerm = request()->input('searchTerm');
         $orderType = request()->input('orderType');
-        $productQuery = DB::table('product')->select(DB::raw('product.stripe_plan as id'),
-            DB::raw('product.product_name as text'))
-            ->whereRaw("(product_name like '%$searchTerm%')")
-            ->where('type','=',$orderType)
-            ->where('status','=','1')
-            ->orderBy('product_name', 'ASC')
-            ->limit(10)->get()->toArray();
+
+        if(!empty($orderType) && !empty($orderType) == 'OneTime'){
+            $productQuery = DB::table('product')->select(DB::raw('product.product_id as id'),
+                DB::raw('product.product_name as text'))
+                ->whereRaw("(product_name like '%$searchTerm%')")
+                ->where('type','=',$orderType)
+                ->where('status','=','1')
+                ->orderBy('product_name', 'ASC')
+                ->limit(10)->get()->toArray();
+        }
+        else{
+            $productQuery = DB::table('product')->select(DB::raw('product.stripe_plan as id'),
+                DB::raw('product.product_name as text'))
+                ->whereRaw("(product_name like '%$searchTerm%')")
+                ->where('type','=',$orderType)
+                ->where('status','=','1')
+                ->orderBy('product_name', 'ASC')
+                ->limit(10)->get()->toArray();
+        }
 
         return response()->json($productQuery);
     }

@@ -223,6 +223,9 @@
             $("input[name=patients_id]").val(Id);
             $("input[name=patients_state_id]").val(stateId);
             $('#addAppointment').modal('show');
+
+
+
         });
 
         $(".assign-program-select2").select2({

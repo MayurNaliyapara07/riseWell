@@ -110,6 +110,7 @@ class Notify
             $notify->setting = $this->setting;
             $notify->createLog = $this->createLog;
             $notify->userColumn = $this->userColumn;
+
             $notify->send();
         }
 	}

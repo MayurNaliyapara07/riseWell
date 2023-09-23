@@ -69,8 +69,12 @@ class PatientsController extends BaseController
 
     public function saveOrder(Request $request)
     {
-        $data = $request->all();
-        return app('App\Http\Controllers\StripePaymentController')->oneTimeCheckout($data);
+        if (!empty($request->order_type) && $request->order_type == 'OneTime'){
+            return app('App\Http\Controllers\StripePaymentController')->oneTimeCheckout($request->all());
+        }
+        else{
+
+        }
     }
 
     public function saveLabReport(Request $request)
