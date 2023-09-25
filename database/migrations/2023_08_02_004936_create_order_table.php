@@ -49,10 +49,14 @@ class CreateOrderTable extends Migration
             $table->decimal('sub_total')->nullable();
             $table->decimal('total_amount')->nullable();
             $table->decimal('shipping_and_processing_amount')->nullable();
-            $table->enum('order_status',['Approved','Placed','Shipped','Arrived','Fulfilled','Delivered'])->nullable();
-            $table->enum('lab_status',['Approved','Placed','Shipped','Arrived','Fulfilled','Delivered','LabsReady'])->nullable();
+            $table->enum('sending_order_status',['NewOrder','Approved','Placed','Shipped','Arrived','Fulfilled','Delivered'])->nullable();
+            $table->enum('receiving_order_status',['NewOrder','Approved','Placed','Shipped','Arrived','Fulfilled','Delivered'])->nullable();
+            $table->enum('sending_lab_status',['NewOrder','Approved','Placed','Shipped','Arrived','Fulfilled','Delivered','LabsReady'])->nullable();
+            $table->enum('receiving_lab_status',['NewOrder','Approved','Placed','Shipped','Arrived','Fulfilled','Delivered','LabsReady'])->nullable();
             $table->timestamps();
         });
+
+
     }
 
     /**

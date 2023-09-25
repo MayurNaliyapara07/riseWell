@@ -38,9 +38,67 @@ class FedexController extends Controller
 
     }
 
-    public function getTrackingDetails()
+
+    public function getSendingOrderTrackingDetails()
     {
-        $orders = Order::where('order_status', '!=', 'Delivered')->where('sending_order_shipment_status','=','Fedex')->get();
+        $type = 'SendingOrder';
+        $orders = Order::select('order_id', 'sending_order_tracking_no as tracking_no','patients_id')->whereNotNull('sending_order_tracking_no')->where('sending_order_status', '!=', 'Delivered')->where('sending_order_shipment_status', '=', 'Fedex')->get();
+        if (count($orders) > 0){
+            foreach ($orders as $order) {
+                $this->CallApi($order, $type);
+            }
+        }
+        else{
+            echo "SendingOrder Not Found !!";
+        }
+
+    }
+
+    public function getReceivingOrderTrackingDetails()
+    {
+        $type = 'ReceivingOrder';
+        $orders = Order::select('order_id', 'receiving_order_tracking_no as tracking_no', 'receiving_order_status','patients_id')->whereNotNull('receiving_order_tracking_no')->where('receiving_order_status', '!=', 'Delivered')->where('receiving_order_shipment_status', '=', 'Fedex')->get();
+
+        if (count($orders) > 0){
+            foreach ($orders as $order) {
+                $this->CallApi($order, $type);
+            }
+        }
+        else{
+            echo "ReceivingOrder Not Found !!";
+        }
+    }
+
+    public function getSendingLabTrackingDetails()
+    {
+        $type = 'SendingLab';
+        $orders = Order::select('order_id', 'sending_lab_tracking_no as tracking_no', 'sending_lab_status','patients_id')->whereNotNull('sending_lab_tracking_no')->where('sending_lab_status', '!=', 'Delivered')->where('sending_lab_shipment_status', '=', 'Fedex')->get();
+        if (count($orders) > 0){
+            foreach ($orders as $order) {
+                $this->CallApi($order, $type);
+            }
+        }
+        else{
+            echo "SendingLab Not Found !!";
+        }
+    }
+
+    public function getReceivingLabTrackingDetails()
+    {
+        $type = 'ReceivingLab';
+        $orders = Order::select('order_id', 'receiving_lab_tracking_no as tracking_no', 'receiving_lab_status')->whereNotNull('receiving_lab_tracking_no')->where('receiving_lab_status', '!=', 'Delivered')->where('receiving_lab_shipment_status', '=', 'Fedex')->get();
+        if (count($orders) > 0){
+            foreach ($orders as $order) {
+                $this->CallApi($order, $type);
+            }
+        }
+        else{
+            echo "ReceivingLab Not Found !!";
+        }
+    }
+
+    public function CallApi($order, $type)
+    {
         $access_token = $this->getAccessToken();
         $url = "https://apis-sandbox.fedex.com/track/v1/trackingnumbers";
         $header = [
@@ -50,27 +108,23 @@ class FedexController extends Controller
             'Content-type' => 'application/json'
         ];
 
-        if (count($orders) > 0) {
-            foreach ($orders as $order) {
-                $fields = '{ "trackingInfo": [
+        $fields = '{ "trackingInfo": [
                     {
                         "trackingNumberInfo": {
-                        "trackingNumber":' . $order->sending_order_tracking_no . ',
+                        "trackingNumber":' . $order->tracking_no . ',
                         }
                     }
                  ],
                   "includeDetailedScans": true
-                }';
-                $resp = $this->curl_me($url, $header, $fields);
-                if (!empty($resp['output'])) {
-                    $response = $resp['output'];
-                    return $this->updateOrderStatus($response, $order);
-                }
-            }
-        } else {
-            echo "Order Not Found!!";
-            exit();
+         }';
+
+
+        $resp = $this->curl_me($url, $header, $fields);
+        if (!empty($resp['output'])) {
+            $response = $resp['output'];
+            return $this->updateOrderStatus($response, $order, $type);
         }
+
 
     }
 
@@ -90,7 +144,7 @@ class FedexController extends Controller
 
     }
 
-    public function updateOrderStatus($details, $order)
+    public function updateOrderStatus($details, $order, $type)
     {
         $completeTrackResults = $details['completeTrackResults'];
         $trackResults = !empty($completeTrackResults[0]) ? $completeTrackResults[0]['trackResults'] : '';
@@ -101,28 +155,24 @@ class FedexController extends Controller
         $scanEvents[50]['date'] = now();
         $scanEvents[50]['derivedStatus'] = 'Delivered';
 
+
         if (!empty($scanEvents)) {
             foreach ($scanEvents as $key => $value) {
                 $eventType = !empty($value['eventType']) ? $value['eventType'] : '';
-
                 if (in_array($eventType, ['OC', 'AO', 'AR', 'DL'])) {
-
-                    $type = $eventType;
                     $date = !empty($value['date']) ? $value['date'] : '-';
                     $derivedStatus = !empty($value['derivedStatus']) ? $value['derivedStatus'] : '';
                     $eventDescription = !empty($value['eventDescription']) ? $value['eventDescription'] : '';
-
                     $orderStatus = new OrderWiseStatus();
                     $orderStatus->order_id = $order->order_id;
                     $orderStatus->date = $date;
                     $orderStatus->status = $derivedStatus;
                     $orderStatus->description = $eventDescription;
-                    $orderStatus->eventType = $type;
+                    $orderStatus->eventType = $eventType;
                     $orderStatus->save();
 
                     /* send notification and status update */
-                    if ($type == 'DL') {
-
+                    if ($eventType == 'DL') {
                         $baseHelper = new BaseHelper();
                         $patientsObj = new Patients();
                         $patientsDetails = $patientsObj->loadModel($order->patients_id);
@@ -130,25 +180,29 @@ class FedexController extends Controller
                         $customerEmail = !empty($order->customer_email) ? $order->customer_email : '';
                         $customerPhoneNo = !empty($patientsDetails->phone_no) ? $patientsDetails->country_code . "" . $patientsDetails->phone_no : '';
 
-                        $smsNotification = $baseHelper->sendSMSNotification($customerEmail, 'Delivered', 'order', '');
-                        $mailNotification = $baseHelper->sendMailNotification($customerEmail, 'Delivered', 'order');
 
-                        Order::where('order_id', $order->order_id)->update(['order_status' => 'Delivered']);
-
-                        if ($mailNotification['status'] == true || $mailNotification['status'] == null) {
-                            echo 'Email sent to ' . $customerEmail . ' successfully';
-                            exit();
-                        }
-                        else {
-                            echo $mailNotification['message'];
-                            exit();
+                        if ($type == 'SendingOrder') {
+                            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo, 'Delivered', 'order', '');
+                            $mailNotification = $baseHelper->sendMailNotification($customerEmail, 'Delivered', 'order');
+                            Order::where('order_id', $order->order_id)->update(['sending_order_status' => 'Delivered']);
+                        } elseif ($type == 'ReceivingOrder') {
+                            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo, 'Delivered', 'order', '');
+                            $mailNotification = $baseHelper->sendMailNotification($customerEmail, 'Delivered', 'order');
+                            Order::where('order_id', $order->order_id)->update(['receiving_order_status' => 'Delivered']);
+                        } elseif ($type == 'SendingLab') {
+                            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo, 'Delivered', 'lab', '');
+                            $mailNotification = $baseHelper->sendMailNotification($customerEmail, 'Delivered', 'lab');
+                            Order::where('order_id', $order->order_id)->update(['sending_lab_status' => 'Delivered']);
+                        } elseif ($type == 'ReceivingLab') {
+                            $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo, 'Delivered', 'lab', '');
+                            $mailNotification = $baseHelper->sendMailNotification($customerEmail, 'Delivered', 'lab');
+                            Order::where('order_id', $order->order_id)->update(['receiving_lab_status' => 'Delivered']);
                         }
 
                     }
                 }
             }
         }
-        echo "Updated Status";
-        exit();
+        echo $order->order_id . "Updated Status".'</br>';
     }
 }

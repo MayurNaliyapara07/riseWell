@@ -9,27 +9,33 @@
         <div class="container-fluid">
             <div class="card card-custom">
                 <div class="card-body">
-
                     <div class="table-responsive">
                         <table class="table table-striped- table-bordered table-hover table-checkable"
                                id="order_table" style="margin-top: 13px !important">
                             <thead>
                             <tr>
                                 <th colspan="1">Customer Information</th>
-                                <th colspan="3">Tracking Information</th>
-                                <th colspan="2">Sending To Patients</th>
-                                <th colspan="2">Receiving To Patients</th>
+                                <th colspan="3">Sending Tracking Information</th>
+                                <th colspan="2">Receiving Tracking Information</th>
+                                <th colspan="4">Sending To Patients</th>
+                                <th colspan="4">Receiving From Patients</th>
                                 <th colspan="1"></th>
                                 <th colspan="1"></th>
                             </tr>
                             <tr>
                                 <th>Name & Email</th>
                                 <th>Order Id</th>
-                                <th>Order No</th>
-                                <th>Labs No</th>
-                                <th>Status</th>
+                                <th>Order</th>
+                                <th>Lab</th>
+                                <th>Order</th>
+                                <th>Lab</th>
+                                <th>Order Status</th>
                                 <th>Shipper</th>
-                                <th>Status</th>
+                                <th>Lab Status</th>
+                                <th>Shipper</th>
+                                <th>Order Status</th>
+                                <th>Shipper</th>
+                                <th>Lab Status</th>
                                 <th>Shipper</th>
                                 <th>Payment Status</th>
                                 <th>Actions</th>
@@ -53,8 +59,19 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="order_id" name="order_id" value="">
+
                         <div class="form-group">
                             <label>Type<span class="text-danger">*</span></label>
+                            <select name="sending_type" class="form-control" id="sending_type"
+                                    style="width: 100%;!important;">
+                                <option value="">Select Type</option>
+                                <option value="sending">Sending</option>
+                                <option value="receiving">Receiving</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tracking Type<span class="text-danger">*</span></label>
                             <select name="tracking_type" class="form-control" style="width: 100%;!important;">
                                 <option value="">Select Status</option>
                                 <option value="order">ORDER</option>
@@ -168,7 +185,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Tracking No<span class="text-danger">*</span></label>
-                                    <input type="text" name="tracking_no" class="form-control" id="receiving_tracking_no"
+                                    <input type="text" name="tracking_no" class="form-control"
+                                           id="receiving_tracking_no"
                                            placeholder="Tracking No">
                                 </div>
                             </div>
@@ -186,7 +204,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal fade" id="trackingHistory" data-backdrop="static" tabindex="-1" role="dialog"
              aria-labelledby="staticBackdrop" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -201,12 +218,13 @@
                         <input type="hidden" id="order_id" name="order_id" value="">
                         <div data-scroll="true" data-height="500">
                             <div id="trackingHistoryTimeline">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 @endsection
 @push('scripts')
@@ -215,6 +233,7 @@
 
         @if (!empty($AJAX_PATH))
         var ajaxTable = $('#order_table').DataTable({
+            scrollX: true,
             processing: false,
             serverSide: true,
             ordering: false,
@@ -240,22 +259,52 @@
                     name: 'sending_lab_tracking_no',
                 },
                 {
-                    data: 'order_status',
-                    name: 'order_status',
+                    data: 'receiving_order_tracking_no',
+                    name: 'receiving_order_tracking_no',
+                },
+                {
+                    data: 'receiving_lab_tracking_no',
+                    name: 'receiving_lab_tracking_no',
+                },
+                {
+                    data: 'sending_order_status',
+                    name: 'sending_order_status',
                 },
                 {
                     data: 'sending_order_shipment_status',
                     name: 'sending_order_shipment_status',
                 },
+
                 {
-                    data: 'lab_status',
-                    name: 'lab_status',
+                    data: 'sending_lab_status',
+                    name: 'sending_lab_status',
                 },
 
                 {
                     data: 'sending_lab_shipment_status',
                     name: 'sending_lab_shipment_status',
                 },
+
+                {
+                    data: 'receiving_order_status',
+                    name: 'receiving_order_status',
+                },
+
+                {
+                    data: 'receiving_order_shipment_status',
+                    name: 'receiving_order_shipment_status',
+                },
+
+                {
+                    data: 'receiving_lab_status',
+                    name: 'receiving_lab_status',
+                },
+
+                {
+                    data: 'receiving_lab_shipment_status',
+                    name: 'receiving_lab_shipment_status',
+                },
+
                 {
                     data: 'payment_status',
                     name: 'payment_status',
@@ -290,7 +339,7 @@
             $('#shipmentStatus').modal('show');
         });
 
-        function trackingHistory(orderId){
+        function trackingHistory(orderId) {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -301,8 +350,8 @@
                     order_id: orderId
                 },
                 success: function (response) {
-                    $.each(response[0], function(key, value) {
-                        $('#trackingHistoryTimeline').append('<div class="timeline timeline-3 mt-3"><div class="timeline-items"><div class="timeline-item"><div class="timeline-media"><i class="flaticon2-notification fl text-primary"></i></div><div class="timeline-content"><div class="d-flex align-items-center justify-content-between mb-3"><div class="mr-2"><span class="text-muted ml-2">'+value.date+'</span><span class="label label-light-primary font-weight-bolder label-inline ml-2">'+value.status+'</span></div></div><p class="p-0">'+value.description+'</p></div></div></div></div>');
+                    $.each(response[0], function (key, value) {
+                        $('#trackingHistoryTimeline').append('<div class="timeline timeline-3 mt-3"><div class="timeline-items"><div class="timeline-item"><div class="timeline-media"><i class="flaticon2-notification fl text-primary"></i></div><div class="timeline-content"><div class="d-flex align-items-center justify-content-between mb-3"><div class="mr-2"><span class="text-muted ml-2">' + value.date + '</span><span class="label label-light-primary font-weight-bolder label-inline ml-2">' + value.status + '</span></div></div><p class="p-0">' + value.description + '</p></div></div></div></div>');
                     });
                 }
             });
@@ -313,6 +362,7 @@
             var order_id = $("input[name=order_id]").val();
             var orderStatus = $("select[name=order_status]").val();
             var tracking_type = $("select[name=tracking_type]").val();
+            var sending_type = $("select[name=sending_type]").val();
             $.ajax({
                 url: "/order-status-change",
                 type: "POST",
@@ -321,6 +371,7 @@
                     order_id: order_id,
                     order_status: orderStatus,
                     tracking_type: tracking_type,
+                    sending_type: sending_type,
                 },
                 success: function (response) {
                     if (response.status) {

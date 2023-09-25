@@ -24,7 +24,7 @@ class OrderPlaced extends Mailable
     public function build()
     {
         $details = $this->details;
-        $this->subject('Order Placed')
+        $this->subject('New Order')
             ->view('master.email.order-placed',['order'=>$details]);
         return $this;
     }

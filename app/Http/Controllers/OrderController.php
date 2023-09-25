@@ -114,16 +114,36 @@ class OrderController extends BaseController
 
     public function orderStatusChange(Request $request)
     {
+
+
         $baseHelper = new BaseHelper();
         $orderId = $request->order_id;
         $trackingType = $request['tracking_type'];
-        if (!empty($trackingType) && $trackingType == 'order') {
+        $sendingType = $request['sending_type'];
+
+        if ($trackingType == 'order' && $sendingType == 'sending') {
             $orderStatus = $request->order_status;
-            $field = 'order_status';
-        } else {
-            $orderStatus = $request->order_status;
-            $field = 'lab_status';
+            $field = 'sending_order_status';
         }
+        if ($trackingType == 'lbs' && $sendingType == 'sending') {
+            $orderStatus = $request->order_status;
+            $field = 'sending_lab_status';
+        }
+
+
+        if ($trackingType == 'order' && $sendingType == 'receiving') {
+            $orderStatus = $request->order_status;
+            $field = 'receiving_order_status';
+        }
+
+        if ($trackingType == 'lbs' && $sendingType == 'receiving') {
+            $orderStatus = $request->order_status;
+            $field = 'receiving_lab_status';
+        }
+
+
+
+
         $orderDetails = $this->_model->loadModel($orderId);
         $patientsObj = new Patients();
         $patientsDetails = $patientsObj->loadModel($orderDetails->patients_id);

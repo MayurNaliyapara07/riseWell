@@ -2,13 +2,11 @@
 @extends('layouts.app')
 @section('content')
 
-
-
     <?php
     $currency = !empty($order) ? strtoupper($order->currency) : "";
     $product = $baseHelper->getStripeProductDetails(json_decode($order->product_details));
-    $shippingAndProcessingCost =!empty($order->shipping_and_processing_amount) ? new \Akaunting\Money\Money($order->shipping_and_processing_amount, new \Akaunting\Money\Currency($currency)) : 0;
-    $shippingCost =!empty($order->shipping_and_processing_amount) ? $order->shipping_and_processing_amount : 0;
+    $shippingAndProcessingCost = !empty($order->shipping_and_processing_amount) ? new \Akaunting\Money\Money($order->shipping_and_processing_amount, new \Akaunting\Money\Currency($currency)) : 0;
+    $shippingCost = !empty($order->shipping_and_processing_amount) ? $order->shipping_and_processing_amount : 0;
     ?>
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         @include('layouts.sub-header',[

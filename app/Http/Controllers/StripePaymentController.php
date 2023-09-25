@@ -300,7 +300,7 @@ class StripePaymentController extends Controller
                 'status' => !empty($status) ? $status : '',
                 'sub_total' => !empty($subTotal) ? $subTotal : '',
                 'total_amount' => !empty($totalAmount) ? $totalAmount : '',
-                'order_status' => 'Placed',
+                'sending_order_status' => 'NewOrder',
             ];
 
             $order = Order::create($order);

@@ -237,7 +237,10 @@ Route::middleware(['auth','verified'])->group(function () {
     });
 
     Route::controller(FedexController::class)->group(function () {
-        Route::get('fedex','getTrackingDetails')->name('fedex');
+        Route::get('sending-order-fedex','getSendingOrderTrackingDetails')->name('sending-order-fedex');
+        Route::get('receiving-order-fedex','getReceivingOrderTrackingDetails')->name('receiving-order-fedex');
+        Route::get('sending-lab-fedex','getSendingLabTrackingDetails')->name('sending-lab-fedex');
+        Route::get('receiving-lab-fedex','getReceivingLabTrackingDetails')->name('receiving-lab-fedex');
     });
 
 });

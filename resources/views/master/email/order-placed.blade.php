@@ -276,7 +276,7 @@ $shippingCost = !empty($order->shipping_and_processing_amount) ? $order->shippin
         <div class="invoice-information">
             <p><b>OrderId </b> : {{!empty($order)?$order->order_id:""}}</p>
             <p><b>Order Date </b>: {{!empty($order)?$baseHelper->dateFormat($order->created_at,'formate-3'):''}}</p>
-            <p><b>Order Status</b> : OrderPlaced</p>
+            <p><b>Order Status</b> : NewOrder</p>
         </div>
         <!-- logo brand invoice -->
         <div class="invoice-logo-brand">
