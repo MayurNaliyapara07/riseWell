@@ -73,7 +73,7 @@ class PatientsController extends BaseController
             return app('App\Http\Controllers\StripePaymentController')->oneTimeCheckout($request->all());
         }
         else{
-
+            return app('App\Http\Controllers\StripePaymentController')->subscriptionCheckout($request->all());
         }
     }
 

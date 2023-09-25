@@ -80,7 +80,7 @@
                                         <td class="left strong">{{$item['product_name']}}</td>
                                         <td class="right">{{$item['unit_cost']}}</td>
                                         <td class="center">{{$item['quantity']}}</td>
-                                        <td class="right">{{$item['unit_cost']}}</td>
+                                        <td class="right">{{$itemTotal}}</td>
                                     </tr>
                                     @php
                                         $subTotal += $item['sub_total'];

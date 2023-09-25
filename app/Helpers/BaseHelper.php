@@ -571,21 +571,31 @@ class BaseHelper
 
     function getStripeProductDetails($product)
     {
+
+
         if (!empty($product)) {
             foreach ($product as $item) {
+
+                if (!empty($item->discount)){
+                    $discount = $item->discount;
+                }
+                else{
+                    $discount =  !empty($item->discount_amounts[0])?$item->discount_amounts[0]->amount:'';
+                }
+                $amount = !empty($item->unit_amount)?$item->unit_amount:$item->amount;
                 $currency = strtoupper($item->currency);
-                $unitAmount = new Money($item->unit_amount, new Currency($currency));
-                $quantity = !empty($item->qty) ? $item->qty : "";
-                $totalAmount = new Money($item->unit_amount * $quantity, new Currency($currency));;
+                $unitAmount = new Money($amount, new Currency($currency));
+                $quantity = !empty($item->qty) ? $item->qty : $item->quantity;
+                $totalAmount = new Money($amount * $quantity, new Currency($currency));;
                 $productArray[] = [
-                    'product_name' => !empty($item->product_name) ? $item->product_name : "",
-                    'description' => !empty($item->description) ? $item->description : "",
+                    'product_name' => !empty($item->product_name) ? $item->product_name : $item->description,
+                    'description' => !empty($item->description) ? $item->description : $item->description,
                     'currency' => $currency,
                     'unit_cost' => $unitAmount,
                     'quantity' => $quantity,
                     'total' => $totalAmount,
-                    'sub_total' => $item->unit_amount,
-                    'discount_amount' => $item->discount,
+                    'sub_total' => $amount,
+                    'discount_amount' => $discount,
                 ];
             }
 

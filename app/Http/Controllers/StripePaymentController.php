@@ -56,7 +56,7 @@ class StripePaymentController extends Controller
             /* stripe create shipping rate & processing fees */
             $shippingRateId = $this->createShippingRate($subTotal);
 
-            $lineItems =  [
+            $lineItems = [
                 [
                     'price_data' => [
                         'product_data' => [
@@ -68,7 +68,7 @@ class StripePaymentController extends Controller
                     'quantity' => 1,
                 ],
             ];
-            return $this->createSessionCheckout($customer,$lineItems,$couponsId,$shippingRateId,$patientId);
+            return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'payment');
 
         }
     }
@@ -124,7 +124,59 @@ class StripePaymentController extends Controller
         /* stripe create shipping rate & processing fees */
         $shippingRateId = $this->createShippingRate($shippingRates);
 
-        return $this->createSessionCheckout($customer,$lineItems,$couponsId,$shippingRateId,$patientId);
+        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'payment');
+    }
+
+    public function subscriptionCheckout($request)
+    {
+
+
+        \Stripe\Stripe::setApiKey($this->stripe_secret_key);
+
+        $order_details = !empty($request['order_details']) ? $request['order_details'] : '';
+
+        /* get patients details */
+        $patientId = !empty($request['patients_id']) ? $request['patients_id'] : '';
+        $patients = $this->getPatientDetails($patientId);
+        $customerDetails = [
+            'customer_name' => !empty($patients) ? $patients->first_name . " " . $patients->last_name : '',
+            'customer_email' => !empty($patients) ? $patients->email : '',
+            'customer_phone_no' => !empty($patients) ? $patients->phone_no : '',
+        ];
+
+        /* get product details */
+        $lineItems = array();
+        $discountPrice = $shippingRates = 0;
+        foreach ($order_details as $value) {
+            $productId = $value['product_id'];
+            $qty = $value['qty'];
+            $product = $this->getProductDetails($productId);
+            $stripePlan = !empty($product->stripe_plan) ? $product->stripe_plan : '';
+
+
+            $price = !empty($product->price) ? ($product->price * 100) : 0;
+            $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
+            $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
+            $processingFees = !empty($product->processing_fees) ? ($product->processing_fees * 100) : 0;
+            $subTotal = $processingFees + $shippingCost;
+            $lineItems[] = array(
+                'price' => $stripePlan,
+                'quantity' => $qty,
+            );
+            $discountPrice += $discount;
+            $shippingRates += $subTotal;
+        }
+
+        /* stripe create customer */
+        $customer = $this->createCustomer($customerDetails);
+
+        /* stripe create coupon */
+        $couponsId = $this->createCoupon($discountPrice);
+
+        /* stripe create shipping rate & processing fees */
+        $shippingRateId = $this->createShippingRate(0);
+
+        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'subscription');
     }
 
     public function createCustomer($data)
@@ -175,11 +227,12 @@ class StripePaymentController extends Controller
         return $shippingRateId;
     }
 
-    public function createSessionCheckOut($customer,$lineItems,$couponsId,$shippingRateId,$patientId){
+    public function createSessionCheckOut($customer, $lineItems, $couponsId, $shippingRateId, $patientId,$mode)
+    {
         $session = \Stripe\Checkout\Session::create([
             'customer' => $customer,
             'line_items' => $lineItems,
-            'mode' => 'payment',
+            'mode' => $mode,
             'discounts' => [$couponsId],
             'shipping_options' => [$shippingRateId],
             'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}&patients_id=$patientId",
