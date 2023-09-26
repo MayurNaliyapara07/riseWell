@@ -49,6 +49,7 @@ Route::post('cancel',[StripePaymentController::class,'cancel'])->name('checkout.
 Route::post('webhook',[StripePaymentController::class,'webhook'])->name('checkout.webhook');
 
 Route::get('survey-form/{flowType}/{uniqueID}',[FrotendController::class, 'index']);
+Route::get('/appointment-book', [FrotendController::class, 'appointmentBook'])->name('appointment-book');
 Route::get('/get-started', [FrotendController::class, 'getStarted'])->name('get-started');
 Route::get('/treat-me-now', [FrotendController::class, 'treatMeNow'])->name('treat-me-now');
 Route::get('/thank-you', [FrotendController::class, 'thankYou'])->name('thank-you');

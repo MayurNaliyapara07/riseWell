@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 class FrotendController extends Controller
 {
 
+
+    public function appointmentBook(){
+        return view('frontend.appointment');
+    }
     public function thankYou()
     {
         return view('frontend.ed-form-survey.thank-you');

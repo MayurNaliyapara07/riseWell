@@ -3752,3 +3752,36 @@ label.css-label a {
 .trt-section .thank-you .icon-withtitle .main-block{width: 40%; text-align: center; font-size: 15px;}
 .trt-section .thank-you .icon-withtitle .main-block .icon{width: 50px; height: 50px; font-size: 50px; text-align: center; line-height: 50px; color: #17171b; margin: 0 auto 15px auto;}
 .trt-section .thank-you .icon-withtitle .center-icon{position: absolute; top: 10px; width: 30px; height: 30px; background: #FFAE17; color: #000; text-align: center; line-height: 32px; border-radius: 50%; left: 50%; margin-left: -15px;}
+
+
+.book-section{background: #FBFBFF; padding: 100px 0}
+.book-section .container{max-width: 1260px;}
+.book-section h1{font-family: 'filson_proregular'; font-size: 48px; line-height: 58px; color: #333333; margin: 0 0 40px 0;  text-align: center;}
+.book-section .form-block{background: #fff; border-radius: 10px; padding: 40px; margin: 0 auto; width: 75%}
+.book-section .form-group{margin: 0 0 20px 0}
+.book-section .form-group label{font-family: 'filson_proregular';font-size: 16px; color: #333; margin: 0 0 5px 0}
+.book-section .form-group .form-control {font-family: 'Raleway', sans-serif; border: #CCD5DD 1px solid; font-size: 15px; padding: 10px 15px; border-radius: 8px; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); }
+.book-section .form-group select.form-control {font-family: 'Raleway', sans-serif; border: #CCD5DD 1px solid; font-size: 15px; padding: 12px 15px; border-radius: 8px; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); height: auto;}
+.book-section .form-group .form-control::-moz-placeholder {color: #CCD5DD !important; opacity: 1;}
+.book-section .form-group .form-control:-ms-input-placeholder {color: #CCD5DD !important;}
+.book-section .form-group .form-control::-webkit-input-placeholder {color: #CCD5DD !important;}
+.book-section .btn-book{background: #FFAE17; border-radius: 10px; font-size: 16px; line-height: 52px; text-align: center; letter-spacing: 0.015em; width: 234px; color: #333333; border:none; padding: 0 15px; display: inline-block; cursor: pointer; text-transform: uppercase;}
+.book-section ul.radio-button{margin: 0px -5px 10px -5px; padding: 0px; list-style: none; display: flex; flex-wrap: wrap;}
+.book-section ul.radio-button li{width: 25%; padding: 0 5px; margin-bottom: 10px}
+.book-section ul.radio-button li input[type=radio].css-radio {position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0; }
+.book-section ul.radio-button li input[type=radio].css-radio + label.css-radiobtn {border: 1px solid #ced4da; font-weight: 400; font-size: 16px; color: #212529; padding:8px 20px; display:inline-block; cursor:pointer; border-radius: 8px; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); width:100%; text-align:center}
+.book-section ul.radio-button li input[type=radio].css-radio:checked + label.css-radiobtn {background: #FFE1AA; color: #212529; border:#FFE1AA 1px solid }
+.book-section ul.radio-button li label.css-radiobtn { margin:0px;}
+
+@media (min-width: 768px) and (max-width: 1024px){
+    .book-section{padding: 40px 0}
+    .book-section h1{font-size: 32px; line-height: 42px; margin: 0 0 20px 0;}
+    .book-section .form-block{width: 80%; padding: 20px}
+    .book-section ul.radio-button li{width: 33.33%}
+}
+@media (max-width: 767px) {
+    .book-section{padding: 40px 0}
+    .book-section h1{font-size: 32px; line-height: 42px; margin: 0 0 20px 0;}
+    .book-section .form-block{width: 100%; padding: 20px}
+    .book-section ul.radio-button li{width: 50%}
+}
