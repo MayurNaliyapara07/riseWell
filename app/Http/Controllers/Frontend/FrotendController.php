@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 class FrotendController extends Controller
 {
 
-
     public function thankYou()
     {
         return view('frontend.ed-form-survey.thank-you');
@@ -19,6 +18,7 @@ class FrotendController extends Controller
 
     public function index(Request $request)
     {
+
         $flowType = !empty($request->flowType) ? $request->flowType : '';
         $uniqueUrl = !empty($request->uniqueID) ? $request->uniqueID : '';
         if ($flowType == 'ed') {

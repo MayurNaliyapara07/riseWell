@@ -25,11 +25,14 @@ class StripePaymentController extends Controller
         $this->stripe = new \Stripe\StripeClient($this->stripe_secret_key);
     }
 
-    public function paymentSuccess(){
+    public function paymentSuccess()
+    {
         return view('payment-success');
     }
+
     public function checkout($patientId)
     {
+
         \Stripe\Stripe::setApiKey($this->stripe_secret_key);
 
         $patients = $this->getPatientDetails($patientId);
@@ -44,6 +47,7 @@ class StripePaymentController extends Controller
 
             $product = $this->getProductDetails($productId);
             $productName = !empty($product->product_name) ? $product->product_name : '';
+            $productType = !empty($product->product_type) ? $product->product_type : '';
             $price = !empty($product->price) ? ($product->price * 100) : 0;
             $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
             $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
@@ -63,7 +67,7 @@ class StripePaymentController extends Controller
                 [
                     'price_data' => [
                         'product_data' => [
-                            'name' => $productName
+                            'name' => $productName,
                         ],
                         'unit_amount' => $price,
                         'currency' => 'USD',
@@ -71,7 +75,7 @@ class StripePaymentController extends Controller
                     'quantity' => 1,
                 ],
             ];
-            return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'payment');
+            return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId, 'payment');
 
         }
     }
@@ -99,6 +103,7 @@ class StripePaymentController extends Controller
             $qty = $value['qty'];
             $product = $this->getProductDetails($productId);
             $productName = !empty($product->product_name) ? $product->product_name : '';
+            $productType = !empty($product->product_type) ? $product->product_type : '';
             $price = !empty($product->price) ? ($product->price * 100) : 0;
             $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
             $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
@@ -127,7 +132,7 @@ class StripePaymentController extends Controller
         /* stripe create shipping rate & processing fees */
         $shippingRateId = $this->createShippingRate($shippingRates);
 
-        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'payment');
+        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId, 'payment');
     }
 
     public function subscriptionCheckout($request)
@@ -179,7 +184,7 @@ class StripePaymentController extends Controller
         /* stripe create shipping rate & processing fees */
         $shippingRateId = $this->createShippingRate(0);
 
-        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'subscription');
+        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId, 'subscription');
     }
 
     public function createCustomer($data)
@@ -230,7 +235,7 @@ class StripePaymentController extends Controller
         return $shippingRateId;
     }
 
-    public function createSessionCheckOut($customer, $lineItems, $couponsId, $shippingRateId, $patientId,$mode)
+    public function createSessionCheckOut($customer, $lineItems, $couponsId, $shippingRateId, $patientId, $mode)
     {
         $session = \Stripe\Checkout\Session::create([
             'customer' => $customer,

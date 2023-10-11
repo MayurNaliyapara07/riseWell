@@ -28,7 +28,7 @@
 
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label ">Image<span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger"></span></label>
                                         <div class="col-lg-6">
                                             <div class="image-input image-input-outline" id="kt_image_1">
                                                 <div class="image-input-wrapper"
@@ -82,8 +82,7 @@
                                         <label class="col-lg-3 col-form-label ">Product Type<span
                                                 class="text-danger"></span></label>
                                         <div class="col-lg-6">
-                                            <select class="form-control required"
-                                                    data-msg-required="Product Type is required"
+                                            <select class="form-control"
                                                     name="product_type" style="width: 100%">
                                                 <option value="">Select Product Type</option>
                                                 @if($productType)
@@ -94,22 +93,40 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-lg-3 col-form-label ">Product Stripe Type<span
-                                                class="text-danger"></span></label>
-                                        <div class="col-lg-6">
-                                            <select class="form-control"
-                                                    name="type" style="width: 100%">
-                                                <option value="">Select Product Stripe Type</option>
 
-                                                @if($stripeProductType)
-                                                    @foreach($stripeProductType as $type)
-                                                        <option value="{{$type['value']}}" @if(!empty($product->type)) disabled @endif {{(isset($product)&& $product->type==$type['value'])?'selected':old('type')}} >{{$type['label']}}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
+                                    @if(!empty($product->type))
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label ">Product Stripe Type<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control"
+                                                        name="type" style="width: 100%">
+                                                    <option value="">Select Product Stripe Type</option>
+                                                    @if($stripeProductType)
+                                                        @foreach($stripeProductType as $type)
+                                                            <option value="{{$type['value']}}" @if(!empty($product->type)) disabled @endif {{(isset($product)&& $product->type==$type['value'])?'selected':old('type')}} >{{$type['label']}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="form-group row">
+                                            <label class="col-lg-3 col-form-label ">Product Stripe Type<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control required"  data-msg-required="Product Stripe Type is required"
+                                                        name="type" style="width: 100%">
+                                                    <option value="">Select Product Stripe Type</option>
+                                                    @if($stripeProductType)
+                                                        @foreach($stripeProductType as $type)
+                                                            <option value="{{$type['value']}}" @if(!empty($product->type)) disabled @endif {{(isset($product)&& $product->type==$type['value'])?'selected':old('type')}} >{{$type['label']}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label ">SKU<span
                                                     class="text-danger">*</span></label>
@@ -132,7 +149,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label ">Discount<span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger"></span></label>
                                         <div class="col-lg-6">
                                             <input type="number" step="any" name="discount" id="discount" autocomplete="off"
                                                    class="form-control"
@@ -142,7 +159,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label ">Shipping Cost<span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger"></span></label>
                                         <div class="col-lg-6">
                                             <input type="number" step="any" name="shipping_cost" id="shipping_cost" autocomplete="off"
                                                    class="form-control"
@@ -152,7 +169,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label ">Processing Fees<span
-                                                class="text-danger">*</span></label>
+                                                class="text-danger"></span></label>
                                         <div class="col-lg-6">
                                             <input type="number" step="any" name="processing_fees" id="processing_fees" autocomplete="off"
                                                    class="form-control"
@@ -165,7 +182,7 @@
                                                     class="text-danger"></span></label>
                                         <div class="col-lg-6">
                                             <input type="number" step="any" name="membership_subscription" id="membership_subscription" autocomplete="off"
-                                                   class="form-control required"
+                                                   class="form-control"
                                                    placeholder=""
                                                    value="{{isset($product)?$product->membership_subscription:old('membership_subscription')}}">
                                         </div>

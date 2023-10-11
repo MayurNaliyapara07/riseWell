@@ -26,6 +26,7 @@ class CreateTrtFlowTable extends Migration
             $table->string('libido',50)->nullable();
             $table->string('memory',50)->nullable();
             $table->string('strength',50)->nullable();
+            $table->tinyInteger('product_request')->default(0);
             $table->tinyInteger('future_children')->nullable();
             $table->tinyInteger('living_children')->nullable();
             $table->tinyInteger('testosterone')->nullable();

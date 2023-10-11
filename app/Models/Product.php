@@ -199,7 +199,6 @@ class Product extends BaseModel
 
         $rules['product_name'] = 'required';
         $rules['price'] = 'required|numeric';
-        $rules['product_type'] = 'required';
 
         if (!empty($data['product_id'])) {
             $rules['sku'] = 'required|unique:' . $this->table . ',sku,' . $data['product_id'] . ',product_id';
@@ -208,11 +207,16 @@ class Product extends BaseModel
             $rules['type'] = 'required';
         }
 
+        $message['product_name.required'] = 'Product Name is required';
+        $message['price.required'] = 'Product Price is required';
+        $message['type.required'] = 'Product Stripe Type is required';
+        $message['sku.required'] = 'Product SKU is required';
+
         $response = [];
         $response['success'] = false;
         $response['message'] = '';
 
-        $validationResult = $this->validateDataWithRules($rules, $data);
+        $validationResult = $this->validateDataWithMessage($rules, $data, $message);
         if ($validationResult['success'] == false) {
             $response['success'] = false;
             $response['message'] = ($validationResult['message']);

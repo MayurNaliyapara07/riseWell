@@ -32,6 +32,7 @@ class ProductController extends BaseController
      */
     public function create()
     {
+
         $productType = $this->_model->getProductType();
         $stripeProductType = $this->_model->getStripeProductType();
         return view('frontend.product.create')->with(compact('productType','stripeProductType'));

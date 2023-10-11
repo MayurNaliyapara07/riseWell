@@ -415,6 +415,7 @@ class TrtFlow extends BaseModel
         }
 
         $trtFormData['additional_information'] = !empty($request['additional_information']) ? $request['additional_information'] : '';
+        $trtFormData['product_request'] = !empty($request['product_request']) ? $request['product_request'] : 0;
         $trtFormData['experience'] = !empty($request['experience']) ? $request['experience'] : 0;
         $trtFormData['energy'] = !empty($request['energy']) ? $request['energy'] : '';
         $trtFormData['sleep'] = !empty($request['sleep']) ? $request['sleep'] : '';

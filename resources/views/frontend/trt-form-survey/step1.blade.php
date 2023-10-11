@@ -20,6 +20,7 @@
                             <div class="main-align-top">
                                 <div class="detail-area">
                                     <h1>Personal Information</h1>
+                                    <input type="hidden" name="product_request" value="1">
                                     <input type="hidden" name="trt_refill" value="1">
                                     <input type="hidden" name="member_id" value="{{!empty($memberId)?$memberId:''}}">
                                     <input type="hidden" name="product_id" value="{{!empty($productId)?$productId:''}}">
