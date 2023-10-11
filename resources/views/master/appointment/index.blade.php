@@ -17,7 +17,7 @@
                                 <th>Event Name</th>
                                 <th>Patients Name</th>
                                 <th>Provider Name</th>
-
+                                <th>Action</th>
                             </tr>
                             </thead>
                         </table>
@@ -56,6 +56,10 @@
                 {
                     data: 'provider_name',
                     name: 'provider_name',
+                },
+                {
+                    data: 'action',
+                    name: 'action',
                 },
 
 

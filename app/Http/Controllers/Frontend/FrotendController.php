@@ -12,9 +12,6 @@ class FrotendController extends Controller
 {
 
 
-    public function appointmentBook(){
-        return view('frontend.appointment');
-    }
     public function thankYou()
     {
         return view('frontend.ed-form-survey.thank-you');
@@ -58,7 +55,7 @@ class FrotendController extends Controller
 
         $productDetails = $this->getProductBySkU($sku,$flow);
 
-        return view('frontend.get-started')->with(compact('getContent','productDetails'));
+        return $this->step1();
     }
 
     public function treatMeNow(){

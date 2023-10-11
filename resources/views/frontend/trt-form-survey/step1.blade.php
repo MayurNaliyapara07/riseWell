@@ -94,8 +94,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label for="">APT/Suite #</label>
-                                                <input type="text" class="form-control required"
-                                                       data-msg-required="APT/Suite is required"
+                                                <input type="text" class="form-control"
                                                        placeholder="Please enter your apt/suite" name="apt"
                                                        value="{{!empty($patient) ? $patient->apt : old('apt')}}">
                                             </div>
@@ -136,14 +135,14 @@
                                                        value="{{!empty($patient) ? $patient->billing_zip : old('billing_zip')}}">
                                             </div>
                                         </div>
-                                        <div class="col-lg-12 col-md-12">
+                                        {{--  <div class="col-lg-12 col-md-12">
                                             <div class="shipping-check">
                                                 <input type="checkbox" name="billing_same_as_shipping" id="checkbox8"
                                                        {{ !empty($patient) && $patient->billing_same_as_shipping == 1 ? 'checked' : ''}}  class="css-checkbox">
                                                 <label for="checkbox8" class="css-label">Billing Address is the same as
                                                     shipping</label>
                                             </div>
-                                        </div>
+                                        </div>  --}}
                                         <div class="col-lg-12 col-md-12">
                                             <div class="shipping-check">
                                                 <input type="checkbox" id="terms" name="terms" class="css-checkbox required" data-msg-required="Please accept Privacy Policy & Terms">
@@ -178,9 +177,7 @@
                                 <div class="summary-box">
                                     <h3>Order Summary</h3>
                                     <div class="product-img">
-                                        <img
-                                            src="{{!empty($productDetails->image)?asset('uploads/images/product/'.$productDetails->image):asset('assets/media/products/default.png')}}"
-                                            alt="">
+                                        <img src="{{asset('assets/frontend/images/testKit.png')}}" alt="testKit">
                                     </div>
                                     <div class="product-name">Hormone Test Kit</div>
                                     <ul class="point">

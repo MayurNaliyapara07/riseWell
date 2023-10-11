@@ -69,10 +69,9 @@ class PatientsController extends BaseController
 
     public function saveOrder(Request $request)
     {
-        if (!empty($request->order_type) && $request->order_type == 'OneTime'){
+        if (!empty($request->order_type) && $request->order_type == 'OneTime') {
             return app('App\Http\Controllers\StripePaymentController')->oneTimeCheckout($request->all());
-        }
-        else{
+        } else {
             return app('App\Http\Controllers\StripePaymentController')->subscriptionCheckout($request->all());
         }
     }
@@ -98,8 +97,7 @@ class PatientsController extends BaseController
         $getSchedule = $this->getSchduleList($id);
         $getOrderHistory = $this->getOrderHistory($id);
 
-
-        return view('master.patients.profile')->with(compact('getOrderHistory','getLabReport', 'patientDetails', 'visitNote', 'medicalHistory', 'getTimeZone', 'getStatName', 'getBillingStatName', 'getShippingStatName', 'surveyForm','getSchedule'));
+        return view('master.patients.profile')->with(compact('getOrderHistory', 'getLabReport', 'patientDetails', 'visitNote', 'medicalHistory', 'getTimeZone', 'getStatName', 'getBillingStatName', 'getShippingStatName', 'surveyForm', 'getSchedule'));
 
     }
 
@@ -117,10 +115,11 @@ class PatientsController extends BaseController
         return $result;
     }
 
-    public function getOrderHistory($patientsID){
-       $orderHistoryObj = new Order();
-       $table = $orderHistoryObj->getTable();
-       return $orderHistoryObj->setSelect()->addFieldToFilter($table,'patients_id','=',$patientsID)->get();
+    public function getOrderHistory($patientsID)
+    {
+        $orderHistoryObj = new Order();
+        $table = $orderHistoryObj->getTable();
+        return $orderHistoryObj->setSelect()->addFieldToFilter($table, 'patients_id', '=', $patientsID)->get();
     }
 
     public function edit($id)
@@ -222,13 +221,13 @@ class PatientsController extends BaseController
 
     public function getAvailableTimes(Request $request)
     {
-
         $assignProgramObj = new AssginProgram();
         $scheduleObj = new Schedule();
         $scheduleTable = $scheduleObj->getTable();
         $date = $this->_model->dateFormat($request->date);
         $dayName = Carbon::parse($date)->format('l');
         $providerId = $request->provider_id;
+        $appointmentType = $request->appointmentType;
         $assignProgramId = $request->assign_program_id;
         $getTimeSlot = $assignProgramObj->getAssignProgramDetails($assignProgramId, $providerId, $dayName);
 
@@ -246,11 +245,17 @@ class PatientsController extends BaseController
                 if (!empty($scheduleDetails->time_slot) && $scheduleDetails->time_slot == $value) {
                     unset($newArray[$key]);
                 } else {
-                    $html .= '<div class="col-md-3 col-sm-3 mt-1">
+                    if (!empty($appointmentType)) {
+                        $html .= '<li>
+                          <input type="radio" name="time_slot" id="radio_'.$key.'" class="css-radio" value="' . $value . '">
+                           <label for="radio_'.$key.'" class="css-radiobtn">' . $value . '</label>';
+                    } else {
+                        $html .= '<div class="col-md-3 col-sm-3 mt-1">
                           <label class="radio">
                           <input type="radio" name="time_slot" value="' . $value . '">
                           <span></span>&nbsp;' . $value . '
                           </label></div>';
+                    }
                 }
             }
         }
@@ -288,8 +293,8 @@ class PatientsController extends BaseController
         $result = $chatObject->create($data);
         event(new \App\Events\TimeLine($result->patients_id, $result->content, 'Chat'));
 
-        $phoneNoWtihCountryCode = $countryCode.$phoneNo;
-        $baseHelper->sendSMSNotification($phoneNoWtihCountryCode,'','',$message);
+        $phoneNoWtihCountryCode = $countryCode . $phoneNo;
+        $baseHelper->sendSMSNotification($phoneNoWtihCountryCode, '', '', $message);
         return response()->json($result);
     }
 

@@ -105,6 +105,7 @@ class Order extends BaseModel
         $this->setSelect();
         $this->selectColomns([
             $this->table . '.order_id',
+            $this->table . '.patients_id',
 
             $this->table . '.sending_order_tracking_no',
             $this->table . '.sending_lab_tracking_no',
@@ -137,6 +138,12 @@ class Order extends BaseModel
             $query->orderBy($columnsOrderData['columnsOrderField'], $columnsOrderData['columnsOrderType']);
         });
         $query = $query->addColumn('action', function ($row) {
+            if ($row->sending_lab_status == self::ORDER_STATUS_READY || $row->receiving_lab_status == self::ORDER_STATUS_READY) {
+                $appointmentBookUrl = '<li class="nav-item"><a class="nav-link" href="' . url('get-appointment-book-url/'. $row->order_id . '/'. $row->patients_id) . '" target="_blank"><i class="nav-icon la la-book"></i><span class="nav-text">Appointment Book</span></a></li>';
+            }
+            else{
+                $appointmentBookUrl = '';
+            }
             $action = '<div class="dropdown dropdown-inline">
                             <a href="#" class="btn btn-sm btn-primary btn-clean btn-icon" data-toggle="dropdown">
                                 <i class="la la-cog"></i>
@@ -148,6 +155,7 @@ class Order extends BaseModel
                                        <li class="nav-item"><a class="nav-link trackingHistory" data-toggle="modal"  data-id="' . $row->order_id . '"><i class="nav-icon la la-history"></i><span class="nav-text">Tracking History</span></a></li>
                                        <li class="nav-item"><a class="nav-link shipmentStatus" data-toggle="modal"  data-id="' . $row->order_id . '"><i class="nav-icon la la-shipping-fast"></i><span class="nav-text">Shipping Status</span></a></li>
                                        <li class="nav-item"><a class="nav-link orderStatus" data-toggle="modal"  data-id="' . $row->order_id . '"><i class="nav-icon la la-eye-dropper"></i><span class="nav-text">Order Status</span></a></li>
+                                       '.$appointmentBookUrl.'
                                 </ul>
                             </div>
                         </div>';

@@ -506,7 +506,6 @@ class TrtFlow extends BaseModel
             'billing_city_name' => 'required',
             'billing_state_id' => 'required|numeric',
             'billing_zip' => 'required',
-            'apt' => 'required',
         ];
         $message['first_name.required'] = 'First Name is required';
         $message['last_name.required'] = 'Last Name is required';

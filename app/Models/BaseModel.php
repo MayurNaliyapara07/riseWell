@@ -967,7 +967,6 @@ class BaseModel extends Model
 
     public function dateFormat($value)
     {
-
         if ($value != '' && $value != 'Invalid date') {
             return Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
         } else {

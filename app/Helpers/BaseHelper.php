@@ -571,16 +571,13 @@ class BaseHelper
 
     function getStripeProductDetails($product)
     {
-
-
         if (!empty($product)) {
             foreach ($product as $item) {
-
                 if (!empty($item->discount)){
                     $discount = $item->discount;
                 }
                 else{
-                    $discount =  !empty($item->discount_amounts[0])?$item->discount_amounts[0]->amount:'';
+                    $discount =  !empty($item->discount_amounts[0])?$item->discount_amounts[0]->amount:0;
                 }
                 $amount = !empty($item->unit_amount)?$item->unit_amount:$item->amount;
                 $currency = strtoupper($item->currency);
@@ -589,7 +586,7 @@ class BaseHelper
                 $totalAmount = new Money($amount * $quantity, new Currency($currency));;
                 $productArray[] = [
                     'product_name' => !empty($item->product_name) ? $item->product_name : $item->description,
-                    'description' => !empty($item->description) ? $item->description : $item->description,
+                    'description' => !empty($item->description) ? $item->description : '',
                     'currency' => $currency,
                     'unit_cost' => $unitAmount,
                     'quantity' => $quantity,
@@ -838,6 +835,28 @@ class BaseHelper
         $notify->createLog = $createLog;
         $notify->userColumn = isset($user->id) ? $user->getForeignKey() : 'user_id';
         $notify->send();
+    }
+
+    function twilio($phoneNo, $countryCode, $message)
+    {
+        $gs = $this->gs();
+        $accountSid = !empty($gs->account_sid) ? $gs->account_sid : "";
+        $authToken = !empty($gs->auth_token) ? $gs->auth_token : "";
+        $formNumber = !empty($gs->from_number) ? $gs->from_number : "";
+        if (!empty($accountSid) && !empty($authToken) && !empty($formNumber)) {
+            $client = new Client($accountSid, $authToken);
+            try {
+                $client->messages->create(
+                    "+" . $countryCode . $phoneNo,
+                    array(
+                        'from' => $formNumber,
+                        'body' => $message,
+                    )
+                );
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+        }
     }
 
 

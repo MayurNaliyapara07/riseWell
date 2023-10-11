@@ -27,6 +27,12 @@ class AppointmentController extends Controller
         return $this->_model->getAppointmentList();
     }
 
+    public function getVisitLab($patientsId){
+        session(['current_tab' => 'visit_note']);
+        return redirect()->route('patients.show', [$patientsId]);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *

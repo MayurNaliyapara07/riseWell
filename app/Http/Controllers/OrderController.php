@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
+use function Laravel\Prompts\error;
 
 class OrderController extends BaseController
 {
@@ -39,6 +40,23 @@ class OrderController extends BaseController
     {
 
         return $this->_model->getOrder();
+    }
+
+    public function appointmentBook($orderId,$patientsId){
+
+        $order = $this->_model->loadModel($orderId);
+        if (!empty($order)){
+            if ($order->sending_lab_status == 'LabsReady' || $orderId->receiving_order_status == 'LabsReady'){
+                $patientsObj = new Patients();
+                $patientDetails = $patientsObj->loadModel($patientsId);
+                $assignProgram = app('\App\Http\Controllers\Common\CommonController')->getRendomAssignProgram();
+                $providers = app('\App\Http\Controllers\Common\CommonController')->getRandomProvider($patientDetails->state_id);
+                return view('frontend.appointment')->with(compact('patientsId','orderId','patientDetails','assignProgram','providers'));
+            }
+        }
+        else{
+            return abort(404, 'Page Not Found');
+        }
     }
 
     /**

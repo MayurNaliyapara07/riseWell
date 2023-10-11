@@ -25,6 +25,9 @@ class StripePaymentController extends Controller
         $this->stripe = new \Stripe\StripeClient($this->stripe_secret_key);
     }
 
+    public function paymentSuccess(){
+        return view('payment-success');
+    }
     public function checkout($patientId)
     {
         \Stripe\Stripe::setApiKey($this->stripe_secret_key);
@@ -358,6 +361,7 @@ class StripePaymentController extends Controller
 
             $order = Order::create($order);
             Mail::to($customerEmail)->send(new OrderPlaced($order));
+            session()->flash('success', 'your order has been created successfully');
             return redirect()->route('home');
         }
 

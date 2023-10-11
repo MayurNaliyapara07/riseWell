@@ -122,6 +122,19 @@ class CommonController extends Controller
         return response()->json($assignProgramQuery);
     }
 
+    public function getRendomAssignProgram()
+    {
+        $assignProgramQuery = DB::table('assign_program')
+            ->select('assign_program.assign_program_id', 'event.event_name')
+            ->join('event', 'event.event_id', '=', 'assign_program.event_id')
+            ->where('assign_program.status', true)
+            ->orderBy('assign_program.user_id', 'ASC')
+            ->inRandomOrder()
+            ->limit(1)
+            ->get();
+        return $assignProgramQuery;
+    }
+
     public function getProvider()
     {
         $searchTerm = request()->input('searchTerm');
@@ -135,6 +148,21 @@ class CommonController extends Controller
             ->orderBy('users.first_name', 'ASC')
             ->limit(10)->get()->toArray();
         return response()->json($stateQuery);
+    }
+
+    public function getRandomProvider($patientStateId)
+    {
+
+        $provider = DB::table('users')->select('users.id as provider_id',
+            DB::raw("CONCAT(users.first_name,' ',users.last_name) as provider_name"))
+            ->join('state_of_lic', 'state_of_lic.user_id', '=', 'users.id')
+            ->where('state_of_lic.state_id', $patientStateId)
+            ->where('users.user_type', 'Provider')
+            ->orderBy('users.first_name', 'ASC')
+            ->inRandomOrder()
+            ->limit(1)
+            ->get();
+        return $provider;
     }
 
     public function getSessionTime(Request $request)

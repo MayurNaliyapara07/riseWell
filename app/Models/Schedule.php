@@ -62,13 +62,13 @@ class Schedule extends BaseModel
             $this->table . '.date',
             $this->table . '.time_slot',
             $this->table . '.created_at',
+            $patientTable . '.patients_id',
             $patientTable . '.first_name',
             $patientTable . '.last_name',
             $eventTable . '.event_name',
             $providerTable . '.first_name',
             $providerTable . '.last_name',
         ]);
-
 
         $this->queryBuilder->join($patientTable, function ($join) use ($patientTable) {
             $join->on($this->table . '.patients_id', '=', $patientTable . '.patients_id');
@@ -90,6 +90,10 @@ class Schedule extends BaseModel
         $columnsOrderData = $this->getOrderByFieldAndValue(request()->get("order"), request()->get("columns"), $this->primaryKey, 'DESC');
         $query = DataTables::of($model)->order(function ($query) use ($columnsOrderData) {
             $query->orderBy($columnsOrderData['columnsOrderField'], $columnsOrderData['columnsOrderType']);
+        });
+        $query->addColumn('action', function ($row) {
+            $action = '<a href="' . route('get-visit-lab', $row->patients_id) . '" class="ml-3 btn btn-sm btn-warning btn-clean btn-icon" title="Visit Lab"><i class="la la-eye"></i> </a>';
+            return $action;
         })->editColumn('patients_name', function ($row) {
             $firstName = !empty($row->first_name) ? $row->first_name : '';
             $lastName = !empty($row->last_name) ? $row->last_name : '';
@@ -103,7 +107,7 @@ class Schedule extends BaseModel
             return $this->displayDate($row->date) . " " . $this->timeFormat($timeSlot);
         })->editColumn('program_name', function ($row) {
             return !empty($row->event_name) ? $row->event_name : '';
-        })->rawColumns(['date', 'patients_name', 'provider_name', 'program_name'])
+        })->rawColumns(['date', 'patients_name', 'provider_name', 'program_name','action'])
             ->filter(function ($query) {
                 $search_value = request()['search']['value'];
                 $column = request()['columns'];
@@ -194,11 +198,12 @@ class Schedule extends BaseModel
         $patientObj = new Patients();
         $patientDetails = $patientObj->setSelect()->loadModel($patientsId);
         $patientName = !empty($patientDetails) ? $patientDetails->first_name . " " . $patientDetails->last_name : "";
-        $phoneNo = !empty($patientDetails->phone_no) ? $patientDetails->phone_no : "";
+        $phoneNo = !empty($patientDetails->phone_no) ? $patientDetails->country_code.$patientDetails->phone_no : "";
         $countryCode = !empty($patientDetails->country_code) ? $patientDetails->country_code : "";
         $timeSlot = !empty($saveRec) ? $saveRec->date . " " . $saveRec->time_slot : "";
         $appointmentTemplate = $this->_helper->getAppointmentTemplate($patientName, $timeSlot);
         $smsTemplate = $this->_helper->getSMSMessage($patientName, $timeSlot);
+
         $details = [
             'template' => $appointmentTemplate,
             'email' => !empty($patientDetails->email) ? $patientDetails->email : "",
