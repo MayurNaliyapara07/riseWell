@@ -7,7 +7,9 @@ use App\Helpers\BaseHelper;
 use App\Models\AdminNotification;
 use App\Models\NotificationLog;
 use App\Models\NotificationTemplate;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\String\u;
 
 class NotifyProcess{
 
@@ -23,7 +25,12 @@ class NotifyProcess{
     |
     */
 
-
+    /**
+     * OrderId,
+     *
+     * @var string
+     */
+    public $orderID;
     /**
      * Template name, which contain the short codes and messages
      *
@@ -163,24 +170,35 @@ class NotifyProcess{
         $this->prevConfiguration();
         $this->setSetting();
 
+        $orderID = $this->orderID;
         $body = $this->body;
         $user = $this->user;
         $globalTemplate = $this->globalTemplate;
 
+
         //finding the notification template
         $template = NotificationTemplate::where('name', $this->templateName)->where($this->statusField, '=',1)->first();
+
+        if ($this->templateName == 'LabsReady'){
+            $orderDetails = Order::where('order_id',$orderID)->first();
+            $patientsID = !empty($orderDetails)?$orderDetails->patients_id:'';
+            $scheduleLinkUrl =  url('get-appointment-book-url/'. $orderID . '/'. $patientsID);
+        }
+        else{
+            $scheduleLinkUrl = "";
+        }
+
         $this->template = $template;
 
         //Getting the notification message from database if use and template exist
         //If not exist, get the message which have sent via method
         if ($user && $template) {
-            $message = $this->replaceShortCode($user->fullname,$template->name,$user->username,$template->$body);
+            $message = $this->replaceShortCode($user->fullname,$template->name,$user->username,$template->$body,$scheduleLinkUrl);
             if (empty($message)) {
                 $message = $template->$body;
             }
         }else{
-
-            $message = $this->replaceShortCode($this->receiverName,$this->toAddress,$this->setting->$globalTemplate,$this->message);
+            $message = $this->replaceShortCode($this->receiverName,$this->toAddress,$this->setting->$globalTemplate,$this->message,$scheduleLinkUrl);
         }
 
         //replace the all short cod of template
@@ -205,12 +223,13 @@ class NotifyProcess{
      *
      * @return string
      */
-    protected function replaceShortCode($name,$status,$username,$body){
+    protected function replaceShortCode($name,$status,$username,$body,$scheduleLinkUrl){
 
         $message = str_replace("{{fullname}}", $name, $body);
         $message = str_replace("{{username}}", $username, $message);
         $message = str_replace("{{message}}", $body, $message);
         $message = str_replace("{{order_status}}", $status, $message);
+        $message = str_replace("{{link}}", $scheduleLinkUrl, $message);
         return $message;
     }
 

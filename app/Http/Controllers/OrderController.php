@@ -7,15 +7,9 @@ use App\Http\Controllers\Common\BaseController;
 use App\Models\Order;
 use App\Models\OrderWiseStatus;
 use App\Models\Patients;
-use App\Models\Schedule;
-use App\Notifications\OrderPlaced;
-use App\Notifications\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Yajra\DataTables\DataTables;
-use function Laravel\Prompts\error;
 
 class OrderController extends BaseController
 {
@@ -38,26 +32,9 @@ class OrderController extends BaseController
 
     public function getOrder()
     {
-
         return $this->_model->getOrder();
     }
 
-    public function appointmentBook($orderId,$patientsId){
-
-        $order = $this->_model->loadModel($orderId);
-        if (!empty($order)){
-            if ($order->sending_lab_status == 'LabsReady' || $orderId->receiving_order_status == 'LabsReady'){
-                $patientsObj = new Patients();
-                $patientDetails = $patientsObj->loadModel($patientsId);
-                $assignProgram = app('\App\Http\Controllers\Common\CommonController')->getRendomAssignProgram();
-                $providers = app('\App\Http\Controllers\Common\CommonController')->getRandomProvider($patientDetails->state_id);
-                return view('frontend.appointment')->with(compact('patientsId','orderId','patientDetails','assignProgram','providers'));
-            }
-        }
-        else{
-            return abort(404, 'Page Not Found');
-        }
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -159,9 +136,6 @@ class OrderController extends BaseController
             $field = 'receiving_lab_status';
         }
 
-
-
-
         $orderDetails = $this->_model->loadModel($orderId);
         $patientsObj = new Patients();
         $patientsDetails = $patientsObj->loadModel($orderDetails->patients_id);
@@ -177,7 +151,8 @@ class OrderController extends BaseController
             $customerEmail = !empty($orderDetails->customer_email) ? $orderDetails->customer_email : '';
             $customerPhoneNo = !empty($patientsDetails->phone_no) ? $patientsDetails->country_code . "" . $patientsDetails->phone_no : '';
             $smsNotification = $baseHelper->sendSMSNotification($customerPhoneNo, $orderStatus, $trackingType, '');
-            $mailNotification = $baseHelper->sendMailNotification($customerEmail, $orderStatus, $trackingType);
+            $mailNotification = $baseHelper->sendMailNotification($customerEmail, $orderStatus, $trackingType,$orderId);
+
             if ($mailNotification['status'] == true || $mailNotification['status'] == null) {
                 return $this->webResponse('Email sent to ' . $customerEmail . ' successfully');
             } else {

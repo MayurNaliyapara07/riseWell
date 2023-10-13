@@ -29,10 +29,10 @@ class Email extends NotifyProcess implements Notifiable
 
     public function __construct()
     {
-
         $this->statusField = 'status';
         $this->body = 'email_body';
         $this->globalTemplate = 'email_template';
+        $this->orderID = 'order_id';
         $this->notifyConfig = 'mail_config';
     }
 
@@ -98,8 +98,6 @@ class Email extends NotifyProcess implements Notifiable
         $mail->isHTML(true);
         $mail->Subject = $this->subject;
         $mail->Body    = $this->finalMessage;
-
-
         $mail->send();
     }
 

@@ -36,6 +36,7 @@
                             <div><strong>PhoneNo
                                     :</strong> {{!empty($order->customer_phone_no)?$order->customer_phone_no:''}}</div>
                             <div><strong>Currency : </strong> {{!empty($order)?$order->currency:''}}</div>
+                            <div><strong>Product Requested : </strong>{{!empty($order->is_product_requested)?'Yes':'No'}}</div>
 
                         </div>
                         <?php
@@ -49,8 +50,7 @@
                             <div><strong>Country : </strong> {{!empty($address->country)?$address->country:''}}</div>
                             <div><strong>State : </strong> {{!empty($address->state)?$address->state:''}}</div>
                             <div><strong>City: </strong> {{!empty($address->city)?$address->city:''}}</div>
-                            <div><strong>Zip / Postal
-                                    Code: </strong> {{!empty($address->postal_code)?$address->postal_code:''}}</div>
+                            <div><strong>Zip / Postal Code: </strong> {{!empty($address->postal_code)?$address->postal_code:''}}</div>
                         </div>
                     </div>
                     <?php $subTotal = $itemTotal = $discountAmount = 0;

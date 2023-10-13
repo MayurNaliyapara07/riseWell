@@ -17,7 +17,6 @@ class Notify
     | the class that is serving this perspective.
     |
     */
-
     /**
      * Subject,
      *
@@ -90,7 +89,6 @@ class Notify
 	public function send(){
 
         $methods = [];
-
         //get the notification method classes which are selected
         if($this->sendVia){
             foreach ($this->sendVia as $sendVia) {
@@ -107,10 +105,10 @@ class Notify
             $notify->subject = $this->subject;
             $notify->shortCodes = $this->shortCodes;
             $notify->user = $this->user;
+            $notify->orderID = $this->order_id;
             $notify->setting = $this->setting;
             $notify->createLog = $this->createLog;
             $notify->userColumn = $this->userColumn;
-
             $notify->send();
         }
 	}

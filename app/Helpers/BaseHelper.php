@@ -746,7 +746,6 @@ class BaseHelper
 
     public function sendSMSNotification($phoneNo, $orderStatus='',$trackingType='',$message)
     {
-
         $response['status'] = false;
         $response['message'] = '';
         if ($trackingType == 'order'){
@@ -786,7 +785,7 @@ class BaseHelper
     }
 
 
-    public function sendMailNotification($email, $orderStatus,$trackingType)
+    public function sendMailNotification($email, $orderStatus,$trackingType,$orderId)
     {
         $response['status'] = false;
         $response['message'] = '';
@@ -808,7 +807,7 @@ class BaseHelper
                 'email' => $email,
                 'fullname' => $receiverName,
             ];
-            $this->notify($details, $orderStatus, $subject,'', ['email']);
+            $this->notify($details, $orderStatus, $subject,'', ['email'],$orderId);
         } else {
             $response['status'] = false;
             $response['message'] = 'Email Configuration Setting is required !!';
@@ -823,7 +822,7 @@ class BaseHelper
 
     }
 
-    function notify($user, $templateName,$subject,$sendVia = null, $createLog = true)
+    function notify($user, $templateName,$subject,$sendVia = null,$createLog = true,$orderId)
     {
         if (gettype($user) == 'array') {
             $user = (object)$user;
@@ -834,6 +833,7 @@ class BaseHelper
         $notify->user = $user;
         $notify->createLog = $createLog;
         $notify->userColumn = isset($user->id) ? $user->getForeignKey() : 'user_id';
+        $notify->order_id = $orderId;
         $notify->send();
     }
 

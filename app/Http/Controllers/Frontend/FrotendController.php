@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\EDFlow;
 use App\Models\ManageSection;
+use App\Models\Order;
+use App\Models\Patients;
 use App\Models\Product;
 use App\Models\TrtFlow;
 use Illuminate\Http\Request;
@@ -11,6 +13,23 @@ use Illuminate\Http\Request;
 class FrotendController extends Controller
 {
 
+    public function appointmentBook($orderId,$patientsId){
+
+        $orderObj = new Order();
+        $order = $orderObj->loadModel($orderId);
+        if (!empty($order)){
+            if ($order->sending_lab_status == 'LabsReady' || $orderId->receiving_order_status == 'LabsReady'){
+                $patientsObj = new Patients();
+                $patientDetails = $patientsObj->loadModel($patientsId);
+                $assignProgram = app('\App\Http\Controllers\Common\CommonController')->getRendomAssignProgram();
+                $providers = app('\App\Http\Controllers\Common\CommonController')->getRandomProvider($patientDetails->state_id);
+                return view('frontend.appointment')->with(compact('patientsId','orderId','patientDetails','assignProgram','providers'));
+            }
+        }
+        else{
+            return abort(404, 'Page Not Found');
+        }
+    }
     public function thankYou()
     {
         return view('frontend.ed-form-survey.thank-you');

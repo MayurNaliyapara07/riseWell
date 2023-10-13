@@ -16,6 +16,8 @@ class Order extends BaseModel
 
     protected $fillable = [
 
+        'is_product_requested',
+
         'sending_order_shipment_status',
         'sending_lab_shipment_status',
         'receiving_order_shipment_status',
@@ -139,7 +141,8 @@ class Order extends BaseModel
         });
         $query = $query->addColumn('action', function ($row) {
             if ($row->sending_lab_status == self::ORDER_STATUS_READY || $row->receiving_lab_status == self::ORDER_STATUS_READY) {
-                $appointmentBookUrl = '<li class="nav-item"><a class="nav-link" href="' . url('get-appointment-book-url/'. $row->order_id . '/'. $row->patients_id) . '" target="_blank"><i class="nav-icon la la-book"></i><span class="nav-text">Appointment Book</span></a></li>';
+                $copyUrl = url('get-appointment-book-url/'. $row->order_id . '/'. $row->patients_id);
+                $appointmentBookUrl = '<li class="nav-item"><a target="_blank" class="nav-link " href="' . $copyUrl . '"><i class="nav-icon la la-book"></i><span class="nav-text">Appointment Book</span></a></li>';
             }
             else{
                 $appointmentBookUrl = '';

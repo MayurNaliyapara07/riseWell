@@ -180,7 +180,6 @@
                         })
                         try {
                             navigator.clipboard.writeText(url);
-
                             Toast.fire({
                                 icon: 'success',
                                 title: 'URL copied! '

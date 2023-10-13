@@ -43,8 +43,9 @@ Route::get('clear-cache', function () {
 Route::get('checkout/{patientId}', [StripePaymentController::class, 'checkout'])->name('checkout');
 Route::get('success', [StripePaymentController::class, 'success'])->name('checkout.success');
 Route::post('cancel', [StripePaymentController::class, 'cancel'])->name('checkout.cancel');
-Route::post('webhook', [StripePaymentController::class, 'webhook'])->name('checkout.webhook');
+Route::post('webhook', [StripePaymentController::class, 'webhook'])->name('webhook');
 
+Route::get('get-appointment-book-url/{orderId}/{patientsID}', [FrotendController::class,'appointmentBook'])->name('get-appointment-book-url');
 Route::get('survey-form/{flowType}/{uniqueID}', [FrotendController::class, 'index']);
 Route::get('get-started', [FrotendController::class, 'getStarted'])->name('get-started');
 Route::get('treat-me-now', [FrotendController::class, 'treatMeNow'])->name('treat-me-now');
@@ -197,7 +198,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('order-status-change', 'orderStatusChange')->name('order-status-change');
         Route::post('save-shipment-status', 'saveShipmentStatus')->name('save-shipment-status');
         Route::post('get-tracking-history', 'getTrackingHistory')->name('get-tracking-history');
-        Route::get('get-appointment-book-url/{orderId}/{patientsID}', 'appointmentBook')->name('get-appointment-book-url');
     });
     Route::controller(SettingsController::class)->group(function () {
         Route::post('send-test-mail', 'sendTestMail')->name('send-test-mail');

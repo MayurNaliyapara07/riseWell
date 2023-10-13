@@ -430,6 +430,33 @@
             }
         });
 
+        function copyUrl(URL){
+            console.log("called",URL);
+            try {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                navigator.clipboard.writeText(URL);
+                Toast.fire({
+                    icon: 'success',
+                    title: 'URL copied! '
+                })
+            } catch (err) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Failed to copy!'
+                })
+            }
+        }
+
     </script>
 
 @endpush

@@ -51,6 +51,7 @@ class CreateOrderTable extends Migration
             $table->decimal('sub_total')->nullable();
             $table->decimal('total_amount')->nullable();
             $table->decimal('shipping_and_processing_amount')->nullable();
+            $table->tinyInteger('is_product_requested')->default(0);
             $table->timestamps();
         });
 

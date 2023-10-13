@@ -5,7 +5,6 @@
             <div class="container">
 
                 <h1>Appointment</h1>
-
                 <input type="hidden" class="form-control"
                        name="patients_id" id="patients_id"
                        value="{{!empty($patientDetails) ? $patientDetails->patienst_id:''}}">
@@ -37,9 +36,6 @@
                                        readonly
                                        name="event_name"
                                        value="{{!empty($assignProgram[0])?$assignProgram[0]->event_name:""}}">
-
-
-
 
                             </div>
                         </div>
@@ -125,7 +121,7 @@
             $('#saveAppointment').addClass('spinner spinner-white spinner-right');
             var patients_id = $("input[name=patients_id]").val();
             var assignProgramId = $('#assignProgramId').val();
-            var date = $("#date").val();
+            var date = moment($("#date").val()).format('DD/MM/YYYY');
             var providerId = $('#providerId').val();
             var description = $('textarea[name="description"]').val();
             var timeSlot = $('input[name="time_slot"]:checked').val();
