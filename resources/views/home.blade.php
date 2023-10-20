@@ -14,7 +14,6 @@
             </div>
         @endif
 
-
         <div class="row">
             <div class="col-xl-3">
                 <!--begin::Stats Widget 29-->

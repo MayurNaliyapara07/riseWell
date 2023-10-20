@@ -8,9 +8,8 @@ use App\Models\Patients;
 use App\Models\PaymentGatewayCredentials;
 use App\Models\Product;
 use App\Notifications\OrderPlaced;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class StripePaymentController extends Controller
@@ -27,19 +26,13 @@ class StripePaymentController extends Controller
         $this->stripe = new \Stripe\StripeClient($this->stripe_secret_key);
     }
 
-    public function paymentSuccess()
-    {
-        return view('payment-success');
-    }
-
     public function checkout($patientId)
     {
 
-        \Stripe\Stripe::setApiKey($this->stripe_secret_key);
 
+        \Stripe\Stripe::setApiKey($this->stripe_secret_key);
         $patients = $this->getPatientDetails($patientId);
         $productId = !empty($patients) ? $patients->product_id : '';
-
         if (isset($productId)) {
             $customerDetails = [
                 'customer_name' => !empty($patients) ? $patients->first_name . " " . $patients->last_name : '',
@@ -48,13 +41,25 @@ class StripePaymentController extends Controller
             ];
 
             $product = $this->getProductDetails($productId);
-            $productName = !empty($product->product_name) ? $product->product_name : '';
             $productRequested = !empty($product->product_type) &&  $product->product_type=='TRT' ? 1: 0;
-            $price = !empty($product->price) ? ($product->price * 100) : 0;
-            $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
-            $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
-            $processingFees = !empty($product->processing_fees) ? ($product->processing_fees * 100) : 0;
-            $subTotal = $processingFees + $shippingCost;
+            if ($product->product_type == 'TRT'){
+                $productDetails = DB::table('product')->where('product_id','=',11)->first();
+                $productName = !empty($productDetails->product_name) ? $productDetails->product_name : '';
+                $price = !empty($productDetails->price) ? ($productDetails->price * 100) : 0;
+                $discount = !empty($productDetails->discount) ? ($productDetails->discount * 100) : 0;
+                $shippingCost = !empty($productDetails->shipping_cost) ? ($productDetails->shipping_cost * 100) : 0;
+                $processingFees = !empty($productDetails->processing_fees) ? ($productDetails->processing_fees * 100) : 0;
+                $subTotal = $processingFees + $shippingCost;
+            }
+            else{
+                $productName = !empty($product->product_name) ? $product->product_name : '';
+                $price = !empty($product->price) ? ($product->price * 100) : 0;
+                $discount = !empty($product->discount) ? ($product->discount * 100) : 0;
+                $shippingCost = !empty($product->shipping_cost) ? ($product->shipping_cost * 100) : 0;
+                $processingFees = !empty($product->processing_fees) ? ($product->processing_fees * 100) : 0;
+                $subTotal = $processingFees + $shippingCost;
+            }
+
 
             /* stripe create customer */
             $customer = $this->createCustomer($customerDetails);
@@ -77,7 +82,7 @@ class StripePaymentController extends Controller
                     'quantity' => 1,
                 ],
             ];
-            return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId, 'payment',$productRequested);
+            return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId, 'payment',$productRequested,$productId);
 
         }
     }
@@ -96,6 +101,7 @@ class StripePaymentController extends Controller
             'customer_email' => !empty($patients) ? $patients->email : '',
             'customer_phone_no' => !empty($patients) ? $patients->phone_no : '',
         ];
+
 
         /* get product details */
         $lineItems = array();
@@ -134,7 +140,7 @@ class StripePaymentController extends Controller
         /* stripe create shipping rate & processing fees */
         $shippingRateId = $this->createShippingRate($shippingRates);
 
-        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId, 'payment',$productRequested);
+        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'payment',$productRequested);
     }
 
     public function subscriptionCheckout($request)
@@ -185,7 +191,7 @@ class StripePaymentController extends Controller
         /* stripe create shipping rate & processing fees */
         $shippingRateId = $this->createShippingRate(0);
 
-        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId, 'subscription',$productRequested);
+        return $this->createSessionCheckout($customer, $lineItems, $couponsId, $shippingRateId, $patientId,'subscription',$productRequested);
     }
 
     public function createCustomer($data)
@@ -236,7 +242,7 @@ class StripePaymentController extends Controller
         return $shippingRateId;
     }
 
-    public function createSessionCheckOut($customer, $lineItems, $couponsId, $shippingRateId, $patientId, $mode,$productRequested)
+    public function createSessionCheckOut($customer, $lineItems, $couponsId, $shippingRateId, $patientId,$mode,$productRequested,$productId=0)
     {
         $session = \Stripe\Checkout\Session::create([
             'customer' => $customer,
@@ -244,7 +250,7 @@ class StripePaymentController extends Controller
             'mode' => $mode,
             'discounts' => [$couponsId],
             'shipping_options' => [$shippingRateId],
-            'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}&patients_id=$patientId&is_product_requested=$productRequested",
+            'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}&patients_id=$patientId&is_product_requested=$productRequested&product_id=$productId",
             'cancel_url' => route('checkout.cancel', [], true),
         ]);
 
@@ -265,67 +271,7 @@ class StripePaymentController extends Controller
     public function webhook(Request $request)
     {
 
-        $endpoint_secret = env('STRIPE_WEBHOOK_SECRET');
-        $payload = @file_get_contents('php://input');
-        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-
-        $receivedData = [
-            'payload'=>[$payload],
-            'header'=>[$_SERVER],
-            'stripe-signature'=>[$sig_header],
-        ];
-
-        Log::channel('daily')->info('Received Request',$receivedData);
-
     }
-
-//    public function webhook(Request $request)
-//    {
-//
-//        $endpoint_secret = env('STRIPE_WEBHOOK_SECRET');
-//        \Stripe\Stripe::setApiKey($this->stripe_secret_key);
-//        $payload = @file_get_contents('php://input');
-//        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
-//        $event = null;
-//
-//
-//        try {
-//            $event = \Stripe\Webhook::constructEvent(
-//                $payload, $sig_header, $endpoint_secret
-//            );
-//        } catch(\UnexpectedValueException $e) {
-//
-//            // Invalid payload
-//            http_response_code(400);
-//            echo json_encode(['Error parsing payload: ' => $e->getMessage()]);
-//            exit();
-//        }
-//        catch(\Stripe\Exception\SignatureVerificationException $e) {
-//            // Invalid signature
-//            http_response_code(400);
-//            echo json_encode(['Error verifying webhook signature: ' => $e->getMessage()]);
-//            exit();
-//        }
-//
-//        // Handle the event
-//
-//        switch ($event->type) {
-//            case 'payment_intent.succeeded':
-//                 $paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
-//                 DB::table('webhook_calls')->insert(array('payload' =>json_encode($paymentIntent)));
-//                 break;
-//
-//            case 'payment_method.attached':
-//                $paymentMethod = $event->data->object; // contains a \Stripe\PaymentMethod
-//                DB::table('webhook_calls')->insert(array('payload' =>json_encode($paymentMethod)));
-//                break;
-//
-//            default:
-//                echo 'Received unknown event type ' . $event->type;
-//        }
-//
-//        http_response_code(200);
-//    }
 
     public function getPatientDetails($patientsId)
     {
@@ -354,6 +300,7 @@ class StripePaymentController extends Controller
     {
 
         $sessionId = $stripeRecord->id;
+        $productId = $stripeRecord->product_id;
         $paymentStatus = $stripeRecord->payment_status;
         $status = $stripeRecord->status;
         $shippingAndProcessingCost = !empty($stripeRecord->shipping_cost->amount_total) ? $stripeRecord->shipping_cost->amount_total : 0;
@@ -386,7 +333,6 @@ class StripePaymentController extends Controller
             $discountDetails = !empty($invoiceDetails['discount']) ? json_encode($invoiceDetails['discount']) : "";
         } else {
             $lineItems = !empty($stripeRecord->line_items->data) ? $stripeRecord->line_items->data : "";
-
             foreach ($lineItems as $item) {
                 $productDetails[] = [
                     'product_name' => !empty($item->description) ? $item->description : '',
@@ -402,8 +348,9 @@ class StripePaymentController extends Controller
         if ($paymentStatus == 'paid' && $status == 'complete') {
             $order = [
                 'session_id' => !empty($sessionId) ? $sessionId : '',
-                'patients_id' => $patientsId,
+                'product_id' => $productId,
                 'is_product_requested' => $is_product_requested,
+                'patients_id' => $patientsId,
                 'product_details' => !empty($productDetails) ? json_encode($productDetails) : '',
                 'shipping_and_processing_amount' => $shippingAndProcessingCost,
                 'discount_details' => !empty($discountDetails) ? $discountDetails : '',
@@ -430,7 +377,7 @@ class StripePaymentController extends Controller
             ];
 
             $order = Order::create($order);
-//            Mail::to($customerEmail)->send(new OrderPlaced($order));
+            Mail::to($customerEmail)->send(new OrderPlaced($order));
             session()->flash('success', 'your order has been created successfully');
             return redirect()->route('home');
         }

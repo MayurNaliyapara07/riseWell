@@ -3,6 +3,7 @@
 @section('content')
 
     <?php
+    $productDetails = \Illuminate\Support\Facades\DB::table('product')->where('product_id',$order->product_id)->first();
     $currency = !empty($order) ? strtoupper($order->currency) : "";
     $product = $baseHelper->getStripeProductDetails(json_decode($order->product_details));
     $shippingAndProcessingCost = !empty($order->shipping_and_processing_amount) ? new \Akaunting\Money\Money($order->shipping_and_processing_amount, new \Akaunting\Money\Currency($currency)) : 0;
@@ -36,7 +37,8 @@
                             <div><strong>PhoneNo
                                     :</strong> {{!empty($order->customer_phone_no)?$order->customer_phone_no:''}}</div>
                             <div><strong>Currency : </strong> {{!empty($order)?$order->currency:''}}</div>
-                            <div><strong>Product Requested : </strong>{{!empty($order->is_product_requested)?'Yes':'No'}}</div>
+
+                            <div><strong>Product Requested : </strong>{{!empty($order->is_product_requested)?$productDetails->product_name:'No'}}</div>
 
                         </div>
                         <?php
@@ -95,36 +97,7 @@
                     @endif
 
                     <div class="row">
-                        <div class="col-lg-4 col-sm-5">
-                            <table class="table table-clear">
-                                <tbody>
-                                <tr>
-                                    <td class="left">
-                                        <strong>Order Status :</strong>
-                                    </td>
-                                    <td class="right">{{$order->order_status}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="left">
-                                        <strong>Labs Status :</strong>
-                                    </td>
-                                    <td class="right">{{$order->lab_status}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="left">
-                                        <strong>Order Shipment Status :</strong>
-                                    </td>
-                                    <td class="right">{{$order->order_shipment_status}}</td>
-                                </tr>
-                                <tr>
-                                    <td class="left">
-                                        <strong>Labs Shipment Status :</strong>
-                                    </td>
-                                    <td class="right">{{$order->lab_shipment_status}}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
                         <div class="col-lg-4 col-sm-5 ml-auto">
                             <?php
 

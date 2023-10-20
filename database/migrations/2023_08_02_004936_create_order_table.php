@@ -16,6 +16,7 @@ class CreateOrderTable extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->bigIncrements('order_id')->index();
             $table->unsignedBigInteger('patients_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->string('sending_order_tracking_no')->nullable();
             $table->string('sending_lab_tracking_no')->nullable();
             $table->string('receiving_order_tracking_no')->nullable();

@@ -187,12 +187,15 @@
                                         <li><i class="fas fa-check"></i>Online Provider Consult</li>
                                     </ul>
                                     <ul class="totalprice">
-                                        <li>Price :<span>${{$productDetails->price}}</span></li>
-                                        <li>Shipping Cost :<span>${{$productDetails->shipping_cost}}</span></li>
-                                        <li>Processing Fees :<span>${{$productDetails->processing_fees}}</span></li>
-                                        <li>Discount :<span>${{$productDetails->discount}}</span></li>
+                                        <?php
+                                            $product = \Illuminate\Support\Facades\DB::table('product')->where('product_id','=',11)->first();
+                                            ?>
+                                        <li>Price :<span>${{$product->price}}</span></li>
+                                        <li>Shipping Cost :<span>${{$product->shipping_cost}}</span></li>
+                                        <li>Processing Fees :<span>${{$product->processing_fees}}</span></li>
+                                        <li>Discount :<span>${{$product->discount}}</span></li>
                                         <li class="total">Total
-                                            :<span>${{($productDetails->price+$productDetails->shipping_cost+$productDetails->processing_fees) - $productDetails->discount}}</span>
+                                            :<span>${{($product->price+$product->shipping_cost+$product->processing_fees) - $product->discount}}</span>
                                         </li>
                                     </ul>
                                 </div>
