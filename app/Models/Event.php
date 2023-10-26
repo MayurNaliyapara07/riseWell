@@ -71,7 +71,7 @@ class Event extends BaseModel
         return [
             ['key' => self::LOCATION_TYPE_IN_METTING, 'value' => self::LOCATION_TYPE_IN_METTING, 'label' => 'In-person Metting'],
             ['key' => self::LOCATION_TYPE_BY_CALL, 'value' => self::LOCATION_TYPE_BY_CALL, 'label' => 'Phone Call'],
-//            ['key' => self::LOCATION_TYPE_ZOOM_METTING, 'value' => self::LOCATION_TYPE_ZOOM_METTING, 'label' => 'Zoom'],
+            ['key' => self::LOCATION_TYPE_ZOOM_METTING, 'value' => self::LOCATION_TYPE_ZOOM_METTING, 'label' => 'Zoom'],
 
         ];
     }
@@ -209,16 +209,8 @@ class Event extends BaseModel
             $data['phone_no'] = $request['phone_no'];
             $data['location'] = "";
         } else if ($locationType == 'Zoom') {
-            $zoomMettingResponse = $this->createMetting([
-                'topic' => $request['event_name'],
-                'duration' => $request['duration'],
-                'start_time' => now(),
-                'host_video' => 1,
-                'participant_video' => 1,
-            ]);
-            $data['zoom_join_url'] = $zoomMettingResponse;
             $data['phone_no'] = "";
-            $data['location'] = "";
+            $data['location'] = $request['location'];
         }
         if (empty($request['event_id'])) {
             $eventLink = $this->_helper->randomString(16);
@@ -337,7 +329,7 @@ class Event extends BaseModel
     {
         $eventAvailable = new EventAvailableTimes();
         $eventAvailableTable = $eventAvailable->getTable();
-        $selectedColumn = array($this->table . '.event_id', $this->table . '.event_name', $this->table . '.duration', $this->table . '.custom_duration', $this->table . '.custom_duration_type', $eventAvailableTable . '.*');
+        $selectedColumn = array($this->table . '.event_id',$this->table . '.location_type', $this->table . '.event_name', $this->table . '.duration', $this->table . '.custom_duration', $this->table . '.custom_duration_type', $eventAvailableTable . '.*');
         $result = $this->setSelect()
                 ->joinEventAvailable()
                 ->addFieldToFilter($this->table, 'event_id', '=', $eventId)

@@ -9,8 +9,13 @@ use App\Models\Patients;
 use App\Models\Product;
 use App\Models\User;
 use App\Notifications\OrderPlaced;
+use Carbon\Carbon;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Exception;
 
 class HomeController extends BaseController
 {
@@ -33,7 +38,5 @@ class HomeController extends BaseController
     {
         return view('auth.verify');
     }
-
-
 
 }

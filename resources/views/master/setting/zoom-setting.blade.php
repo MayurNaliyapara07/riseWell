@@ -30,6 +30,19 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
+
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Zoom Account ID
+                                            <span class="text-danger">*</span></label>
+                                        <div class="col-lg-9 col-xl-6">
+                                            <input type="text"
+                                                   data-msg-required="Zoom Account Id required"
+                                                   name="zoom_account_id" autocomplete="off"
+                                                   class="form-control form-control-lg form-control-solid mb-2 required" value="{{!empty($general_setting->zoom_account_id)?$general_setting->zoom_account_id:''}}"
+                                                   placeholder="Zoom Account Id">
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-lg-3 col-form-label text-alert">Zoom Client Id
                                             <span class="text-danger">*</span></label>
@@ -52,29 +65,18 @@
                                                    placeholder="Zoom Client Secret Key">
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Zoom Account No
-                                            <span class="text-danger">*</span></label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input type="text"
-                                                   data-msg-required="Zoom Account No required"
-                                                   name="zoom_account_no" autocomplete="off"
-                                                   class="form-control form-control-lg form-control-solid mb-2 required" value="{{!empty($general_setting->zoom_account_no)?$general_setting->zoom_account_no:''}}"
-                                                   placeholder="Zoom Account No">
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Zoom Access Token
-                                            <span class="text-danger">*</span></label>
-                                        <div class="col-lg-9 col-xl-6">
-                                            <input type="text"
-                                                   data-msg-required="Zoom Access Token required"
-                                                   name="zoom_access_token" autocomplete="off"
-                                                   class="form-control form-control-lg form-control-solid mb-2 required" value="{{!empty($general_setting->zoom_access_token)?$general_setting->zoom_access_token:''}}"
-                                                   placeholder="Zoom Access Token">
-                                        </div>
-                                    </div>
+{{--                                    <div class="form-group row">--}}
+{{--                                        <label class="col-xl-3 col-lg-3 col-form-label text-alert">Zoom Access Token--}}
+{{--                                            <span class="text-danger">*</span></label>--}}
+{{--                                        <div class="col-lg-9 col-xl-6">--}}
+{{--                                            <input type="text"--}}
+{{--                                                   data-msg-required="Zoom Access Token required"--}}
+{{--                                                   name="zoom_access_token" autocomplete="off"--}}
+{{--                                                   class="form-control form-control-lg form-control-solid mb-2 required" value="{{!empty($general_setting->zoom_access_token)?$general_setting->zoom_access_token:''}}"--}}
+{{--                                                   placeholder="Zoom Access Token">--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
 
                                 </div>
                             </div>

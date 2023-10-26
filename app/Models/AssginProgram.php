@@ -3,7 +3,12 @@
 namespace App\Models;
 
 use App\Helpers\AssignProgram\Helper;
+use App\Helpers\ZoomApi;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class AssginProgram extends BaseModel
 {
@@ -51,7 +56,8 @@ class AssginProgram extends BaseModel
         return $result;
     }
 
-    public function saveRecord($data){
+    public function saveRecord($data)
+    {
 
         $rules['event_id'] = 'required';
         $validationResult = $this->validateDataWithRules($rules, $data);
@@ -86,11 +92,13 @@ class AssginProgram extends BaseModel
         $day = $this->_helper->dayFormat($dayName);
         $assignProgramDetails = self::findOneWithId($assignProgramId);
         $event_id = !empty($assignProgramDetails) ? $assignProgramDetails->event_id : '';
+
         $eventObject = new Event();
         $providerWorkingHoursObject = new UserWiseWorkingHours();
         $eventDetails = $eventObject->getDayWiseEventAvailable($event_id, $day);
         $timeSlot = "";
         if (count($eventDetails) > 0) {
+            $eventName = $eventDetails[0]->event_name;
             $duration = $eventDetails[0]->duration;
             $custom_duration = $eventDetails[0]->custom_duration;
             $custom_duration_type = $eventDetails[0]->custom_duration_type;
@@ -99,6 +107,7 @@ class AssginProgram extends BaseModel
             } else {
                 $gap = $duration;
             }
+            $createMettings = $this->createZoomMettings($eventName, $duration);
             $providerTimeSlot = $providerWorkingHoursObject->getAvailableTimesSlot($providerId, $day);
             $slot = [];
             foreach ($providerTimeSlot as $value) {
@@ -106,11 +115,71 @@ class AssginProgram extends BaseModel
                 $endTime = $value->end_time;
                 $result = $this->_helper->convertSlot($startTime, $endTime, $gap);
 
-                array_push($slot,$result);
+                array_push($slot, $result);
             }
-
-            return $slot;
-
+            $response['slot'] = $slot;
+            $response['is_zoom_mettings'] = !empty($eventDetails[0]) ? $eventDetails[0]['location_type'] == 'Zoom' : '';
+            $response['zoom_join_url'] = !empty($createMettings['data'])?$createMettings['data']['join_url']:'';
+            return $response;
         }
     }
+
+    function accessToken()
+    {
+        session()->remove('zoom_app_token');
+        $zoom_app_token = \session('zoom_app_token');
+        if (!$zoom_app_token || Carbon::now() > $zoom_app_token->expires_in) {
+            $zoom_access_token = $this->newAccessToken();
+        } else {
+            $zoom_access_token = $zoom_app_token->access_token;
+        }
+        return $zoom_access_token;
+    }
+
+    function newAccessToken()
+    {
+        $gs = $this->_helper->gs();
+        $zoom_account_id = $gs->zoom_account_id;
+        $zoom_client_secret_key = $gs->zoom_client_secret_key;
+        $zoom_client_id = $gs->zoom_client_url;
+        $base64Credentials = base64_encode("$zoom_client_id:$zoom_client_secret_key");
+        $url = 'https://zoom.us/oauth/token?grant_type=account_credentials&account_id=' . $zoom_account_id;
+        $response = Http::withHeaders([
+            'Authorization' => "Basic $base64Credentials",
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ])->post($url);
+        $res = $response->object();
+        $res->expires_in = Carbon::now()->addMinutes(58);
+        \session()->put('zoom_app_token', $res);
+         return $res->access_token;
+    }
+
+    public function createZoomMettings($eventName, $time)
+    {
+        $zoom_access_token = $this->accessToken();
+        $url = 'https://api.zoom.us/v2/users/me/meetings';
+        $response = Http::withToken($zoom_access_token)->post($url, [
+            'topic' => $eventName,
+            'type' => 2,
+            'start_time' => now(),
+            'duration' => $time,
+            'agenda' => 'Meeting for Patient',
+            'timezone' => 'Asia/Kolkata',
+        ]);
+        if ($response->successful()) {
+            return [
+                'success' => $response->getStatusCode() === 201,
+                'data'    => json_decode($response->getBody(), true),
+            ];
+        }
+        else {
+            return [
+                'success' => $response->getStatusCode() === 201,
+                'data'    => json_decode($response->getBody(), true),
+            ];
+            return response()->json(['error' => 'Failed to create a Zoom meeting'], 500);
+        }
+    }
+
+
 }

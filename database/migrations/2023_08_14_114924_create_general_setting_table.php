@@ -27,7 +27,7 @@ class CreateGeneralSettingTable extends Migration
             $table->string('stripe_webhook_key',150)->nullable();
             $table->string('zoom_client_url',255)->nullable();
             $table->string('zoom_client_secret_key',255)->nullable();
-            $table->string('zoom_account_no',255)->nullable();
+            $table->string('zoom_account_id',255)->nullable();
             $table->text('zoom_access_token')->nullable();
             $table->timestamps();
         });

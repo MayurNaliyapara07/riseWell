@@ -230,10 +230,13 @@ class PatientsController extends BaseController
         $appointmentType = $request->appointmentType;
         $assignProgramId = $request->assign_program_id;
         $getTimeSlot = $assignProgramObj->getAssignProgramDetails($assignProgramId, $providerId, $dayName);
+        $timeSlot = !empty($getTimeSlot['slot'])?$getTimeSlot['slot']:'';
+        $is_zoom_mettings = !empty($getTimeSlot['is_zoom_mettings'])?$getTimeSlot['is_zoom_mettings']:'';
 
+        $response = [];
         $html = '';
-        if (!empty($getTimeSlot)) {
-            $newArray = array_merge(...$getTimeSlot);
+        if (!empty($timeSlot)) {
+            $newArray = array_merge(...$timeSlot);
             foreach ($newArray as $key => $value) {
                 /* if check time slot booked or not */
                 $scheduleDetails = $scheduleObj->setSelect()
@@ -259,7 +262,9 @@ class PatientsController extends BaseController
                 }
             }
         }
-        return response()->json($html, 200);
+        $response['html'] = $html;
+        $response['is_zoom_mettings'] = $is_zoom_mettings;
+        return response()->json($response, 200);
     }
 
     public function chat($id = 0)

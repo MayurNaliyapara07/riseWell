@@ -14,7 +14,7 @@ class GeneralSetting extends BaseModel
 
     protected $primaryKey = "general_setting_id";
 
-    protected $fillable = ['email_from', 'site_title', 'site_logo','site_logo_dark','country_code','mail_config','sms_config','stripe_key','stripe_secret_key','stripe_webhook_key','zoom_client_url','zoom_client_secret_key','zoom_account_no','zoom_access_token'];
+    protected $fillable = ['email_from', 'site_title', 'site_logo','site_logo_dark','country_code','mail_config','sms_config','stripe_key','stripe_secret_key','stripe_webhook_key','zoom_client_url','zoom_client_secret_key','zoom_account_id','zoom_access_token'];
 
     protected $entity = 'general_setting';
 
@@ -272,7 +272,7 @@ class GeneralSetting extends BaseModel
         $data['stripe_webhook_url'] = $request['stripe_webhook_url'];
         $data['zoom_client_url'] = $request['zoom_client_url'];
         $data['zoom_client_secret_key'] = $request['zoom_client_secret_key'];
-        $data['zoom_account_no'] = $request['zoom_account_no'];
+        $data['zoom_account_id'] = $request['zoom_account_id'];
         $data['zoom_access_token'] = $request['zoom_access_token'];
 
         /* set webhook url */

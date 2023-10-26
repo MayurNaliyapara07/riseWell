@@ -46,8 +46,7 @@
 
                     <div class="form-group">
                         <label>Program<span class="text-danger">*</span></label>
-                        <select name="assign_program_id" class="form-control  assign-program-select2"
-                                style="width: 100%;!important;">
+                        <select name="assign_program_id" class="form-control  assign-program-select2" style="width: 100%;!important;">
                             <option value="">Select Program</option>
                         </select>
                     </div>
@@ -75,6 +74,13 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group" id="zoomLink">
+                        <label>Zoom Metting Link:</label>
+                        <textarea type="text" autocomplete="off" name="zoom_metting_link" class="form-control"
+                                  placeholder=""></textarea>
+                    </div>
+
                     <div class="form-group">
                         <label>Description:</label>
                         <textarea type="text" autocomplete="off" name="description" class="form-control"
@@ -271,6 +277,7 @@
             providerId = $(this).val();
         });
         $('#show_time').hide();
+        $('#zoomLink').hide();
         $('.datepicker').datepicker({
             rtl: KTUtil.isRTL(),
             todayHighlight: true,
@@ -295,17 +302,25 @@
                         assign_program_id:assignProgramId,
                     },
                     success: function (response) {
+                        console.log(response,'Response');
                         $('#show_time').show();
-                        if(response == "" || response == null || response == undefined ){
+                        if(isNullOrUndefined(response.html)){
                             $("#timeSlot").html('<span class="label label-lg label-light-danger label-inline">Timeslot not Available<span>');
                         } else {
-                            $("#timeSlot").html(response);
+                            if(!isNullOrUndefined(response.is_zoom_mettings)){
+                                $('#zoomLink').show();
+                            }
+                            $("#timeSlot").html(response.html);
                         }
-
                     },
                 });
             }
         });
+
+        function isNullOrUndefined(value) {
+            return value === undefined || value === null;
+        }
+
         function saveAppointment() {
             $('#saveAppointment').addClass('spinner spinner-white spinner-right');
             var patients_id = $("input[name=patients_id]").val();

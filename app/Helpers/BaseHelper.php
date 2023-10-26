@@ -12,6 +12,7 @@ use App\Notify\Sms;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Twilio\Rest\Client;
 
@@ -409,7 +410,6 @@ class BaseHelper
                 return $date;
             }
         }
-
         return $date;
     }
 
@@ -521,7 +521,6 @@ class BaseHelper
     }
 
 
-
     function setWebhookUrl($url)
     {
         $gs = $this->gs();
@@ -573,13 +572,12 @@ class BaseHelper
     {
         if (!empty($product)) {
             foreach ($product as $item) {
-                if (!empty($item->discount)){
+                if (!empty($item->discount)) {
                     $discount = $item->discount;
+                } else {
+                    $discount = !empty($item->discount_amounts[0]) ? $item->discount_amounts[0]->amount : 0;
                 }
-                else{
-                    $discount =  !empty($item->discount_amounts[0])?$item->discount_amounts[0]->amount:0;
-                }
-                $amount = !empty($item->unit_amount)?$item->unit_amount:$item->amount;
+                $amount = !empty($item->unit_amount) ? $item->unit_amount : $item->amount;
                 $currency = strtoupper($item->currency);
                 $unitAmount = new Money($amount, new Currency($currency));
                 $quantity = !empty($item->qty) ? $item->qty : $item->quantity;
@@ -744,17 +742,15 @@ class BaseHelper
         return DB::table('notification_template')->where('name', $name)->first();
     }
 
-    public function sendSMSNotification($phoneNo, $orderStatus='',$trackingType='',$message)
+    public function sendSMSNotification($phoneNo, $orderStatus = '', $trackingType = '', $message)
     {
         $response['status'] = false;
         $response['message'] = '';
-        if ($trackingType == 'order'){
-            $message = 'Hi, Your Order Status Is '.$orderStatus.' Thank You for RiseWell';
-        }
-        else if ($trackingType == 'lbs'){
-            $message = 'Hi, Your Labs Status Is '.$orderStatus.' Thank You for RiseWell';
-        }
-        else{
+        if ($trackingType == 'order') {
+            $message = 'Hi, Your Order Status Is ' . $orderStatus . ' Thank You for RiseWell';
+        } else if ($trackingType == 'lbs') {
+            $message = 'Hi, Your Labs Status Is ' . $orderStatus . ' Thank You for RiseWell';
+        } else {
             $message = $message;
         }
 
@@ -767,11 +763,10 @@ class BaseHelper
             $sendSms->receiverName = '';
             $sendSms->templateName = $orderStatus;
             $sendSms->message = $message;
-            $sendSms->subject = !empty($template->subj)?$template->subj:'';
+            $sendSms->subject = !empty($template->subj) ? $template->subj : '';
             $sendSms->send();
 
-        }
-        else {
+        } else {
             $response['status'] = false;
             $response['message'] = 'SMS Configuration Setting is required !!';
         }
@@ -785,7 +780,7 @@ class BaseHelper
     }
 
 
-    public function sendMailNotification($email, $orderStatus,$trackingType,$orderId)
+    public function sendMailNotification($email, $orderStatus, $trackingType, $orderId)
     {
         $response['status'] = false;
         $response['message'] = '';
@@ -794,10 +789,9 @@ class BaseHelper
 
         if (!empty($config)) {
             $template = $this->getNotificationTemplate($orderStatus);
-            if ($trackingType == 'order' || $trackingType == 'TestMail'){
+            if ($trackingType == 'order' || $trackingType == 'TestMail') {
                 $subject = $template->subj;
-            }
-            else{
+            } else {
                 $subject = $template->labs_subj;
             }
 
@@ -807,7 +801,7 @@ class BaseHelper
                 'email' => $email,
                 'fullname' => $receiverName,
             ];
-            $this->notify($details, $orderStatus, $subject,'', ['email'],$orderId);
+            $this->notify($details, $orderStatus, $subject, '', ['email'], $orderId);
         } else {
             $response['status'] = false;
             $response['message'] = 'Email Configuration Setting is required !!';
@@ -822,7 +816,7 @@ class BaseHelper
 
     }
 
-    function notify($user, $templateName,$subject,$sendVia = null,$createLog = true,$orderId)
+    function notify($user, $templateName, $subject, $sendVia = null, $createLog = true, $orderId)
     {
         if (gettype($user) == 'array') {
             $user = (object)$user;
@@ -858,11 +852,6 @@ class BaseHelper
             }
         }
     }
-
-
-
-
-
 
 
 }
